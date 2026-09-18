@@ -13,7 +13,7 @@ export const categories = [
 export const initialProducts = [
   {
     id: 'val-1', category: 'valorant', name: 'Valorant Points', subtitle: 'VP • Livraison instantanée',
-    image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&q=80&auto=format&fit=crop', // Valorant - rouge / agents
     badge: 'HOT', description: 'Recharge ton compte Valorant en quelques secondes. Code officiel Riot.',
     variants: [
       { id: 'val-1-125', label: '125 VP', price: 1.99 },
@@ -27,7 +27,7 @@ export const initialProducts = [
   },
   {
     id: 'lol-1', category: 'lol', name: 'League of Legends RP', subtitle: 'Riot Points EUW / EUNE',
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&q=80&auto=format&fit=crop', // LoL - arena
     badge: 'BEST SELLER', description: 'Débloque skins, champions et chromas. Code valable Europe.',
     variants: [
       { id: 'lol-650', label: '650 RP', price: 5.00 },
@@ -39,7 +39,7 @@ export const initialProducts = [
   },
   {
     id: 'fc26-1', category: 'fc26', name: 'FC 26 Coins Ultimate Team', subtitle: 'Livraison 5-15 min • PS / Xbox / PC',
-    image: 'https://images.unsplash.com/photo-1574629810360-214f3774381b?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=600&q=80&auto=format&fit=crop', // FC26 / FIFA - foot
     badge: 'NEW', description: 'Coins pour FC 26 UT. Méthode sécurisée Player Auction, garantie anti-ban.',
     variants: [
       { id: 'fc-50k', label: '50K Coins', price: 9.99 },
@@ -52,7 +52,7 @@ export const initialProducts = [
   },
   {
     id: 'pubg-1', category: 'pubg', name: 'PUBG Mobile UC', subtitle: 'Unknown Cash',
-    image: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80&auto=format&fit=crop', // PUBG - combat
     badge: null, description: 'UC pour PUBG Mobile. Compatible Global. ID joueur requis à la livraison pour méthode directe, ou code.',
     variants: [
       { id: 'pubg-60', label: '60 UC', price: 0.99 },
@@ -65,7 +65,7 @@ export const initialProducts = [
   },
   {
     id: 'roblox-1', category: 'roblox', name: 'Roblox Gift Card', subtitle: 'Robux & Premium',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80&auto=format&fit=crop',
     badge: null, description: 'Carte Roblox officielle. Échangeable en Robux ou abonnement Premium.',
     variants: [
       { id: 'rbx-10', label: '10 TND (≈800 Robux)', price: 10.00 },
@@ -76,7 +76,7 @@ export const initialProducts = [
   },
   {
     id: 'ff-1', category: 'freefire', name: 'Free Fire Diamonds', subtitle: 'Garena • Instantané',
-    image: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=600&q=80&auto=format&fit=crop',
     badge: 'PROMO', description: 'Diamants Free Fire. Livraison par ID ou code.',
     variants: [
       { id: 'ff-100', label: '100 Diamonds', price: 1.29 },
@@ -88,7 +88,7 @@ export const initialProducts = [
   },
   {
     id: 'netflix-1', category: 'netflix', name: 'Netflix E-Card', subtitle: 'Abonnement Prépayé',
-    image: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600&q=80&auto=format&fit=crop',
     badge: null, description: 'Carte Netflix France. Compatible Essentiel, Standard et Premium. Durée selon formule.',
     variants: [
       { id: 'nfx-25', label: '25 TND', price: 25.00 },
@@ -99,7 +99,7 @@ export const initialProducts = [
   },
   {
     id: 'psn-1', category: 'other', name: 'PlayStation Store Card', subtitle: 'PSN Wallet FR',
-    image: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=600&q=80&auto=format&fit=crop',
     badge: null, description: 'Recharge portefeuille PSN. Jeux, add-ons, PS Plus.',
     variants: [
       { id: 'psn-20', label: '20 TND', price: 20.00 },
@@ -110,7 +110,7 @@ export const initialProducts = [
   },
   {
     id: 'xbox-1', category: 'other', name: 'Xbox Gift Card', subtitle: 'Microsoft Store',
-    image: 'https://images.unsplash.com/photo-1622297845775-5ff3fef71d13?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1622297845775-5ff3fef71d13?w=600&q=80&auto=format&fit=crop',
     badge: null, description: 'Pour Game Pass, jeux et contenus Xbox & PC.',
     variants: [
       { id: 'xbx-15', label: '15 TND', price: 15.00 },
@@ -121,7 +121,7 @@ export const initialProducts = [
   },
   {
     id: 'steam-1', category: 'other', name: 'Steam Wallet Code', subtitle: 'EUR',
-    image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=600&q=80&auto=format&fit=crop',
     badge: null, description: 'Code Steam Wallet à activer sur votre compte Steam.',
     variants: [
       { id: 'stm-20', label: '20 TND', price: 20.00 },

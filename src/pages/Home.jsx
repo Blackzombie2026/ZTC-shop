@@ -3,12 +3,12 @@ import { ArrowRight, Zap, ShieldCheck, Truck, Clock } from 'lucide-react'
 import { initialProducts, categories } from '../data/products'
 
 const heroCats = [
-  { id:'valorant', label:'Valorant', img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300' },
-  { id:'lol', label:'League of Legends', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300' },
-  { id:'fc26', label:'FC 26 Coins', img:'https://images.unsplash.com/photo-1574629810360-214f3774381b?w=300' },
-  { id:'pubg', label:'PUBG UC', img:'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=300' },
-  { id:'roblox', label:'Roblox', img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300' },
-  { id:'netflix', label:'Netflix', img:'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=300' },
+  { id:'valorant', label:'Valorant', img:'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&q=80&auto=format&fit=crop' },
+  { id:'lol', label:'League of Legends', img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=300&q=80&auto=format&fit=crop' },
+  { id:'fc26', label:'FC 26 Coins', img:'https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=300&q=80&auto=format&fit=crop' },
+  { id:'pubg', label:'PUBG UC', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80&auto=format&fit=crop' },
+  { id:'roblox', label:'Roblox', img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80&auto=format&fit=crop' },
+  { id:'netflix', label:'Netflix', img:'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=300&q=80&auto=format&fit=crop' },
 ]
 
 export default function Home(){
