@@ -14,14 +14,11 @@ export const initialProducts = [
   {
     id: 'val-1', category: 'valorant', name: 'Valorant Points', subtitle: 'VP • Livraison instantanée',
     image: '/valorant.jpg', // image fournie: Reyna + logo V rouge
-    badge: 'HOT', description: 'Recharge ton compte Valorant en quelques secondes. Code officiel Riot.',
+    badge: 'HOT', description: 'Recharge ton compte Valorant en quelques secondes. Code officiel Riot. Carte EU.',
     variants: [
-      { id: 'val-1-125', label: '125 VP', price: 1.99 },
-      { id: 'val-1-420', label: '420 VP', price: 4.99 },
-      { id: 'val-1-700', label: '700 VP', price: 7.99 },
-      { id: 'val-1-1375', label: '1375 VP', price: 14.99 },
-      { id: 'val-1-2400', label: '2400 VP', price: 24.99 },
-      { id: 'val-1-5000', label: '5000 VP', price: 49.99 },
+      { id: 'val-1000', label: '1000 VP', price: 38.00 },
+      { id: 'val-2050', label: '2050 VP', price: 76.00 },
+      { id: 'val-2450', label: '2450 VP', price: 92.00 },
     ],
     stock: 124, rating: 4.9
   },
