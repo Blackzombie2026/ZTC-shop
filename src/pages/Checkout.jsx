@@ -41,7 +41,8 @@ export default function Checkout(){
       items: cart.map(c=> ({...c, code: genCode()})),
       total, method, customer: { name: form.name, email: form.email, phone: (form.phone||'').replace(/[\s.-]/g,''), address: form.address },
       userId: user.id, principal: user.principal, provider: user.provider,
-      status: method==='cod' ? 'En attente (paiement à la livraison)' : 'Payée • Codes disponibles'
+      // Tout code reste verrouillé jusqu'à confirmation admin (même payé par carte)
+      status: method==='cod' ? 'En attente (paiement à la livraison)' : 'En attente de confirmation (paiement reçu)'
     }
     addOrder(order)
     clearCart()

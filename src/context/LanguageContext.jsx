@@ -36,6 +36,9 @@ fr: {
   signin: 'Se connecter', signup: 'Créer un compte', pseudo_ph: 'Pseudo', pass_ph: 'Mot de passe',
   create_account: 'Créer mon compte', login_email: "Se connecter avec email", or_with: 'ou continuer avec',
   admin: 'Console d’administration', products_stock: 'Produits & Stock', orders_tab: 'Commandes',
+  pending_title: 'En attente de confirmation admin', codes_locked: 'Codes verrouillés',
+  pending_desc: "Ta commande est bien reçue ! L'admin va la vérifier puis tes codes seront révélés ici. Reviens dans quelques minutes.",
+  confirmed_hint: 'Commande confirmée par l’admin — clique pour révéler tes codes.',
 },
 en: {
   catalog: 'Catalog', cart: 'Cart', orders: 'Orders', login: 'Login', logout: 'Logout',
@@ -64,6 +67,9 @@ en: {
   signin: 'Log in', signup: 'Sign up', pseudo_ph: 'Nickname', pass_ph: 'Password',
   create_account: 'Create my account', login_email: 'Log in with email', or_with: 'or continue with',
   admin: 'Admin console', products_stock: 'Products & Stock', orders_tab: 'Orders',
+  pending_title: 'Waiting for admin confirmation', codes_locked: 'Locked codes',
+  pending_desc: 'Order received! The admin will verify it, then your codes will be revealed here. Check back in a few minutes.',
+  confirmed_hint: 'Order confirmed by admin — click to reveal your codes.',
 },
 ar: {
   catalog: 'المتجر', cart: 'السلة', orders: 'طلباتي', login: 'تسجيل الدخول', logout: 'تسجيل الخروج',
@@ -92,6 +98,9 @@ ar: {
   signin: 'دخول', signup: 'حساب جديد', pseudo_ph: 'الاسم المستعار', pass_ph: 'كلمة المرور',
   create_account: 'إنشاء حسابي', login_email: 'الدخول بالإيميل', or_with: 'أو تابع مع',
   admin: 'لوحة الإدارة', products_stock: 'المنتجات والمخزون', orders_tab: 'الطلبات',
+  pending_title: 'بانتظار تأكيد الإدارة', codes_locked: 'أكواد مقفلة',
+  pending_desc: 'تم استلام طلبك! ستتحقق الإدارة منه ثم ستظهر أكوادك هنا. عد بعد بضع دقائق.',
+  confirmed_hint: 'تم تأكيد الطلب من الإدارة — اضغط لكشف أكوادك.',
 }
 }
 
