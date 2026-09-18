@@ -24,7 +24,7 @@ export const initialProducts = [
   },
   {
     id: 'lol-1', category: 'lol', name: 'League of Legends RP', subtitle: 'Riot Points EUW / EUNE',
-    image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&q=80&auto=format&fit=crop', // LoL - arena
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNztnpwTexsNw2a58jD4GD3VukhzYqPHAouBNgep7nzA&s=10',
     badge: 'BEST SELLER', description: 'Débloque skins, champions et chromas. Code valable Europe.',
     variants: [
       { id: 'lol-650', label: '650 RP', price: 5.00 },
@@ -49,7 +49,7 @@ export const initialProducts = [
   },
   {
     id: 'pubg-1', category: 'pubg', name: 'PUBG Mobile UC', subtitle: 'Unknown Cash',
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80&auto=format&fit=crop', // PUBG - combat
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2k0Xlx3K5dZvgyfn4R20bh_OFVCv93xOJkyMmx-g-Zg&s=10',
     badge: null, description: 'UC pour PUBG Mobile. Compatible Global. ID joueur requis à la livraison pour méthode directe, ou code.',
     variants: [
       { id: 'pubg-60', label: '60 UC', price: 0.99 },
@@ -62,7 +62,7 @@ export const initialProducts = [
   },
   {
     id: 'roblox-1', category: 'roblox', name: 'Roblox Gift Card', subtitle: 'Robux & Premium',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80&auto=format&fit=crop',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyCcKCRn3kSwAHeU7aumRfEv7QvfvG639Rn5HkcsNUiA&s=10',
     badge: null, description: 'Carte Roblox officielle. Échangeable en Robux ou abonnement Premium.',
     variants: [
       { id: 'rbx-10', label: '10 TND (≈800 Robux)', price: 10.00 },
@@ -73,7 +73,7 @@ export const initialProducts = [
   },
   {
     id: 'ff-1', category: 'freefire', name: 'Free Fire Diamonds', subtitle: 'Garena • Instantané',
-    image: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=600&q=80&auto=format&fit=crop',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd5HuED_JGEoLag7MWcOoH5IXb-RT85bqifrp5p71oBQ&s=10',
     badge: 'PROMO', description: 'Diamants Free Fire. Livraison par ID ou code.',
     variants: [
       { id: 'ff-100', label: '100 Diamonds', price: 1.29 },

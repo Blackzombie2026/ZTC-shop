@@ -4,10 +4,10 @@ import { initialProducts, categories } from '../data/products'
 
 const heroCats = [
   { id:'valorant', label:'Valorant', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7raq6TZniTT-h3tAcCp4gTt1qayp_6_4m5VYdEKZf2w&s=10' },
-  { id:'lol', label:'League of Legends', img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=300&q=80&auto=format&fit=crop' },
+  { id:'lol', label:'League of Legends', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNztnpwTexsNw2a58jD4GD3VukhzYqPHAouBNgep7nzA&s=10' },
   { id:'fc26', label:'FC 26 Coins', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhPfUeZMBSqKcCZINmj7HGMN4nDmh3OVPLURigP-u5bg&s=10' },
-  { id:'pubg', label:'PUBG UC', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80&auto=format&fit=crop' },
-  { id:'roblox', label:'Roblox', img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80&auto=format&fit=crop' },
+  { id:'pubg', label:'PUBG UC', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2k0Xlx3K5dZvgyfn4R20bh_OFVCv93xOJkyMmx-g-Zg&s=10' },
+  { id:'roblox', label:'Roblox', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyCcKCRn3kSwAHeU7aumRfEv7QvfvG639Rn5HkcsNUiA&s=10' },
   { id:'netflix', label:'Netflix', img:'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=300&q=80&auto=format&fit=crop' },
 ]
 
