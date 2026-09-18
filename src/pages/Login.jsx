@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
-import { Fingerprint, Shield, Mail, MessageCircle, ThumbsUp, UserPlus, LogIn } from 'lucide-react'
+import { Shield, Mail, MessageCircle, ThumbsUp, UserPlus, LogIn } from 'lucide-react'
 
 export default function Login(){
-  const { user, login, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook } = useAuth()
+  const { user, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook } = useAuth()
   const { t } = useLang()
   const nav = useNavigate()
   const loc = useLocation()
@@ -14,10 +14,14 @@ export default function Login(){
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [showAdmin, setShowAdmin] = useState(false)
+  const [adminEmail, setAdminEmail] = useState('')
+  const [adminPass, setAdminPass] = useState('')
+  const [adminError, setAdminError] = useState('')
 
   const from = loc.state?.from || '/orders'
 
-  useEffect(()=>{ if(user) nav(from, {replace:true}) }, [user])
+  useEffect(()=>{ if(user){ nav(user.isAdmin ? '/admin' : from, {replace:true}) } }, [user])
 
   const handleEmail = (e)=>{
     e.preventDefault(); setError('')
@@ -26,6 +30,14 @@ export default function Login(){
       else loginWithEmail(email, password)
       nav(from)
     }catch(err){ setError(err.message) }
+  }
+
+  const handleAdmin = (e)=>{
+    e.preventDefault(); setAdminError('')
+    try{
+      loginAdmin(adminEmail, adminPass)
+      nav('/admin')
+    }catch(err){ setAdminError(err.message) }
   }
 
   const discordConfigured = !!import.meta.env.VITE_DISCORD_CLIENT_ID
@@ -56,7 +68,6 @@ export default function Login(){
               <Mail size={16}/> {mode==='signup' ? t('create_account') : t('login_email')}
             </button>
           </form>
-          <p className="text-[11px] text-white/40 mt-2 text-center">Démo locale : comptes stockés dans ton navigateur (localStorage).</p>
         </div>
 
         <div className="flex items-center gap-3 my-4 text-xs text-white/40"><div className="flex-1 h-px bg-white/10"/><span>{t('or_with')}</span><div className="flex-1 h-px bg-white/10"/></div>
@@ -70,19 +81,20 @@ export default function Login(){
             <ThumbsUp size={18}/> Facebook {!fbConfigured && <span className="text-[10px] opacity-70 font-normal">(démo)</span>}
           </button>
         </div>
-        {!discordConfigured && !fbConfigured && (
-          <p className="text-[11px] text-white/40 mt-2 text-center">Mode démo : pour un vrai OAuth, ajoute <span className="font-mono">VITE_DISCORD_CLIENT_ID</span> et <span className="font-mono">VITE_FACEBOOK_APP_ID</span> dans <span className="font-mono">.env</span> puis redéploie.</p>
-        )}
 
-        <div className="flex items-center gap-3 my-4 text-xs text-white/40"><div className="flex-1 h-px bg-white/10"/><span>avancé</span><div className="flex-1 h-px bg-white/10"/></div>
-
-        <div className="space-y-2">
-          <button onClick={()=>{login(false); nav('/orders')}} className="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm font-semibold flex items-center justify-center gap-2">
-            <Fingerprint size={16}/> Internet Identity (démo)
+        <div className="mt-6 rounded-2xl bg-amber-500/5 border border-amber-500/20 p-4">
+          <button onClick={()=>setShowAdmin(s=>!s)} className="w-full flex items-center justify-center gap-2 text-sm font-bold text-amber-300">
+            <Shield size={15}/> Espace propriétaire — Admin ZTC {showAdmin?'▲':'▼'}
           </button>
-          <button onClick={()=>{login(true); nav('/admin')}} className="w-full py-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm font-bold flex items-center justify-center gap-2">
-            <Shield size={16}/> Connexion Admin (démo)
-          </button>
+          {showAdmin && (
+            <form onSubmit={handleAdmin} className="mt-3 space-y-3">
+              <input placeholder="Email admin" type="email" required value={adminEmail} onChange={e=>setAdminEmail(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-amber-500"/>
+              <input placeholder="Mot de passe admin" type="password" required value={adminPass} onChange={e=>setAdminPass(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-amber-500"/>
+              {adminError && <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-2.5">{adminError}</div>}
+              <button className="w-full py-3 rounded-xl bg-amber-500 text-black font-black">Se connecter en Admin</button>
+              <p className="text-[11px] text-white/40 text-center">Seul le propriétaire connaît ces identifiants (définis dans les variables Netlify).</p>
+            </form>
+          )}
         </div>
       </div>
     </div>

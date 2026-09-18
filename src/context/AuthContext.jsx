@@ -125,6 +125,18 @@ export function AuthProvider({ children }){
     setUser(u); return u
   }
 
+  // ---- Admin (propriétaire uniquement — email + mot de passe) ----
+  // Configure sur Netlify: VITE_ADMIN_EMAIL + VITE_ADMIN_PASSWORD
+  const loginAdmin = (email, password)=>{
+    const expectedEmail = (import.meta.env.VITE_ADMIN_EMAIL || 'admin@ztc.shop').toLowerCase()
+    const expectedPass = import.meta.env.VITE_ADMIN_PASSWORD || 'ztc2026admin'
+    email = (email||'').trim().toLowerCase()
+    if(email !== expectedEmail) throw new Error('Email admin inconnu')
+    if(password !== expectedPass) throw new Error('Mot de passe admin incorrect')
+    const u = { id: 'admin_owner', name: 'Admin ZTC', email, provider:'email', principal: genPrincipal(), isAdmin: true, createdAt: new Date().toISOString() }
+    setUser(u); return u
+  }
+
   const logout = ()=> setUser(null)
   const addOrder = (order)=> setOrders(o=>[order, ...o])
   const updateOrderStatus = (id, status)=> setOrders(o=> o.map(x=> x.id===id? {...x, status}:x))
@@ -135,6 +147,6 @@ export function AuthProvider({ children }){
     return orders.filter(o=> o.userId===u.id || o.principal===u.principal || (u.email && o.customer?.email?.toLowerCase()===u.email.toLowerCase()))
   }
 
-  return <AuthCtx.Provider value={{user, setUser, login, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, addOrder, updateOrderStatus, products, setProducts}}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{user, setUser, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, addOrder, updateOrderStatus, products, setProducts}}>{children}</AuthCtx.Provider>
 }
 export const useAuth = ()=> useContext(AuthCtx)
