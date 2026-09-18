@@ -21,10 +21,10 @@ export default function Home(){
         <div className="relative max-w-[1280px] mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-8 items-center">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-600/20 border border-violet-500/30 text-xs text-violet-300 mb-4">
-              <Zap size={14}/> Livraison instantanée 24/7 • Codes officiels
+              <Zap size={14}/> ZTC Shop • Livraison instantanée 24/7 • Codes officiels
             </div>
             <h1 className="text-4xl md:text-6xl font-black leading-[0.9] tracking-tight">
-              Ton shop<br/>
+              ZTC Shop<br/>
               <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">gift cards</span><br/>
               gaming & streaming
             </h1>
