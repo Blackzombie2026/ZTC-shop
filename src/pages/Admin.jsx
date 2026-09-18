@@ -6,7 +6,7 @@ import { initialProducts, categories } from '../data/products'
 import { Plus, Trash2, Phone, Check, Truck, X, Users, Search } from 'lucide-react'
 
 export default function Admin(){
-  const { user, orders, updateOrderStatus, products, setProducts, allAccounts } = useAuth()
+  const { user, orders, updateOrderStatus, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll } = useAuth()
   const { t } = useLang()
   const prods = products || initialProducts
   const [tab, setTab] = useState('orders')
@@ -27,7 +27,12 @@ export default function Admin(){
     </div>
   )
 
-  const initIfNeeded = ()=> { if(!products) setProducts(initialProducts) }
+  const initIfNeeded = async ()=> { if(!products){ try{ await saveProducts(initialProducts) }catch{ setProducts(initialProducts) } } }
+
+  const persist = async (next)=>{
+    try{ await saveProducts(next) }
+    catch{ alert('Écriture cloud refusée — vérifie ton droit admin (SQL is_admin)'); setProducts(next) }
+  }
 
   const handleAddVariant = ()=>{
     if(!newProd.name || !newProd.price) return alert('Nom et prix requis')
@@ -37,13 +42,13 @@ export default function Admin(){
       description:'Produit créé depuis la console admin.', variants:[{id:'var-'+Date.now(), label:newProd.label||newProd.price+' TND', price: parseFloat(newProd.price)}],
       stock: 50, rating: 5.0
     }
-    setProducts([p, ...prods]); setNewProd({ name:'', category:'valorant', price:'', label:'' })
+    persist([p, ...prods]); setNewProd({ name:'', category:'valorant', price:'', label:'' })
   }
 
   const changeStock = (id, delta)=>{
-    setProducts(prods.map(p=> p.id===id? {...p, stock: Math.max(0, p.stock+delta)}:p))
+    persist(prods.map(p=> p.id===id? {...p, stock: Math.max(0, p.stock+delta)}:p))
   }
-  const deleteProd = (id)=> setProducts(prods.filter(p=> p.id!==id))
+  const deleteProd = (id)=> persist(prods.filter(p=> p.id!==id))
 
   const isPending = (o)=> o.status.includes('En attente') || o.status.toLowerCase().includes('attente')
   const pendingCount = orders.filter(isPending).length
@@ -57,8 +62,16 @@ export default function Admin(){
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-8">
-      <h1 className="text-2xl font-black">{t('admin')}</h1>
+      <h1 className="text-2xl font-black">{t('admin')} {cloud && <span className="text-xs px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 align-middle">☁️ Cloud partagé</span>}</h1>
       <p className="text-sm text-white/50">Chaque commande client arrive ici — confirme-la, appelle le client au besoin.</p>
+      {needsDbGrant && (
+        <div className="mt-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-sm">
+          <div className="font-black text-amber-300">⚠️ Dernière étape pour voir les commandes de TOUS les clients :</div>
+          <div className="text-white/70 mt-1">Dans Supabase &gt; SQL Editor, exécute :</div>
+          <code className="block mt-2 p-2.5 rounded-xl bg-black/50 font-mono text-xs text-emerald-300">update public.profiles set is_admin = true where email = 'apatchegaming@gmail.com';</code>
+          <button onClick={refreshAll} className="mt-2 px-3 py-1.5 rounded-xl bg-white/10 border border-white/10 text-xs">↻ Revérifier</button>
+        </div>
+      )}
       <div className="flex flex-wrap gap-2 mt-4">
         <button onClick={()=>setTab('orders')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='orders'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}>
           {t('orders_tab')} ({orders.length}){pendingCount>0 && <span className="ml-2 px-2 py-0.5 rounded-full bg-amber-400 text-black text-xs">{pendingCount} à confirmer</span>}

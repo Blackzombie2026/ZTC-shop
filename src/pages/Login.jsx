@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
+import { isCloudEnabled } from '../lib/supabase'
 import { Shield, Mail, MessageCircle, ThumbsUp, UserPlus, LogIn } from 'lucide-react'
 
 export default function Login(){
@@ -18,18 +19,20 @@ export default function Login(){
   const [adminEmail, setAdminEmail] = useState('')
   const [adminPass, setAdminPass] = useState('')
   const [adminError, setAdminError] = useState('')
+  const [busy, setBusy] = useState(false)
 
   const from = loc.state?.from || '/orders'
 
   useEffect(()=>{ if(user){ nav(user.isAdmin ? '/admin' : from, {replace:true}) } }, [user])
 
-  const handleEmail = (e)=>{
-    e.preventDefault(); setError('')
+  const handleEmail = async (e)=>{
+    e.preventDefault(); setError(''); setBusy(true)
     try{
-      if(mode==='signup') signupWithEmail(name, email, password)
-      else loginWithEmail(email, password)
+      if(mode==='signup') await signupWithEmail(name, email, password)
+      else await loginWithEmail(email, password)
       nav(from)
     }catch(err){ setError(err.message) }
+    finally{ setBusy(false) }
   }
 
   const handleAdmin = (e)=>{
@@ -64,9 +67,10 @@ export default function Login(){
             <input placeholder="Email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
             <input placeholder={t('pass_ph')} type="password" required value={password} onChange={e=>setPassword(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
             {error && <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-2.5">{error}</div>}
-            <button className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 font-bold flex items-center justify-center gap-2">
-              <Mail size={16}/> {mode==='signup' ? t('create_account') : t('login_email')}
+            <button disabled={busy} className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 font-bold flex items-center justify-center gap-2 disabled:opacity-60">
+              <Mail size={16}/> {busy ? '...' : mode==='signup' ? t('create_account') : t('login_email')}
             </button>
+            {isCloudEnabled && <p className="text-[11px] text-emerald-300/80 text-center">☁️ Compte partagé — mêmes commandes sur tous tes appareils</p>}
           </form>
         </div>
 
