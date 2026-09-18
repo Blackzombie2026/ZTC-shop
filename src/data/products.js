@@ -13,7 +13,7 @@ export const categories = [
 export const initialProducts = [
   {
     id: 'val-1', category: 'valorant', name: 'Valorant Points', subtitle: 'VP • Livraison instantanée',
-    image: '/valorant.jpg', // image fournie: Reyna + logo V rouge
+    image: '/https://s.pacn.ws/1/p/166/valorant-gift-card-eur-25--europe-account-759335.3.jpg?v=srnoyc&width=800', // image fournie: Reyna + logo V rouge
     badge: 'HOT', description: 'Recharge ton compte Valorant en quelques secondes. Code officiel Riot. Carte EU.',
     variants: [
       { id: 'val-1000', label: '1000 VP', price: 38.00 },
