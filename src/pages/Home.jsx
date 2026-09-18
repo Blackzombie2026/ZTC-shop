@@ -3,7 +3,7 @@ import { ArrowRight, Zap, ShieldCheck, Truck, Clock } from 'lucide-react'
 import { initialProducts, categories } from '../data/products'
 
 const heroCats = [
-  { id:'valorant', label:'Valorant', img:'/valorant.jpg' },
+  { id:'valorant', label:'Valorant', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7raq6TZniTT-h3tAcCp4gTt1qayp_6_4m5VYdEKZf2w&s=10' },
   { id:'lol', label:'League of Legends', img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=300&q=80&auto=format&fit=crop' },
   { id:'fc26', label:'FC 26 Coins', img:'/fc26-coins.jpg' },
   { id:'pubg', label:'PUBG UC', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80&auto=format&fit=crop' },
