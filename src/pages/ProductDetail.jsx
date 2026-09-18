@@ -4,12 +4,14 @@ import { ShoppingCart, Check, ShieldCheck } from 'lucide-react'
 import { initialProducts } from '../data/products'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import { useLang } from '../context/LanguageContext'
 
 export default function ProductDetail(){
   const { id } = useParams()
   const nav = useNavigate()
   const { products: dbProducts } = useAuth()
   const { addToCart } = useCart()
+  const { t } = useLang()
   const products = dbProducts || initialProducts
   const product = products.find(p=> p.id===id)
   const [selected, setSelected] = useState(product?.variants[0]?.id)
@@ -40,13 +42,13 @@ export default function ProductDetail(){
         <p className="text-sm text-white/70 mt-3 leading-relaxed">{product.description} Livraison instantanée après paiement. Support 24/7.</p>
 
         <div className="mt-6">
-          <div className="text-sm font-bold mb-2">Choisis un montant</div>
+          <div className="text-sm font-bold mb-2">{t('choose_amount')}</div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {product.variants.map(v=>(
               <button key={v.id} onClick={()=>setSelected(v.id)} className={`p-3 rounded-xl border text-left ${selected===v.id? 'bg-violet-600 border-violet-600 text-white':'bg-white/5 border-white/10 hover:bg-white/10'}`}>
                 <div className="font-bold text-sm">{v.label}</div>
                 <div className={`text-sm ${selected===v.id? 'text-white':'text-violet-400'}`}>{v.price.toFixed(2)} TND</div>
-                {selected===v.id && <div className="text-[10px] mt-1 flex items-center gap-1"><Check size={12}/> Sélectionné</div>}
+                {selected===v.id && <div className="text-[10px] mt-1 flex items-center gap-1"><Check size={12}/> {t('selected')}</div>}
               </button>
             ))}
           </div>
@@ -59,13 +61,13 @@ export default function ProductDetail(){
             <button onClick={()=>setQty(q=> q+1)} className="w-8 h-8 rounded-lg bg-white/10">+</button>
           </div>
           <div className="flex-1 text-right">
-            <div className="text-xs text-white/50">Total</div>
+            <div className="text-xs text-white/50">{t('total')}</div>
             <div className="text-xl font-black text-violet-400">{(variant.price * qty).toFixed(2)} TND</div>
           </div>
         </div>
 
         <button onClick={handleAdd} className="mt-4 w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-700 font-black flex items-center justify-center gap-2 text-white">
-          <ShoppingCart size={18}/> Ajouter au panier
+          <ShoppingCart size={18}/> {t('add_cart')}
         </button>
         <div className="mt-3 flex items-center justify-center gap-2 text-xs text-white/50"><ShieldCheck size={14} className="text-emerald-400"/> Paiement sécurisé • Livraison instantanée • Code réutilisable dans l'historique</div>
       </div>

@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { useLang } from '../context/LanguageContext'
 import { initialProducts } from '../data/products'
-import { Plus, Trash2, Save } from 'lucide-react'
+import { Plus, Trash2 } from 'lucide-react'
 
 export default function Admin(){
   const { user, orders, updateOrderStatus, products, setProducts } = useAuth()
+  const { t } = useLang()
   const prods = products || initialProducts
   const [tab, setTab] = useState('products')
   const [newProd, setNewProd] = useState({ name:'', category:'valorant', price:'', label:'' })
@@ -36,7 +38,7 @@ export default function Admin(){
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-8">
-      <h1 className="text-2xl font-black">Console d'administration</h1>
+      <h1 className="text-2xl font-black">{t('admin')}</h1>
       <p className="text-sm text-white/50">Gère produits, stock de codes et commandes. Protégé par Internet Identity (rôle admin).</p>
       <div className="flex gap-2 mt-4">
         <button onClick={()=>setTab('products')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='products'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}>Produits & Stock</button>

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useLang } from '../context/LanguageContext'
 import { Fingerprint, Shield, Mail, MessageCircle, ThumbsUp, UserPlus, LogIn } from 'lucide-react'
 
 export default function Login(){
   const { user, login, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook } = useAuth()
+  const { t } = useLang()
   const nav = useNavigate()
   const loc = useLocation()
   const [mode, setMode] = useState('login') // login | signup
@@ -33,31 +35,31 @@ export default function Login(){
     <div className="max-w-[560px] mx-auto px-4 py-10">
       <div className="rounded-3xl bg-white/5 border border-white/10 p-6 sm:p-8">
         <div className="text-center">
-          <h1 className="text-2xl font-black">Connexion ZTC Shop</h1>
-          <p className="text-sm text-white/60 mt-1">Email, Discord ou Facebook — tes commandes et codes te suivent.</p>
+          <h1 className="text-2xl font-black">{t('login_title')}</h1>
+          <p className="text-sm text-white/60 mt-1">{t('login_sub')}</p>
         </div>
 
         {/* EMAIL */}
         <div className="mt-6 rounded-2xl bg-black/30 border border-white/10 p-4">
           <div className="flex gap-2 mb-4">
-            <button onClick={()=>setMode('login')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='login'?'bg-violet-600':'bg-white/5 border border-white/10'}`}><LogIn size={15}/> Se connecter</button>
-            <button onClick={()=>setMode('signup')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='signup'?'bg-violet-600':'bg-white/5 border border-white/10'}`}><UserPlus size={15}/> Créer un compte</button>
+            <button onClick={()=>setMode('login')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='login'?'bg-violet-600':'bg-white/5 border border-white/10'}`}><LogIn size={15}/> {t('signin')}</button>
+            <button onClick={()=>setMode('signup')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='signup'?'bg-violet-600':'bg-white/5 border border-white/10'}`}><UserPlus size={15}/> {t('signup')}</button>
           </div>
           <form onSubmit={handleEmail} className="space-y-3">
             {mode==='signup' && (
-              <input placeholder="Pseudo" value={name} onChange={e=>setName(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
+              <input placeholder={t('pseudo_ph')} value={name} onChange={e=>setName(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
             )}
-            <input placeholder="Adresse email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
-            <input placeholder="Mot de passe" type="password" required value={password} onChange={e=>setPassword(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
+            <input placeholder="Email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
+            <input placeholder={t('pass_ph')} type="password" required value={password} onChange={e=>setPassword(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
             {error && <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-2.5">{error}</div>}
             <button className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 font-bold flex items-center justify-center gap-2">
-              <Mail size={16}/> {mode==='signup' ? "Créer mon compte" : "Se connecter avec email"}
+              <Mail size={16}/> {mode==='signup' ? t('create_account') : t('login_email')}
             </button>
           </form>
           <p className="text-[11px] text-white/40 mt-2 text-center">Démo locale : comptes stockés dans ton navigateur (localStorage).</p>
         </div>
 
-        <div className="flex items-center gap-3 my-4 text-xs text-white/40"><div className="flex-1 h-px bg-white/10"/><span>ou continuer avec</span><div className="flex-1 h-px bg-white/10"/></div>
+        <div className="flex items-center gap-3 my-4 text-xs text-white/40"><div className="flex-1 h-px bg-white/10"/><span>{t('or_with')}</span><div className="flex-1 h-px bg-white/10"/></div>
 
         {/* SOCIAL */}
         <div className="grid sm:grid-cols-2 gap-3">
