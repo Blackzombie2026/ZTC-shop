@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 import { initialProducts, categories } from '../data/products'
-import { Plus, Trash2, Phone, Check, Truck, X, Users, Search } from 'lucide-react'
+import { Plus, Trash2, Phone, Check, Truck, X, Users, Search, RefreshCw } from 'lucide-react'
 
 export default function Admin(){
   const { user, orders, updateOrderStatus, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll } = useAuth()
@@ -14,7 +14,25 @@ export default function Admin(){
   const [catFilter, setCatFilter] = useState('all')
   const [newProd, setNewProd] = useState({ name:'', category:'valorant', price:'', label:'' })
   const [qUser, setQUser] = useState('')
+  const [spinning, setSpinning] = useState(false)
+  const [lastSync, setLastSync] = useState(null)
   const visibleProds = catFilter==='all' ? prods : prods.filter(p=>p.category===catFilter)
+
+  // Actualisation auto des commandes clients toutes les 15s + bouton manuel
+  const doRefresh = async ()=>{
+    setSpinning(true)
+    try{ await refreshAll() }finally{
+      setLastSync(new Date())
+      setTimeout(()=>setSpinning(false), 600)
+    }
+  }
+  useEffect(()=>{
+    if(tab!=='orders') return
+    doRefresh()
+    const timer = setInterval(doRefresh, 15000)
+    return ()=> clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab])
   const accounts = allAccounts()
   const visibleAccounts = qUser
     ? accounts.filter(a=> ((a.name||'')+' '+(a.email||'')+' '+(a.phones||[]).join(' ')+' '+(a.provider||'')).toLowerCase().includes(qUser.toLowerCase()))
@@ -134,6 +152,14 @@ export default function Admin(){
 
       {tab==='orders' && (
         <div className="mt-6">
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <button onClick={doRefresh} className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-sm font-black flex items-center gap-2">
+              <RefreshCw size={15} className={spinning?'animate-spin':''}/> Actualiser les commandes
+            </button>
+            <span className="text-xs text-white/40">
+              {cloud ? '☁️ Synchro auto toutes les 15s' : '📱 Mode local'} {lastSync && `• Dernière synchro ${lastSync.toLocaleTimeString('fr-FR')}`}
+            </span>
+          </div>
           <div className="flex gap-2 overflow-auto pb-2">
             {[
               {id:'all', label:`Toutes (${orders.length})`},
