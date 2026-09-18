@@ -12,7 +12,7 @@ export default function Navbar(){
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-4">
         <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center"><Gamepad2 size={18}/></div>
-          <span className="hidden sm:inline">GIFT<span className="text-violet-500">CARD</span> SHOP</span>
+          <span className="hidden sm:inline">ZTC<span className="text-violet-500"> SHOP</span></span>
         </Link>
         <nav className="hidden md:flex items-center gap-5 ml-6 text-sm text-white/70">
           <Link to="/catalog" className="hover:text-white">Catalogue</Link>

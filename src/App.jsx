@@ -31,7 +31,7 @@ export default function App(){
               <Route path="/admin" element={<Admin/>}/>
             </Routes>
             <footer className="border-t border-white/10 mt-8 py-6 text-center text-xs text-white/40">
-              © 2026 GIFT CARD SHOP • Codes promo & avis clients reportés • Démo locale (pas de vrai paiement)
+              © 2026 ZTC SHOP • Codes promo & avis clients reportés • Démo locale (pas de vrai paiement)
             </footer>
           </div>
         </BrowserRouter>
