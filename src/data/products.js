@@ -13,7 +13,7 @@ export const categories = [
 export const initialProducts = [
   {
     id: 'val-1', category: 'valorant', name: 'Valorant Points', subtitle: 'VP • Livraison instantanée',
-    image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&q=80&auto=format&fit=crop', // Valorant - rouge / agents
+    image: '/valorant.jpg', // image fournie: Reyna + logo V rouge
     badge: 'HOT', description: 'Recharge ton compte Valorant en quelques secondes. Code officiel Riot.',
     variants: [
       { id: 'val-1-125', label: '125 VP', price: 1.99 },
@@ -39,7 +39,7 @@ export const initialProducts = [
   },
   {
     id: 'fc26-1', category: 'fc26', name: 'FC 26 Coins Ultimate Team', subtitle: 'Livraison 5-15 min • PS / Xbox / PC',
-    image: 'https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=600&q=80&auto=format&fit=crop', // FC26 / FIFA - foot
+    image: '/fc26-coins.jpg', // image fournie: UT coins dorés
     badge: 'NEW', description: 'Coins pour FC 26 UT. Méthode sécurisée Player Auction, garantie anti-ban.',
     variants: [
       { id: 'fc-50k', label: '50K Coins', price: 9.99 },

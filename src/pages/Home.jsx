@@ -3,9 +3,9 @@ import { ArrowRight, Zap, ShieldCheck, Truck, Clock } from 'lucide-react'
 import { initialProducts, categories } from '../data/products'
 
 const heroCats = [
-  { id:'valorant', label:'Valorant', img:'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&q=80&auto=format&fit=crop' },
+  { id:'valorant', label:'Valorant', img:'/valorant.jpg' },
   { id:'lol', label:'League of Legends', img:'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=300&q=80&auto=format&fit=crop' },
-  { id:'fc26', label:'FC 26 Coins', img:'https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=300&q=80&auto=format&fit=crop' },
+  { id:'fc26', label:'FC 26 Coins', img:'/fc26-coins.jpg' },
   { id:'pubg', label:'PUBG UC', img:'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80&auto=format&fit=crop' },
   { id:'roblox', label:'Roblox', img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80&auto=format&fit=crop' },
   { id:'netflix', label:'Netflix', img:'https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=300&q=80&auto=format&fit=crop' },
