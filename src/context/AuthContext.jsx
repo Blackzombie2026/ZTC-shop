@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { initialProducts } from '../data/products'
 
 const AuthCtx = createContext()
 
@@ -27,7 +28,19 @@ export function AuthProvider({ children }){
     try{ return JSON.parse(localStorage.getItem('orders')||'[]')}catch{return []}
   })
   const [products, setProducts] = useState(()=>{
-    try{ const p=JSON.parse(localStorage.getItem('products_db')||'null'); return p }catch{return null}
+    // Fusionne les nouveautés du code (ex: Warzone, R6) avec la DB locale de l'admin,
+    // pour que l'admin voie exactement les mêmes jeux/photos que les clients.
+    try{
+      const stored = JSON.parse(localStorage.getItem('products_db')||'null')
+      if(!stored) return null // fallback: initialProducts du code
+      if(!Array.isArray(stored)) return null
+      const ids = new Set(stored.map(p=>p.id))
+      const missing = initialProducts.filter(p=>!ids.has(p.id))
+      // Met aussi à jour image/catégorie des produits existants si le code a changé
+      const byId = Object.fromEntries(initialProducts.map(p=>[p.id,p]))
+      const synced = stored.map(p=> byId[p.id] ? { ...p, image: byId[p.id].image, category: byId[p.id].category, name: byId[p.id].name, subtitle: byId[p.id].subtitle, variants: byId[p.id].variants } : p)
+      return missing.length ? [...synced, ...missing] : synced
+    }catch{return null}
   })
 
   useEffect(()=> localStorage.setItem('ztc_user', JSON.stringify(user)), [user])

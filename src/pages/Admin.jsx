@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
-import { initialProducts } from '../data/products'
+import { initialProducts, categories } from '../data/products'
 import { Plus, Trash2, Phone, Check, Truck, X } from 'lucide-react'
 
 export default function Admin(){
@@ -10,7 +11,9 @@ export default function Admin(){
   const prods = products || initialProducts
   const [tab, setTab] = useState('orders')
   const [filter, setFilter] = useState('all')
+  const [catFilter, setCatFilter] = useState('all')
   const [newProd, setNewProd] = useState({ name:'', category:'valorant', price:'', label:'' })
+  const visibleProds = catFilter==='all' ? prods : prods.filter(p=>p.category===catFilter)
 
   if(!user?.isAdmin) return (
     <div className="max-w-[600px] mx-auto px-4 py-16 text-center">
@@ -71,27 +74,42 @@ export default function Admin(){
             <button onClick={handleAddVariant} className="px-4 py-2.5 rounded-xl bg-violet-600 font-bold flex items-center justify-center gap-2"><Plus size={16}/> Ajouter</button>
           </div>
 
-          <div className="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {prods.map(p=>(
-              <div key={p.id} className="rounded-2xl bg-[#18181b] border border-white/10 p-4">
-                <div className="flex gap-3">
-                  <img src={p.image} alt={p.name} className="w-14 h-14 rounded-xl object-cover"/>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-bold text-sm truncate">{p.name}</div>
-                    <div className="text-xs text-white/50">{p.category} • {p.variants.map(v=> v.label+' '+v.price.toFixed(2)+' TND').join(', ')}</div>
-                    <div className="text-xs mt-1">Stock: <span className="font-bold text-violet-400">{p.stock}</span> codes</div>
-                  </div>
-                  <button onClick={()=>deleteProd(p.id)} className="p-2 rounded-xl bg-red-500/20 text-red-400 h-fit"><Trash2 size={14}/></button>
+          {/* Mêmes catégories que les clients */}
+          <div className="mt-4 flex gap-2 overflow-auto pb-2">
+            {categories.map(c=>(
+              <button key={c.id} onClick={()=>setCatFilter(c.id)} className={`px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${catFilter===c.id?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 text-white/70'}`}>{c.id==='all'?t('all'):c.label} ({c.id==='all'?prods.length:prods.filter(p=>p.category===c.id).length})</button>
+            ))}
+          </div>
+
+          {/* Mêmes visuels que les clients (photo, catégorie, montants) + gestion stock */}
+          <div className="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {visibleProds.map(p=>(
+              <div key={p.id} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10">
+                <div className="relative h-40 overflow-hidden">
+                  <img src={p.image} alt={p.name} className="w-full h-full object-cover"/>
+                  {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600">{p.badge}</span>}
+                  <span className="absolute bottom-2 right-2 text-xs bg-black/60 backdrop-blur px-2 py-1 rounded-full border border-white/10">{p.stock} {t('in_stock')}</span>
+                  <button onClick={()=>deleteProd(p.id)} title="Supprimer" className="absolute top-2 right-2 p-2 rounded-xl bg-red-600/90 text-white"><Trash2 size={14}/></button>
                 </div>
-                <div className="flex gap-2 mt-3">
-                  <button onClick={()=>changeStock(p.id,-10)} className="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-xs">-10</button>
-                  <button onClick={()=>changeStock(p.id,-1)} className="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-xs">-1</button>
-                  <button onClick={()=>changeStock(p.id,1)} className="flex-1 py-2 rounded-xl bg-violet-600 text-xs font-bold">+1</button>
-                  <button onClick={()=>changeStock(p.id,10)} className="flex-1 py-2 rounded-xl bg-violet-600 text-xs font-bold">+10</button>
+                <div className="p-4">
+                  <div className="text-[11px] tracking-widest text-violet-400 uppercase font-bold">{p.category}</div>
+                  <Link to={`/product/${p.id}`} className="font-bold hover:text-violet-300">{p.name}</Link>
+                  <div className="text-xs text-white/50 line-clamp-1">{p.subtitle}</div>
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {p.variants.map(v=> <span key={v.id} className="text-[11px] px-2 py-1 rounded-full bg-white/5 border border-white/10">{v.label} • {v.price.toFixed(2)} TND</span>)}
+                  </div>
+                  <div className="text-xs mt-2">Stock: <span className="font-bold text-violet-400">{p.stock}</span> codes • ⭐ {p.rating}</div>
+                  <div className="flex gap-2 mt-3">
+                    <button onClick={()=>changeStock(p.id,-10)} className="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-xs">-10</button>
+                    <button onClick={()=>changeStock(p.id,-1)} className="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-xs">-1</button>
+                    <button onClick={()=>changeStock(p.id,1)} className="flex-1 py-2 rounded-xl bg-violet-600 text-xs font-bold">+1</button>
+                    <button onClick={()=>changeStock(p.id,10)} className="flex-1 py-2 rounded-xl bg-violet-600 text-xs font-bold">+10</button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+          {visibleProds.length===0 && <div className="text-white/50 text-center py-8">{t('no_result')}</div>}
         </div>
       )}
 
