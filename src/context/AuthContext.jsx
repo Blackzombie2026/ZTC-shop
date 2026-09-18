@@ -12,6 +12,21 @@ const hashPw = (pw)=> { try { return btoa('ztc$'+pw) } catch { return 'hash_'+pw
 function readUsers(){
   try { return JSON.parse(localStorage.getItem('ztc_users')||'[]') } catch { return [] }
 }
+// Enregistre chaque profil connecté (email, discord, facebook, II) pour la section Comptes de l'admin
+function saveProfile(u){
+  try{
+    const users = readUsers()
+    const idx = users.findIndex(x=> x.id===u.id)
+    const entry = { id: u.id, name: u.name||'', email: u.email||'', provider: u.provider||'email', principal: u.principal||'', isAdmin: !!u.isAdmin, createdAt: u.createdAt||new Date().toISOString(), lastSeen: new Date().toISOString() }
+    if(idx>=0){
+      const keepHash = users[idx].passwordHash
+      users[idx] = { ...entry, createdAt: users[idx].createdAt||entry.createdAt, ...(keepHash?{passwordHash: keepHash}:{}) }
+      if(u.name) users[idx].name = u.name
+      if(u.email) users[idx].email = u.email
+    } else users.push(entry)
+    localStorage.setItem('ztc_users', JSON.stringify(users))
+  }catch{}
+}
 
 export function AuthProvider({ children }){
   const [user, setUser] = useState(()=>{
@@ -70,7 +85,7 @@ export function AuthProvider({ children }){
               } : {
                 id: genId('discord'), name: 'Joueur Discord', email:'', provider:'discord', principal: genPrincipal(), createdAt: new Date().toISOString()
               }
-              setUser(u)
+              setUser(u); saveProfile(u)
               window.history.replaceState({}, '', window.location.pathname)
             })
             .catch(()=> window.history.replaceState({}, '', window.location.pathname))
@@ -84,7 +99,7 @@ export function AuthProvider({ children }){
   // Legacy Internet Identity (gardé pour admin + compat)
   const login = (asAdmin=false)=>{
     const u = { id: genId('ii'), name: asAdmin?'Admin':'Joueur', email:'', provider:'Internet Identity', principal: genPrincipal(), isAdmin: asAdmin, createdAt: new Date().toISOString() }
-    setUser(u); return u
+    setUser(u); saveProfile(u); return u
   }
 
   // ---- Email ----
@@ -106,7 +121,7 @@ export function AuthProvider({ children }){
     if(!found) throw new Error('Aucun compte avec cet email — crée un compte')
     if(found.passwordHash !== hashPw(password)) throw new Error('Mot de passe incorrect')
     const { passwordHash, ...safe } = found
-    setUser(safe); return safe
+    setUser(safe); saveProfile(safe); return safe
   }
 
   // ---- Discord ----
@@ -121,7 +136,7 @@ export function AuthProvider({ children }){
     }
     // Démo locale (sans Client ID)
     const u = { id: genId('discord'), name: 'Joueur Discord', email:'', provider:'discord', principal: genPrincipal(), createdAt: new Date().toISOString() }
-    setUser(u); return u
+    setUser(u); saveProfile(u); return u
   }
 
   // ---- Facebook ----
@@ -135,7 +150,7 @@ export function AuthProvider({ children }){
     }
     // Démo locale (sans App ID)
     const u = { id: genId('fb'), name: 'Joueur Facebook', email:'', provider:'facebook', principal: genPrincipal(), createdAt: new Date().toISOString() }
-    setUser(u); return u
+    setUser(u); saveProfile(u); return u
   }
 
   // ---- Admin (propriétaire uniquement — email + mot de passe) ----
@@ -147,7 +162,7 @@ export function AuthProvider({ children }){
     if(email !== expectedEmail) throw new Error('Email admin inconnu')
     if(password !== expectedPass) throw new Error('Mot de passe admin incorrect')
     const u = { id: 'admin_owner', name: 'Admin ZTC', email, provider:'email', principal: genPrincipal(), isAdmin: true, createdAt: new Date().toISOString() }
-    setUser(u); return u
+    setUser(u); saveProfile(u); return u
   }
 
   const logout = ()=> setUser(null)
@@ -160,6 +175,32 @@ export function AuthProvider({ children }){
     return orders.filter(o=> o.userId===u.id || o.principal===u.principal || (u.email && o.customer?.email?.toLowerCase()===u.email.toLowerCase()))
   }
 
-  return <AuthCtx.Provider value={{user, setUser, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, addOrder, updateOrderStatus, products, setProducts}}>{children}</AuthCtx.Provider>
+  // Tous les comptes créés (registre local) + clients vus via commandes, avec stats
+  const allAccounts = ()=>{
+    const regs = readUsers()
+    const map = new Map()
+    regs.forEach(r=> map.set(r.id, { ...r, phones: [], ordersCount: 0, totalSpent: 0, lastOrder: null, orderIds: [] }))
+    orders.forEach(o=>{
+      const key = o.userId || o.principal || o.customer?.email || o.id
+      if(!map.has(key)){
+        map.set(key, {
+          id: key, name: o.customer?.name||'Client', email: o.customer?.email||'',
+          provider: o.provider||'email', principal: o.principal||'', isAdmin: false,
+          createdAt: o.date, lastSeen: o.date, phones: [], ordersCount: 0, totalSpent: 0, lastOrder: null, orderIds: []
+        })
+      }
+      const a = map.get(key)
+      if(o.customer?.phone && !a.phones.includes(o.customer.phone)) a.phones.push(o.customer.phone)
+      if(o.customer?.email && !a.email) a.email = o.customer.email
+      if(o.customer?.name && (a.name==='Client'||!a.name)) a.name = o.customer.name
+      a.ordersCount += 1
+      a.totalSpent += Number(o.total||0)
+      if(!a.lastOrder || new Date(o.date) > new Date(a.lastOrder)) a.lastOrder = o.date
+      a.orderIds.push(o.id)
+    })
+    return [...map.values()].sort((a,b)=> new Date(b.lastSeen||b.createdAt||0) - new Date(a.lastSeen||a.createdAt||0))
+  }
+
+  return <AuthCtx.Provider value={{user, setUser, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, products, setProducts}}>{children}</AuthCtx.Provider>
 }
 export const useAuth = ()=> useContext(AuthCtx)

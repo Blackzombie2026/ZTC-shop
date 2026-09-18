@@ -3,17 +3,22 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 import { initialProducts, categories } from '../data/products'
-import { Plus, Trash2, Phone, Check, Truck, X } from 'lucide-react'
+import { Plus, Trash2, Phone, Check, Truck, X, Users, Search } from 'lucide-react'
 
 export default function Admin(){
-  const { user, orders, updateOrderStatus, products, setProducts } = useAuth()
+  const { user, orders, updateOrderStatus, products, setProducts, allAccounts } = useAuth()
   const { t } = useLang()
   const prods = products || initialProducts
   const [tab, setTab] = useState('orders')
   const [filter, setFilter] = useState('all')
   const [catFilter, setCatFilter] = useState('all')
   const [newProd, setNewProd] = useState({ name:'', category:'valorant', price:'', label:'' })
+  const [qUser, setQUser] = useState('')
   const visibleProds = catFilter==='all' ? prods : prods.filter(p=>p.category===catFilter)
+  const accounts = allAccounts()
+  const visibleAccounts = qUser
+    ? accounts.filter(a=> ((a.name||'')+' '+(a.email||'')+' '+(a.phones||[]).join(' ')+' '+(a.provider||'')).toLowerCase().includes(qUser.toLowerCase()))
+    : accounts
 
   if(!user?.isAdmin) return (
     <div className="max-w-[600px] mx-auto px-4 py-16 text-center">
@@ -59,6 +64,7 @@ export default function Admin(){
           {t('orders_tab')} ({orders.length}){pendingCount>0 && <span className="ml-2 px-2 py-0.5 rounded-full bg-amber-400 text-black text-xs">{pendingCount} à confirmer</span>}
         </button>
         <button onClick={()=>setTab('products')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='products'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}>{t('products_stock')}</button>
+        <button onClick={()=>setTab('users')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='users'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><Users size={15}/> Comptes ({accounts.length})</button>
         <button onClick={initIfNeeded} className="ml-auto text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10">Réinitialiser DB démo</button>
       </div>
 
@@ -154,6 +160,38 @@ export default function Admin(){
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {tab==='users' && (
+        <div className="mt-6">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={16}/>
+            <input value={qUser} onChange={e=>setQUser(e.target.value)} placeholder="Rechercher nom, email, téléphone..." className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-violet-500/50 text-sm"/>
+          </div>
+          <p className="text-xs text-white/40 mt-2">Chaque compte créé sur le site (email, Discord, Facebook) + infos de ses commandes.</p>
+          <div className="mt-4 grid md:grid-cols-2 gap-3">
+            {visibleAccounts.map(a=>(
+              <div key={a.id} className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center font-black text-lg shrink-0">{(a.name||a.email||'?')[0].toUpperCase()}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold truncate">{a.name||'Client'} {a.isAdmin && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 ml-1">ADMIN</span>}</div>
+                    <div className="text-xs text-white/50 truncate">📧 {a.email||'—'} • {a.provider}</div>
+                  </div>
+                </div>
+                <div className="mt-3 space-y-1 text-xs">
+                  <div className="flex justify-between"><span className="text-white/50">Téléphone(s)</span><span className="font-bold">{a.phones.length? a.phones.map(ph=> <a key={ph} href={`tel:${ph}`} className="text-emerald-300 ml-2">📞 {ph}</a>) : '—'}</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Compte créé</span><span>{a.createdAt? new Date(a.createdAt).toLocaleString('fr-FR') : '—'}</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Dernière activité</span><span>{a.lastSeen? new Date(a.lastSeen).toLocaleString('fr-FR') : '—'}</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Commandes</span><span className="font-black text-violet-400">{a.ordersCount}</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Total dépensé</span><span className="font-black text-emerald-400">{a.totalSpent.toFixed(2)} TND</span></div>
+                  {a.orderIds.length>0 && <div className="text-white/40 pt-1">🧾 {a.orderIds.join(' • ')}</div>}
+                </div>
+              </div>
+            ))}
+          </div>
+          {visibleAccounts.length===0 && <div className="text-white/50 text-center py-8">Aucun compte pour l'instant — ils apparaîtront ici dès qu'un client crée un compte ou commande.</div>}
         </div>
       )}
     </div>
