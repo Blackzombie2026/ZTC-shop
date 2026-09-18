@@ -51,7 +51,8 @@ as $$
   );
 $$;
 
--- ---------- Anti-escalade : personne ne peut se nommer admin seul ----------
+-- ---------- Anti-escalade : personne ne peut se nommer admin seul via l'appli ----------
+-- (le SQL Editor connecté en postgres/service_role reste autorisé pour le réglage initial)
 create or replace function public.prevent_admin_escalation()
 returns trigger
 language plpgsql
@@ -59,7 +60,9 @@ security definer
 set search_path = public
 as $$
 begin
-  if NEW.is_admin is distinct from OLD.is_admin and not public.is_admin() then
+  if NEW.is_admin is distinct from OLD.is_admin
+     and not public.is_admin()
+     and current_user not in ('postgres', 'service_role') then
     raise exception 'Seul un admin peut modifier le rôle admin.';
   end if;
   return NEW;

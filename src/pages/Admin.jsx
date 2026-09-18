@@ -67,8 +67,8 @@ export default function Admin(){
       {needsDbGrant && (
         <div className="mt-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-sm">
           <div className="font-black text-amber-300">⚠️ Dernière étape pour voir les commandes de TOUS les clients :</div>
-          <div className="text-white/70 mt-1">Dans Supabase &gt; SQL Editor, exécute :</div>
-          <code className="block mt-2 p-2.5 rounded-xl bg-black/50 font-mono text-xs text-emerald-300">update public.profiles set is_admin = true where email = 'apatchegaming@gmail.com';</code>
+          <div className="text-white/70 mt-1">Dans Supabase &gt; SQL Editor, exécute ces 2 blocs :</div>
+          <code className="block mt-2 p-2.5 rounded-xl bg-black/50 font-mono text-xs text-emerald-300 whitespace-pre-wrap">{"-- 1) autorise le réglage admin via SQL Editor\ncreate or replace function public.prevent_admin_escalation() returns trigger language plpgsql security definer set search_path = public as $$ begin if NEW.is_admin is distinct from OLD.is_admin and not public.is_admin() and current_user not in ('postgres','service_role') then raise exception 'Seul un admin peut modifier le rôle admin.'; end if; return NEW; end; $$;\n\n-- 2) nomme le propriétaire admin\nupdate public.profiles set is_admin = true where email = 'apatchegaming@gmail.com';"}</code>
           <button onClick={refreshAll} className="mt-2 px-3 py-1.5 rounded-xl bg-white/10 border border-white/10 text-xs">↻ Revérifier</button>
         </div>
       )}
