@@ -4,6 +4,8 @@ export const categories = [
   { id: 'lol', label: 'League of Legends' },
   { id: 'fc26', label: 'FC 26 Coins' },
   { id: 'pubg', label: 'PUBG' },
+  { id: 'warzone', label: 'Warzone' },
+  { id: 'r6', label: 'Rainbow Six' },
   { id: 'roblox', label: 'Roblox' },
   { id: 'freefire', label: 'Free Fire' },
   { id: 'netflix', label: 'Netflix' },
@@ -59,6 +61,30 @@ export const initialProducts = [
       { id: 'pubg-3850', label: '3850 UC', price: 49.99 },
     ],
     stock: 210, rating: 4.8
+  },
+  {
+    id: 'wz-1', category: 'warzone', name: 'Warzone COD Points', subtitle: 'CP • Toutes plateformes',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZyqv8ihFLqe-huGX1idY3forMuHcN39UzhSDqVNCQ4g&s=10',
+    badge: 'HOT', description: 'COD Points pour Warzone / Modern Warfare. Débloque Battle Pass, skins et bundles. Livraison instantanée.',
+    variants: [
+      { id: 'wz-500', label: '500 CP', price: 19.00 },
+      { id: 'wz-1100', label: '1100 CP', price: 38.00 },
+      { id: 'wz-2400', label: '2400 CP', price: 75.00 },
+      { id: 'wz-5000', label: '5000 CP', price: 145.00 },
+    ],
+    stock: 78, rating: 4.8
+  },
+  {
+    id: 'r6-1', category: 'r6', name: 'Rainbow Six Credits', subtitle: 'R6 Credits • Ubisoft',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBN2ACWqqVPyzbeCQUHPa9BmoN5rgkkccXtbNxOohIYg&s',
+    badge: 'NEW', description: 'Crédits R6 pour Rainbow Six Siege. Opérateurs élite, skins et Battle Pass. Code Ubisoft.',
+    variants: [
+      { id: 'r6-600', label: '600 Credits', price: 18.00 },
+      { id: 'r6-1200', label: '1200 Credits', price: 35.00 },
+      { id: 'r6-2670', label: '2670 Credits', price: 72.00 },
+      { id: 'r6-4920', label: '4920 Credits', price: 125.00 },
+    ],
+    stock: 54, rating: 4.7
   },
   {
     id: 'roblox-1', category: 'roblox', name: 'Roblox Gift Card', subtitle: 'Robux & Premium',
