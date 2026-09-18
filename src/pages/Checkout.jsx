@@ -13,7 +13,7 @@ export default function Checkout(){
   const { t } = useLang()
   const nav = useNavigate()
   const [method, setMethod] = useState('card')
-  const [form, setForm] = useState({ name:'', email:'', address:'', cardNumber:'', exp:'', cvc:'' })
+  const [form, setForm] = useState({ name:'', email:'', phone:'', address:'', cardNumber:'', exp:'', cvc:'' })
   const [loading, setLoading] = useState(false)
 
   if(cart.length===0) return <div className="max-w-[600px] mx-auto px-4 py-16 text-center">Panier vide.</div>
@@ -30,13 +30,16 @@ export default function Checkout(){
     e.preventDefault()
     if(method==='card' && (!form.cardNumber || !form.exp || !form.cvc)) return alert('Remplis les infos carte')
     if(!form.email || !form.name) return alert('Nom et email requis')
+    const phoneClean = (form.phone||'').replace(/[\s.-]/g,'')
+    if(!phoneClean) return alert('Numéro de téléphone requis pour te contacter (livraison)')
+    if(!/^[0-9+]{8,15}$/.test(phoneClean)) return alert('Numéro de téléphone invalide (8-15 chiffres, ex: 98 123 456)')
     setLoading(true)
     await new Promise(r=> setTimeout(r, 900))
     const order = {
       id: 'ORD-'+Date.now().toString().slice(-8),
       date: new Date().toISOString(),
       items: cart.map(c=> ({...c, code: genCode()})),
-      total, method, customer: { name: form.name, email: form.email, address: form.address },
+      total, method, customer: { name: form.name, email: form.email, phone: (form.phone||'').replace(/[\s.-]/g,''), address: form.address },
       userId: user.id, principal: user.principal, provider: user.provider,
       status: method==='cod' ? 'En attente (paiement à la livraison)' : 'Payée • Codes disponibles'
     }
@@ -55,8 +58,10 @@ export default function Checkout(){
           <div className="grid sm:grid-cols-2 gap-3">
             <input placeholder={t('name_ph')} value={form.name} onChange={e=>setForm({...form,name:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
             <input placeholder={t('email_ph')} value={form.email} onChange={e=>setForm({...form,email:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
-            <input placeholder={t('addr_ph')} value={form.address} onChange={e=>setForm({...form,address:e.target.value})} className="sm:col-span-2 px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
+            <input placeholder="Téléphone (ex: 98 123 456) *" inputMode="tel" required value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
+            <input placeholder={t('addr_ph')} value={form.address} onChange={e=>setForm({...form,address:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
           </div>
+          <p className="text-[11px] text-white/40 mt-2">* Requis — on t’appelle sur ce numéro en cas de livraison / paiement à la livraison.</p>
         </div>
 
         <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
