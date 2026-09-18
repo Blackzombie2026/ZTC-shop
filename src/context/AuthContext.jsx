@@ -9,6 +9,13 @@ function genPrincipal(){ return 'aaaaa-aa-' + Math.random().toString(36).slice(2
 // Simple demo hash (NOT secure - remplace par backend en prod)
 const hashPw = (pw)=> { try { return btoa('ztc$'+pw) } catch { return 'hash_'+pw.length } }
 
+// Emails propriétaires => toujours admin sur ce navigateur (identifiant public, pas un secret)
+const OWNER_EMAILS = [
+  (import.meta.env.VITE_ADMIN_EMAIL || 'admin@ztc.shop').toLowerCase(),
+  'apatchegaming@gmail.com',
+]
+const isOwnerEmail = (email)=> OWNER_EMAILS.includes((email||'').trim().toLowerCase())
+
 function readUsers(){
   try { return JSON.parse(localStorage.getItem('ztc_users')||'[]') } catch { return [] }
 }
@@ -17,7 +24,7 @@ function saveProfile(u){
   try{
     const users = readUsers()
     const idx = users.findIndex(x=> x.id===u.id)
-    const entry = { id: u.id, name: u.name||'', email: u.email||'', provider: u.provider||'email', principal: u.principal||'', isAdmin: !!u.isAdmin, createdAt: u.createdAt||new Date().toISOString(), lastSeen: new Date().toISOString() }
+    const entry = { id: u.id, name: u.name||'', email: u.email||'', provider: u.provider||'email', principal: u.principal||'', isAdmin: !!u.isAdmin || isOwnerEmail(u.email), createdAt: u.createdAt||new Date().toISOString(), lastSeen: new Date().toISOString() }
     if(idx>=0){
       const keepHash = users[idx].passwordHash
       users[idx] = { ...entry, createdAt: users[idx].createdAt||entry.createdAt, ...(keepHash?{passwordHash: keepHash}:{}) }
@@ -109,7 +116,7 @@ export function AuthProvider({ children }){
     if(password.length<4) throw new Error('Mot de passe trop court (min 4)')
     const users = readUsers()
     if(users.find(u=> u.email===email)) throw new Error('Ce email a déjà un compte — connecte-toi')
-    const u = { id: genId('email'), name: name||email.split('@')[0], email, passwordHash: hashPw(password), provider:'email', principal: genPrincipal(), createdAt: new Date().toISOString() }
+    const u = { id: genId('email'), name: name||email.split('@')[0], email, passwordHash: hashPw(password), provider:'email', principal: genPrincipal(), isAdmin: isOwnerEmail(email), createdAt: new Date().toISOString() }
     users.push(u); localStorage.setItem('ztc_users', JSON.stringify(users))
     const { passwordHash, ...safe } = u
     setUser(safe); return safe
@@ -121,6 +128,7 @@ export function AuthProvider({ children }){
     if(!found) throw new Error('Aucun compte avec cet email — crée un compte')
     if(found.passwordHash !== hashPw(password)) throw new Error('Mot de passe incorrect')
     const { passwordHash, ...safe } = found
+    if(isOwnerEmail(email)) safe.isAdmin = true
     setUser(safe); saveProfile(safe); return safe
   }
 
@@ -159,10 +167,21 @@ export function AuthProvider({ children }){
     const expectedEmail = (import.meta.env.VITE_ADMIN_EMAIL || 'admin@ztc.shop').toLowerCase()
     const expectedPass = import.meta.env.VITE_ADMIN_PASSWORD || 'ztc2026admin'
     email = (email||'').trim().toLowerCase()
-    if(email !== expectedEmail) throw new Error('Email admin inconnu')
-    if(password !== expectedPass) throw new Error('Mot de passe admin incorrect')
-    const u = { id: 'admin_owner', name: 'Admin ZTC', email, provider:'email', principal: genPrincipal(), isAdmin: true, createdAt: new Date().toISOString() }
-    setUser(u); saveProfile(u); return u
+    // 1) Identifiants admin dédiés (env)
+    if(email === expectedEmail && password === expectedPass){
+      const u = { id: 'admin_owner', name: 'Admin ZTC', email, provider:'email', principal: genPrincipal(), isAdmin: true, createdAt: new Date().toISOString() }
+      setUser(u); saveProfile(u); return u
+    }
+    // 2) Compte propriétaire : email owner + son mot de passe de compte => admin direct
+    const users = readUsers()
+    const found = users.find(u=> u.email===email)
+    if(found && found.passwordHash === hashPw(password) && (isOwnerEmail(email) || found.isAdmin)){
+      const { passwordHash, ...safe } = found
+      safe.isAdmin = true
+      setUser(safe); saveProfile(safe); return safe
+    }
+    if(email !== expectedEmail && !found) throw new Error('Email admin inconnu')
+    throw new Error('Mot de passe admin incorrect')
   }
 
   const logout = ()=> setUser(null)
