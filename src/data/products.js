@@ -36,7 +36,7 @@ export const initialProducts = [
   },
   {
     id: 'fc26-1', category: 'fc26', name: 'FC 26 Coins Ultimate Team', subtitle: 'Livraison 5-15 min • PS / Xbox / PC',
-    image: '/fc26-coins.jpg', // image fournie: UT coins dorés
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhPfUeZMBSqKcCZINmj7HGMN4nDmh3OVPLURigP-u5bg&s=10',
     badge: 'NEW', description: 'Coins pour FC 26 UT. Méthode sécurisée Player Auction, garantie anti-ban.',
     variants: [
       { id: 'fc-50k', label: '50K Coins', price: 9.99 },
