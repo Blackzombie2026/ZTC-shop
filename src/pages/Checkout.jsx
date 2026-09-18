@@ -19,7 +19,7 @@ export default function Checkout(){
     <div className="max-w-[600px] mx-auto px-4 py-16 text-center">
       <Lock className="mx-auto text-violet-400" size={32}/>
       <h2 className="text-xl font-black mt-3">Connexion requise</h2>
-      <p className="text-white/60 text-sm mt-1">Connecte-toi avec Internet Identity pour commander et retrouver tes codes.</p>
+      <p className="text-white/60 text-sm mt-1">Connecte-toi avec ton email, Discord ou Facebook pour commander et retrouver tes codes.</p>
       <button onClick={()=>nav('/login')} className="mt-4 px-6 py-3 rounded-xl bg-violet-600 font-bold">Se connecter</button>
     </div>
   )
@@ -35,7 +35,7 @@ export default function Checkout(){
       date: new Date().toISOString(),
       items: cart.map(c=> ({...c, code: genCode()})),
       total, method, customer: { name: form.name, email: form.email, address: form.address },
-      principal: user.principal,
+      userId: user.id, principal: user.principal, provider: user.provider,
       status: method==='cod' ? 'En attente (paiement à la livraison)' : 'Payée • Codes disponibles'
     }
     addOrder(order)

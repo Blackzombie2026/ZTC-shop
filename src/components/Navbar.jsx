@@ -1,12 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingCart, Search, User, Shield, LogOut, Gamepad2, Package } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ShoppingCart, User, Shield, LogOut, Gamepad2, Package } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
+
+const providerLabel = { email:'Email', discord:'Discord', facebook:'Facebook', 'Internet Identity':'Internet Identity' }
+const providerColor = { email:'bg-emerald-500', discord:'bg-[#5865F2]', facebook:'bg-[#1877F2]', 'Internet Identity':'bg-violet-600' }
 
 export default function Navbar(){
   const { count } = useCart()
   const { user, logout } = useAuth()
-  const nav = useNavigate()
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-4">
@@ -29,10 +31,16 @@ export default function Navbar(){
           <div className="flex items-center gap-2">
             <Link to="/orders" className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm hover:bg-white/10"><Package size={16}/>Commandes</Link>
             {user.isAdmin && <Link to="/admin" className="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400"><Shield size={18}/></Link>}
-            <button onClick={logout} className="p-2.5 rounded-xl bg-white/5 border border-white/10"><LogOut size={16}/></button>
-            <div className="hidden lg:block text-xs leading-tight">
-              <div className="text-white font-medium truncate max-w-[120px]">{user.principal}</div>
-              <div className="text-white/50">Internet Identity</div>
+            <button onClick={logout} title="Déconnexion" className="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10"><LogOut size={16}/></button>
+            <div className="hidden lg:flex items-center gap-2">
+              {user.avatar
+                ? <img src={user.avatar} alt="" className="w-8 h-8 rounded-full object-cover"/>
+                : <div className={`w-8 h-8 rounded-full ${providerColor[user.provider]||'bg-violet-600'} flex items-center justify-center font-black text-sm`}>{(user.name||user.email||'?')[0].toUpperCase()}</div>
+              }
+              <div className="text-xs leading-tight">
+                <div className="text-white font-bold truncate max-w-[120px]">{user.name || user.email || user.principal?.slice(0,12)}</div>
+                <div className="text-white/50">{providerLabel[user.provider]||user.provider}{user.email? ` • ${user.email.slice(0,18)}`:''}</div>
+              </div>
             </div>
           </div>
         ) : (
