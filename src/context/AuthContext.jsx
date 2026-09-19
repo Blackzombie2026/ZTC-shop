@@ -50,6 +50,11 @@ const mapCloudProduct = (r)=> ({
   image: r.image||'', badge: r.badge||null, description: r.description||'',
   variants: r.variants||[], stock: r.stock??0, rating: Number(r.rating||5),
 })
+const mapCloudMessage = (r)=> ({
+  id: r.id, userId: r.user_id, orderId: r.order_id||null,
+  sender: r.sender, name: r.name||'', text: r.text||'',
+  isRead: !!r.is_read, date: r.created_at, cloud: true,
+})
 const toCloudProduct = (p)=> ({
   id: p.id, category: p.category, name: p.name, subtitle: p.subtitle||'',
   image: p.image||'', badge: p.badge||null, description: p.description||'',
@@ -125,9 +130,29 @@ export function AuthProvider({ children }){
     }catch{ setCloudProfiles(null) }
   }, [])
 
+  const [messages, setMessages] = useState(()=>{
+    try{ return JSON.parse(localStorage.getItem('ztc_messages')||'[]')}catch{return []}
+  })
+  useEffect(()=> localStorage.setItem('ztc_messages', JSON.stringify(messages.filter(m=>!m.cloud))), [messages])
+
+  const refreshCloudMessages = useCallback(async ()=>{
+    if(!cloud) return
+    try{
+      const { data, error } = await supabase.from('messages').select('*').order('created_at', { ascending: true }).limit(500)
+      if(error) throw error
+      const mapped = (data||[]).map(mapCloudMessage)
+      setMessages(prev=> {
+        const map = new Map()
+        prev.forEach(m=> map.set(m.id, m))
+        mapped.forEach(m=> map.set(m.id, m))
+        return [...map.values()].sort((a,b)=> new Date(a.date||0) - new Date(b.date||0))
+      })
+    }catch(e){ console.warn('cloud messages:', e.message) }
+  }, [])
+
   const refreshAll = useCallback(()=>{
-    refreshCloudOrders(); refreshCloudProducts(); refreshCloudProfiles()
-  }, [refreshCloudOrders, refreshCloudProducts, refreshCloudProfiles])
+    refreshCloudOrders(); refreshCloudProducts(); refreshCloudProfiles(); refreshCloudMessages()
+  }, [refreshCloudOrders, refreshCloudProducts, refreshCloudProfiles, refreshCloudMessages])
 
   // Session cloud au démarrage + realtime + refresh au focus
   useEffect(()=>{
@@ -145,6 +170,8 @@ export function AuthProvider({ children }){
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, ()=> refreshCloudOrders())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, ()=> refreshCloudProducts())
       .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, ()=> refreshCloudProfiles())
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, ()=> refreshCloudMessages())
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages' }, ()=> refreshCloudMessages())
       .subscribe()
     const onFocus = ()=> refreshAll()
     window.addEventListener('focus', onFocus)
@@ -288,10 +315,23 @@ export function AuthProvider({ children }){
   }
 
   // ---- Admin propriétaire ----
-  const loginAdmin = (email, password)=>{
+  // Tente d'abord une session cloud (nécessaire pour écrire dans le cloud),
+  // sinon repli local.
+  const loginAdmin = async (email, password)=>{
+    email = (email||'').trim().toLowerCase()
+    if(cloud){
+      try{
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+        if(!error && data.user){
+          await upsertCloudProfile(data.user)
+          const u = await buildCloudUser(data.user)
+          refreshAll()
+          if(u.isAdmin) return u
+        }
+      }catch{}
+    }
     const expectedEmail = (import.meta.env.VITE_ADMIN_EMAIL || 'admin@ztc.shop').toLowerCase()
     const expectedPass = import.meta.env.VITE_ADMIN_PASSWORD || 'ztc2026admin'
-    email = (email||'').trim().toLowerCase()
     if(email === expectedEmail && password === expectedPass){
       const u = { id: 'admin_owner', name: 'Admin ZTC', email, provider:'email', principal: genPrincipal(), isAdmin: true, createdAt: new Date().toISOString() }
       setUser(u); saveProfile(u); return u
@@ -377,6 +417,59 @@ export function AuthProvider({ children }){
     return orders.filter(o=> o.userId===u.id || o.principal===u.principal || (u.email && o.customer?.email?.toLowerCase()===u.email.toLowerCase()))
   }
 
+  // ---- Chat direct admin <-> client ----
+  const sendMessage = async ({ text, orderId=null, toUserId=null })=>{
+    const clean = (text||'').trim()
+    if(!clean || !user) throw new Error('empty')
+    const isAdminMsg = !!user.isAdmin
+    // Côté admin : le fil appartient au client (toUserId). Côté client : son propre fil.
+    const threadUserId = isAdminMsg ? (toUserId || user.id) : (user.cloud ? user.id : (user.id))
+    const msg = {
+      id: genId('msg'), userId: threadUserId, orderId,
+      sender: isAdminMsg ? 'admin' : 'client',
+      name: user.name || user.email || 'Client',
+      text: clean.slice(0, 1000), isRead: false,
+      date: new Date().toISOString(), cloud: !!(cloud && (user.cloud || isAdminMsg)),
+    }
+    setMessages(prev=> [...prev, msg])
+    if(msg.cloud){
+      try{
+        const { error } = await supabase.from('messages').insert({
+          user_id: threadUserId, order_id: orderId,
+          sender: msg.sender, name: msg.name, text: msg.text,
+        })
+        if(error) throw error
+        refreshCloudMessages()
+      }catch(e){ console.warn('cloud send message:', e.message) }
+    }
+    return msg
+  }
+  const markThreadRead = async (threadUserId)=>{
+    setMessages(prev=> prev.map(m=> (m.userId===threadUserId && m.sender==='client') ? {...m, isRead:true} : m))
+    if(cloud){
+      try{ await supabase.from('messages').update({ is_read: true }).eq('user_id', threadUserId).eq('sender', 'client') }catch{}
+    }
+  }
+  // Fil d'un client (ses messages + réponses admin)
+  const myThread = (u=user)=>{
+    if(!u) return []
+    return messages.filter(m=> m.userId===u.id || (!m.userId && m.sender==='client')).sort((a,b)=> new Date(a.date||0)-new Date(b.date||0))
+  }
+  // Threads groupés pour l'admin : [{userId, name, last, unread, count}]
+  const adminThreads = ()=>{
+    const map = new Map()
+    messages.forEach(m=>{
+      const key = m.userId || 'unknown'
+      if(!map.has(key)) map.set(key, { userId: key, name: m.name||'Client', last: null, unread: 0, count: 0 })
+      const t = map.get(key)
+      t.count += 1
+      if(!t.last || new Date(m.date||0) > new Date(t.last.date||0)) t.last = m
+      if(m.sender==='client' && !m.isRead) t.unread += 1
+      if(m.sender==='client' && m.name) t.name = m.name
+    })
+    return [...map.values()].sort((a,b)=> new Date(b.last?.date||0) - new Date(a.last?.date||0))
+  }
+
   // Tous les comptes : registre local + profils cloud + clients vus via commandes
   const allAccounts = ()=>{
     const map = new Map()
@@ -409,6 +502,6 @@ export function AuthProvider({ children }){
   // L'admin a-t-il la vue globale cloud ? (false tant que le SQL is_admin n'est pas exécuté)
   const needsDbGrant = cloud && !!user?.isAdmin && cloudProfiles === null
 
-  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, messages, sendMessage, markThreadRead, myThread, adminThreads, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
 }
 export const useAuth = ()=> useContext(AuthCtx)

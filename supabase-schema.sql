@@ -143,3 +143,34 @@ on conflict (id) do nothing;
 -- (remplace l’email si besoin) pour le nommer ADMIN :
 -- ============================================================
 -- update public.profiles set is_admin = true where email = 'apatchegaming@gmail.com';
+
+-- ============================================================
+-- MESSAGES : conversation directe admin <-> client (support)
+-- ============================================================
+create table if not exists public.messages (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade,
+  order_id text,
+  sender text not null check (sender in ('client','admin')),
+  name text,
+  text text not null,
+  is_read boolean default false,
+  created_at timestamptz default now()
+);
+
+alter table public.messages enable row level security;
+
+drop policy if exists "messages_select_own_or_admin" on public.messages;
+create policy "messages_select_own_or_admin" on public.messages
+  for select using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "messages_insert_own" on public.messages;
+create policy "messages_insert_own" on public.messages
+  for insert with check (user_id = auth.uid());
+drop policy if exists "messages_insert_admin" on public.messages;
+create policy "messages_insert_admin" on public.messages
+  for insert with check (public.is_admin());
+drop policy if exists "messages_update_admin" on public.messages;
+create policy "messages_update_admin" on public.messages
+  for update using (public.is_admin());
+
+alter publication supabase_realtime add table public.messages;

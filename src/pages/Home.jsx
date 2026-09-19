@@ -49,11 +49,13 @@ export default function Home(){
           </div>
           <div className="grid grid-cols-3 gap-3">
             {heroCats.map(c=>(
-              <Link key={c.id} to={`/catalog?cat=${c.id}`} className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-violet-500/50 transition">
+              <div key={c.id} className="anim-glow">
+              <Link to={`/catalog?cat=${c.id}`} className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-violet-500/50 transition block active:scale-95">
                 <img src={c.img} className="w-full h-28 object-cover group-hover:scale-105 transition duration-500" alt={c.label}/>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"/>
                 <span className="absolute bottom-2 left-2 text-xs font-bold">{c.label}</span>
               </Link>
+              </div>
             ))}
             <div className="col-span-3 rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 p-4 flex items-center justify-between">
               <div><div className="font-black">+ 10 marques</div><div className="text-xs opacity-80">PSN, Xbox, Steam…</div></div>
@@ -70,7 +72,8 @@ export default function Home(){
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {initialProducts.slice(0,8).map(p=>(
-            <Link key={p.id} to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 hover:-translate-y-1 transition group">
+            <div key={p.id} className="anim-glow">
+            <Link to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 hover:-translate-y-1 transition group block">
               <div className="relative h-36 overflow-hidden">
                 <img src={p.image} className="w-full h-full object-cover group-hover:scale-105 transition" alt={p.name}/>
                 {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600 text-white">{p.badge}</span>}
@@ -86,6 +89,7 @@ export default function Home(){
                 </div>
               </div>
             </Link>
+            </div>
           ))}
         </div>
       </section>

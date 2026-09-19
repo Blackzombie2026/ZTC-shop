@@ -55,13 +55,14 @@ export default function Catalog(){
 
       <div className="mt-4 flex gap-2 overflow-auto pb-2">
         {categories.map(c=>(
-          <button key={c.id} onClick={()=>setCat(c.id)} className={`px-4 py-2 rounded-full text-sm font-semibold border whitespace-nowrap ${category===c.id? 'bg-violet-600 border-violet-600 text-white':'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}`}>{catLabel(c.id)}</button>
+          <button key={c.id} onClick={()=>setCat(c.id)} className={`cat-pill px-4 py-2 rounded-full text-sm font-semibold border whitespace-nowrap ${category===c.id? 'bg-violet-600 border-violet-600 text-white':'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}`}>{catLabel(c.id)}</button>
         ))}
       </div>
 
       <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filtered.map(p=>(
-          <Link key={p.id} to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 transition group">
+          <div key={p.id} className="anim-glow">
+          <Link to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 transition group block">
             <div className="relative h-40 overflow-hidden">
               <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500"/>
               {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600">{p.badge}</span>}
@@ -81,6 +82,7 @@ export default function Catalog(){
               </div>
             </div>
           </Link>
+          </div>
         ))}
       </div>
       {filtered.length===0 && <div className="text-center py-16 text-white/50">{t('no_result')}</div>}

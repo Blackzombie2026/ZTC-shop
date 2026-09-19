@@ -22,3 +22,24 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #
   50% { transform: translateY(-3px); }
 }
 .animate-support-bounce { animation: support-bounce 2s ease-in-out infinite; }
+
+/* Halo animé derrière les photos produits */
+.anim-glow { position: relative; border-radius: 18px; }
+.anim-glow::before {
+  content: ''; position: absolute; inset: -4px; border-radius: 22px; z-index: 0;
+  background: conic-gradient(from 0deg, #7c3aed, #d946ef, #10b981, #7c3aed);
+  filter: blur(12px); opacity: .28;
+  animation: glow-spin 7s linear infinite;
+}
+.anim-glow:nth-child(3n)::before { filter: blur(12px) hue-rotate(70deg); }
+.anim-glow:nth-child(3n+1)::before { filter: blur(12px) hue-rotate(-40deg); }
+.anim-glow > * { position: relative; z-index: 1; }
+@keyframes glow-spin { to { transform: rotate(360deg); } }
+
+/* Pastilles catégories : rebond au clic */
+.cat-pill { transition: transform .15s ease; }
+.cat-pill:active { transform: scale(.88); }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-glow::before, .animate-support-ring, .animate-support-bounce { animation: none; }
+}

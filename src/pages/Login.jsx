@@ -35,12 +35,13 @@ export default function Login(){
     finally{ setBusy(false) }
   }
 
-  const handleAdmin = (e)=>{
-    e.preventDefault(); setAdminError('')
+  const handleAdmin = async (e)=>{
+    e.preventDefault(); setAdminError(''); setBusy(true)
     try{
-      loginAdmin(adminEmail, adminPass)
+      await loginAdmin(adminEmail, adminPass)
       nav('/admin')
     }catch(err){ setAdminError(err.message) }
+    finally{ setBusy(false) }
   }
 
   const discordConfigured = !!import.meta.env.VITE_DISCORD_CLIENT_ID

@@ -3,10 +3,23 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 import { initialProducts, categories } from '../data/products'
-import { Plus, Trash2, Phone, Check, Truck, X, Users, Search, RefreshCw } from 'lucide-react'
+import { Plus, Trash2, Phone, Check, Truck, X, Users, Search, RefreshCw, MessageCircle, Send } from 'lucide-react'
 
 export default function Admin(){
-  const { user, orders, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll } = useAuth()
+  const { user, orders, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll, adminThreads, sendMessage, markThreadRead, messages } = useAuth()
+  const threads = adminThreads()
+  const totalUnread = threads.reduce((s,th)=> s+th.unread, 0)
+  const [activeThread, setActiveThread] = useState(null)
+  const [reply, setReply] = useState('')
+  const currentThread = threads.find(th=> th.userId===activeThread)
+  const threadMessages = messages.filter(m=> m.userId===activeThread).sort((a,b)=> new Date(a.date||0)-new Date(b.date||0))
+  const openThread = (id)=>{ setActiveThread(id); setReply(''); markThreadRead(id) }
+  const handleReply = async (e)=>{
+    e.preventDefault()
+    if(!reply.trim()) return
+    await sendMessage({ text: reply, toUserId: activeThread })
+    setReply('')
+  }
 
   const handleDeleteOrder = async (id)=>{
     if(!window.confirm(t('del_order_q'))) return
@@ -106,6 +119,7 @@ export default function Admin(){
         </button>
         <button onClick={()=>setTab('products')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='products'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}>{t('products_stock')}</button>
         <button onClick={()=>setTab('users')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='users'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><Users size={15}/> Comptes ({accounts.length})</button>
+        <button onClick={()=>setTab('messages')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='messages'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><MessageCircle size={15}/> {t('messages_tab')} {totalUnread>0 && <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-xs animate-pulse">{totalUnread}</span>}</button>
         <button onClick={initIfNeeded} className="ml-auto text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10">Réinitialiser DB démo</button>
       </div>
 
@@ -124,7 +138,7 @@ export default function Admin(){
           {/* Mêmes catégories que les clients */}
           <div className="mt-4 flex gap-2 overflow-auto pb-2">
             {categories.map(c=>(
-              <button key={c.id} onClick={()=>setCatFilter(c.id)} className={`px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${catFilter===c.id?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 text-white/70'}`}>{c.id==='all'?t('all'):c.label} ({c.id==='all'?prods.length:prods.filter(p=>p.category===c.id).length})</button>
+              <button key={c.id} onClick={()=>setCatFilter(c.id)} className={`cat-pill px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${catFilter===c.id?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 text-white/70'}`}>{c.id==='all'?t('all'):c.label} ({c.id==='all'?prods.length:prods.filter(p=>p.category===c.id).length})</button>
             ))}
           </div>
 
@@ -178,7 +192,7 @@ export default function Admin(){
               {id:'delivered', label:'📦 Livrées'},
               {id:'cancelled', label:'❌ Annulées'},
             ].map(f=>(
-              <button key={f.id} onClick={()=>setFilter(f.id)} className={`px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${filter===f.id?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 text-white/70'}`}>{f.label}</button>
+              <button key={f.id} onClick={()=>setFilter(f.id)} className={`cat-pill px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${filter===f.id?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 text-white/70'}`}>{f.label}</button>
             ))}
           </div>
 
@@ -247,6 +261,45 @@ export default function Admin(){
             ))}
           </div>
           {visibleAccounts.length===0 && <div className="text-white/50 text-center py-8">Aucun compte pour l'instant — ils apparaîtront ici dès qu'un client crée un compte ou commande.</div>}
+        </div>
+      )}
+
+      {tab==='messages' && (
+        <div className="mt-6 grid lg:grid-cols-[320px_1fr] gap-4">
+          <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+            {threads.length===0 && <div className="text-white/50 text-center py-8 text-sm">{t('chat_empty_admin')}</div>}
+            {threads.map(th=>(
+              <button key={th.userId} onClick={()=>openThread(th.userId)} className={`w-full text-left p-3 rounded-2xl border ${activeThread===th.userId?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 hover:bg-white/10'}`}>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="font-bold text-sm truncate">{th.name}</div>
+                  {th.unread>0 && <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-[11px] font-black shrink-0">{th.unread}</span>}
+                </div>
+                <div className="text-xs text-white/60 truncate mt-0.5">{th.last?.sender==='admin' ? 'Toi : ' : ''}{th.last?.text}</div>
+                <div className="text-[10px] text-white/40 mt-0.5">{th.last?.date ? new Date(th.last.date).toLocaleString('fr-FR') : ''} • {th.count} msg</div>
+              </button>
+            ))}
+          </div>
+          <div className="rounded-2xl bg-white/5 border border-white/10 p-4 flex flex-col min-h-[50vh]">
+            {!currentThread ? (
+              <div className="flex-1 flex items-center justify-center text-white/40 text-sm">{t('chat_select_thread')}</div>
+            ) : (
+              <>
+                <div className="font-black pb-2 border-b border-white/10">💬 {currentThread.name}</div>
+                <div className="flex-1 space-y-2 overflow-y-auto py-3 max-h-[45vh]">
+                  {threadMessages.map(m=>(
+                    <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-violet-600 ml-auto' : 'bg-white/10 border border-white/10 mr-auto'}`}>
+                      <div className="leading-snug">{m.text}</div>
+                      <div className="text-[10px] opacity-60 mt-0.5">{m.date ? new Date(m.date).toLocaleString('fr-FR') : ''}</div>
+                    </div>
+                  ))}
+                </div>
+                <form onSubmit={handleReply} className="flex gap-2 pt-2 border-t border-white/10">
+                  <input value={reply} onChange={e=>setReply(e.target.value)} placeholder={t('chat_placeholder')} className="flex-1 px-3 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm focus:outline-none focus:border-violet-500"/>
+                  <button className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 font-black disabled:opacity-50" disabled={!reply.trim()}><Send size={16}/></button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>
