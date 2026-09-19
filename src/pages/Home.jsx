@@ -7,7 +7,7 @@ const heroCats = [
   { id:'valorant', label:'Valorant', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7raq6TZniTT-h3tAcCp4gTt1qayp_6_4m5VYdEKZf2w&s=10' },
   { id:'lol', label:'League of Legends', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNztnpwTexsNw2a58jD4GD3VukhzYqPHAouBNgep7nzA&s=10' },
   { id:'fc26', label:'FC 26 Coins', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhPfUeZMBSqKcCZINmj7HGMN4nDmh3OVPLURigP-u5bg&s=10' },
-  { id:'fc27', label:'FC 27', img:'https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=300&q=80&auto=format&fit=crop' },
+  { id:'fc27', label:'FC 27', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhc6Hl7O2D2ZMM5mGE1Ou40bK_4_xPxWdJW8VsQ7faUHqHInv68ByFjCMH&s=10' },
   { id:'pubg', label:'PUBG UC', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2k0Xlx3K5dZvgyfn4R20bh_OFVCv93xOJkyMmx-g-Zg&s=10' },
   { id:'warzone', label:'Warzone', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZyqv8ihFLqe-huGX1idY3forMuHcN39UzhSDqVNCQ4g&s=10' },
   { id:'r6', label:'Rainbow Six', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBN2ACWqqVPyzbeCQUHPa9BmoN5rgkkccXtbNxOohIYg&s' },

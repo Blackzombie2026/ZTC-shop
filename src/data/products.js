@@ -51,14 +51,24 @@ export const initialProducts = [
     stock: 42, rating: 4.7
   },
   {
-    id: 'fc27-1', category: 'fc27', name: 'FC 27 Steam Account', subtitle: 'Compte complet • Full Access',
-    image: 'https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=600&q=80&auto=format&fit=crop',
-    badge: 'NEW', description: 'Compte Steam FC 27 en plein accès : email et mot de passe modifiables, jeu à vie sur ton compte. Livraison 5-30 min avec identifiants + guide d’activation.',
+    id: 'fc27-pc', category: 'fc27', name: 'FC 27 PC – Steam Full Access', subtitle: 'Compte complet • Version PC',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhc6Hl7O2D2ZMM5mGE1Ou40bK_4_xPxWdJW8VsQ7faUHqHInv68ByFjCMH&s=10',
+    badge: 'NEW', description: 'Compte Steam FC 27 version PC en plein accès : email et mot de passe modifiables, jeu à vie. Livraison 5-30 min avec identifiants + guide d’activation.',
     variants: [
-      { id: 'fc27-std', label: 'Standard – Full Access', price: 199.00 },
-      { id: 'fc27-ult', label: 'Ultimate – Full Access', price: 299.00 },
+      { id: 'fc27-pc-std', label: 'Standard Edition – Full Access', price: 140.00 },
+      { id: 'fc27-pc-ult', label: 'Ultimate Edition – Full Access', price: 220.00 },
     ],
     stock: 25, rating: 5.0
+  },
+  {
+    id: 'fc27-ps5', category: 'fc27', name: 'FC 27 PS5 – PSN', subtitle: 'Compte complet • Version PS5',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHFwBgEcKi_xb22H3SlkrPBNlUjsOwHxCey-epDjbKyQ&s=10',
+    badge: 'NEW', description: 'FC 27 version PS5 (compte PSN) : Standard ou Ultimate, accès complet. Livraison 5-30 min avec identifiants + guide d’activation.',
+    variants: [
+      { id: 'fc27-ps5-std', label: 'Standard Edition – PSN', price: 240.00 },
+      { id: 'fc27-ps5-ult', label: 'Ultimate Edition – PSN', price: 340.00 },
+    ],
+    stock: 20, rating: 5.0
   },
   {
     id: 'pubg-1', category: 'pubg', name: 'PUBG Mobile UC', subtitle: 'Unknown Cash',
