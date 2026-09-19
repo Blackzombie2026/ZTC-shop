@@ -11,10 +11,11 @@ function genPrincipal(){ return 'aaaaa-aa-' + Math.random().toString(36).slice(2
 // Simple demo hash (mode local uniquement)
 const hashPw = (pw)=> { try { return btoa('ztc$'+pw) } catch { return 'hash_'+pw.length } }
 
-// Emails propriétaires => toujours admin (identifiant public, pas un secret)
+// Emails propriétaires/admins => toujours admin (identifiants publics, pas des secrets)
 const OWNER_EMAILS = [
   (import.meta.env.VITE_ADMIN_EMAIL || 'admin@ztc.shop').toLowerCase(),
   'apatchegaming@gmail.com',
+  'sasorisescanor113@gmail.com',
 ]
 const isOwnerEmail = (email)=> OWNER_EMAILS.includes((email||'').trim().toLowerCase())
 
