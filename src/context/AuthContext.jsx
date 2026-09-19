@@ -176,8 +176,12 @@ export function AuthProvider({ children }){
 
   const upsertCloudProfile = async (sbUser, name)=>{
     try{
+      const email = (sbUser.email||'').toLowerCase()
+      // Pour un email propriétaire SANS ligne existante, l'INSERT passe avec is_admin=true
+      // (aucun trigger sur INSERT). Si la ligne existe déjà, l'UPDATE est bloqué par le
+      // trigger anti-escalade — dans ce cas supprime ta ligne via Table Editor puis reconnecte-toi.
       await supabase.from('profiles').upsert(
-        { id: sbUser.id, email: (sbUser.email||'').toLowerCase(), name: name || sbUser.user_metadata?.name || (sbUser.email||'').split('@')[0], provider: 'email' },
+        { id: sbUser.id, email, name: name || sbUser.user_metadata?.name || email.split('@')[0], provider: 'email', ...(isOwnerEmail(email) ? { is_admin: true } : {}) },
         { onConflict: 'id' }
       )
     }catch{}
