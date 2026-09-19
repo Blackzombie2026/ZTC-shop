@@ -47,7 +47,7 @@ export default function Navbar(){
         </div>
         <Link to="/cart" className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10">
           <ShoppingCart size={18}/>
-          {count>0 && <span className="absolute -top-1.5 -right-1.5 bg-violet-600 text-white text-[11px] font-bold rounded-full min-w-5 h-5 flex items-center justify-center px-1">{count}</span>}
+          {count>0 && <span key={count} className="badge-pop absolute -top-1.5 -right-1.5 bg-violet-600 text-white text-[11px] font-bold rounded-full min-w-5 h-5 flex items-center justify-center px-1">{count}</span>}
         </Link>
         {user ? (
           <div className="flex items-center gap-2">

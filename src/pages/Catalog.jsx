@@ -60,8 +60,8 @@ export default function Catalog(){
       </div>
 
       <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {filtered.map(p=>(
-          <div key={p.id} className="anim-glow">
+        {filtered.map((p,i)=>(
+          <div key={p.id} className="anim-glow reveal" style={{animationDelay:`${(i%12)*50}ms`}}>
           <Link to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 transition group block">
             <div className="relative h-40 overflow-hidden">
               <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500"/>
