@@ -11,7 +11,7 @@ export default function Navbar(){
   const { count } = useCart()
   const { user, logout } = useAuth()
   const { lang, setLang, t } = useLang()
-  const logoUrl = `${import.meta.env.BASE_URL}Zomra-tn.jpg`
+  const logoUrl = `${import.meta.env.BASE_URL}logo.svg`
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-3">
