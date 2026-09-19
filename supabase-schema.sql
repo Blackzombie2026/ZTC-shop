@@ -144,6 +144,11 @@ on conflict (id) do nothing;
 -- ============================================================
 -- update public.profiles set is_admin = true where email = 'apatchegaming@gmail.com';
 
+-- ---------- FC 27 (ajouté après le seed initial) ----------
+insert into public.products (id, category, name, subtitle, image, badge, description, variants, stock, rating) values
+('fc27-1','fc27','FC 27 Steam Account','Compte complet • Full Access','https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=600&q=80&auto=format&fit=crop','NEW','Compte Steam FC 27 en plein accès : email et mot de passe modifiables, jeu à vie sur ton compte. Livraison 5-30 min avec identifiants + guide.','[{"id":"fc27-std","label":"Standard – Full Access","price":199},{"id":"fc27-ult","label":"Ultimate – Full Access","price":299}]',25,5.0)
+on conflict (id) do nothing;
+
 -- ============================================================
 -- MESSAGES : conversation directe admin <-> client (support)
 -- ============================================================

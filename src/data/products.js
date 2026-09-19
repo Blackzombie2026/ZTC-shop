@@ -3,6 +3,7 @@ export const categories = [
   { id: 'valorant', label: 'Valorant' },
   { id: 'lol', label: 'League of Legends' },
   { id: 'fc26', label: 'FC 26 Coins' },
+  { id: 'fc27', label: 'FC 27' },
   { id: 'pubg', label: 'PUBG' },
   { id: 'warzone', label: 'Warzone' },
   { id: 'r6', label: 'Rainbow Six' },
@@ -48,6 +49,16 @@ export const initialProducts = [
       { id: 'fc-1m', label: '1M Coins', price: 139.99 },
     ],
     stock: 42, rating: 4.7
+  },
+  {
+    id: 'fc27-1', category: 'fc27', name: 'FC 27 Steam Account', subtitle: 'Compte complet • Full Access',
+    image: 'https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=600&q=80&auto=format&fit=crop',
+    badge: 'NEW', description: 'Compte Steam FC 27 en plein accès : email et mot de passe modifiables, jeu à vie sur ton compte. Livraison 5-30 min avec identifiants + guide d’activation.',
+    variants: [
+      { id: 'fc27-std', label: 'Standard – Full Access', price: 199.00 },
+      { id: 'fc27-ult', label: 'Ultimate – Full Access', price: 299.00 },
+    ],
+    stock: 25, rating: 5.0
   },
   {
     id: 'pubg-1', category: 'pubg', name: 'PUBG Mobile UC', subtitle: 'Unknown Cash',
