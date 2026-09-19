@@ -312,6 +312,23 @@ export function AuthProvider({ children }){
     setUser(null)
   }
 
+  // ---- Suppressions admin (local + cloud) ----
+  const deleteOrder = async (id)=>{
+    const target = orders.find(o=> o.id===id)
+    setOrders(prev=> prev.filter(o=> o.id!==id))
+    if(cloud && target?.cloud){
+      const { error } = await supabase.from('orders').delete().eq('id', id)
+      if(error){ refreshCloudOrders(); throw new Error('del_need_policy') }
+    }
+  }
+  const deleteAccount = async (id)=>{
+    try{ localStorage.setItem('ztc_users', JSON.stringify(readUsers().filter(u=> u.id!==id))) }catch{}
+    if(cloud){
+      const { error } = await supabase.from('profiles').delete().eq('id', id)
+      if(error){ refreshCloudProfiles(); throw new Error('del_need_policy') }
+    }
+  }
+
   // ---- Commandes : cloud si compte cloud, sinon local ----
   const addOrder = async (order)=>{
     const full = { ...order, cloud: !!(cloud && user?.cloud) }
@@ -391,6 +408,6 @@ export function AuthProvider({ children }){
   // L'admin a-t-il la vue globale cloud ? (false tant que le SQL is_admin n'est pas exécuté)
   const needsDbGrant = cloud && !!user?.isAdmin && cloudProfiles === null
 
-  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
 }
 export const useAuth = ()=> useContext(AuthCtx)

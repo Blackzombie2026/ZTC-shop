@@ -109,6 +109,14 @@ drop policy if exists "products_write_admin" on public.products;
 create policy "products_write_admin" on public.products
   for all using (public.is_admin()) with check (public.is_admin());
 
+-- suppressions admin (bouton poubelle : commandes + comptes)
+drop policy if exists "orders_delete_admin" on public.orders;
+create policy "orders_delete_admin" on public.orders
+  for delete using (public.is_admin());
+drop policy if exists "profiles_delete_admin" on public.profiles;
+create policy "profiles_delete_admin" on public.profiles
+  for delete using (public.is_admin());
+
 -- ---------- Realtime (commandes + produits en direct pour l'admin) ----------
 alter publication supabase_realtime add table public.orders;
 alter publication supabase_realtime add table public.products;

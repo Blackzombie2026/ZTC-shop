@@ -6,7 +6,17 @@ import { initialProducts, categories } from '../data/products'
 import { Plus, Trash2, Phone, Check, Truck, X, Users, Search, RefreshCw } from 'lucide-react'
 
 export default function Admin(){
-  const { user, orders, updateOrderStatus, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll } = useAuth()
+  const { user, orders, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll } = useAuth()
+
+  const handleDeleteOrder = async (id)=>{
+    if(!window.confirm(t('del_order_q'))) return
+    try{ await deleteOrder(id) }catch{ alert(t('del_need_policy')) }
+  }
+  const handleDeleteAccount = async (a)=>{
+    if(a.id===user.id || a.isAdmin) return alert('Impossible : compte admin/propriétaire.')
+    if(!window.confirm(`${t('del_account_q')}\n${a.name||''} ${a.email||''}`)) return
+    try{ await deleteAccount(a.id) }catch{ alert(t('del_need_policy')) }
+  }
   const { t } = useLang()
   const prods = products || initialProducts
   const [tab, setTab] = useState('orders')
@@ -178,7 +188,10 @@ export default function Admin(){
               <div key={o.id} className={`p-4 rounded-2xl border ${isPending(o)?'bg-amber-500/5 border-amber-500/30':'bg-white/5 border-white/10'}`}>
                 <div className="flex flex-wrap justify-between gap-2">
                   <div className="font-bold text-sm">{o.id} • {o.customer?.name} • {o.total.toFixed(2)} TND • {o.method==='card'?'Carte':'À la livraison'}</div>
-                  <span className={`text-xs px-2 py-1 rounded-full font-bold ${isPending(o)?'bg-amber-500/20 text-amber-300 border border-amber-500/30': o.status.includes('Annulée')?'bg-red-500/20 text-red-300 border border-red-500/30':'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}`}>{o.status}</span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs px-2 py-1 rounded-full font-bold ${isPending(o)?'bg-amber-500/20 text-amber-300 border border-amber-500/30': o.status.includes('Annulée')?'bg-red-500/20 text-red-300 border border-red-500/30':'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'}`}>{o.status}</span>
+                    <button onClick={()=>handleDeleteOrder(o.id)} title="Supprimer" className="p-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30"><Trash2 size={13}/></button>
+                  </div>
                 </div>
                 <div className="text-xs text-white/60 mt-2 flex flex-wrap gap-x-4 gap-y-1">
                   <span>📧 {o.customer?.email}</span>
@@ -218,6 +231,9 @@ export default function Admin(){
                     <div className="font-bold truncate">{a.name||'Client'} {a.isAdmin && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 ml-1">ADMIN</span>}</div>
                     <div className="text-xs text-white/50 truncate">📧 {a.email||'—'} • {a.provider}</div>
                   </div>
+                  {a.id!==user.id && !a.isAdmin && (
+                    <button onClick={()=>handleDeleteAccount(a)} title="Supprimer ce compte" className="p-2 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 shrink-0"><Trash2 size={14}/></button>
+                  )}
                 </div>
                 <div className="mt-3 space-y-1 text-xs">
                   <div className="flex justify-between"><span className="text-white/50">Téléphone(s)</span><span className="font-bold">{a.phones.length? a.phones.map(ph=> <a key={ph} href={`tel:${ph}`} className="text-emerald-300 ml-2">📞 {ph}</a>) : '—'}</span></div>
