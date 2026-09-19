@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ShoppingCart, User, Shield, LogOut, Gamepad2, Package, MessageCircle } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLang, LANGS } from '../context/LanguageContext'
-import SupportPanel from './SupportPanel'
 
 const providerLabel = { email:'Email', discord:'Discord', facebook:'Facebook', 'Internet Identity':'Internet Identity' }
 const providerColor = { email:'bg-emerald-500', discord:'bg-[#5865F2]', facebook:'bg-[#1877F2]', 'Internet Identity':'bg-violet-600' }
@@ -13,7 +11,6 @@ export default function Navbar(){
   const { count } = useCart()
   const { user, logout } = useAuth()
   const { lang, setLang, t } = useLang()
-  const [supportOpen, setSupportOpen] = useState(false)
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-3">
@@ -28,14 +25,14 @@ export default function Navbar(){
           <Link to="/catalog?cat=netflix" className="hover:text-white">Netflix</Link>
         </nav>
         <div className="flex-1" />
-        {/* Support animé */}
-        <button onClick={()=>setSupportOpen(true)} title={t('support')}
+        {/* Support animé -> page dédiée */}
+        <Link to="/support" title={t('support')}
           className="relative flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 hover:brightness-110 text-white text-sm font-black animate-support-ring">
           <MessageCircle size={17} className="animate-support-bounce"/>
           <span className="hidden sm:inline">{t('support')}</span>
           <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-amber-400 border-2 border-[#0a0a0c] animate-ping"/>
           <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-amber-400 border-2 border-[#0a0a0c]"/>
-        </button>
+        </Link>
         {/* Lang switcher */}
         <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-xl p-1">
           {LANGS.map(l=>(
@@ -71,7 +68,6 @@ export default function Navbar(){
           </Link>
         )}
       </div>
-      <SupportPanel open={supportOpen} onClose={()=>setSupportOpen(false)}/>
     </header>
   )
 }

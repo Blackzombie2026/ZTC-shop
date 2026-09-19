@@ -80,7 +80,7 @@ export default function OrderDetail(){
           ))}
         </div>
         <div className="mt-4 p-4 rounded-xl bg-violet-600/10 border border-violet-500/20 text-sm text-violet-200">
-          Besoin d'aide ? Contacte le support avec ton ID de commande <span className="font-mono font-bold">{order.id}</span>.
+          Besoin d'aide ? <Link to="/support" className="font-bold underline">Contacte le support</Link> avec ton ID de commande <span className="font-mono font-bold">{order.id}</span>.
         </div>
       </div>
       )}

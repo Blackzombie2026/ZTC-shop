@@ -12,6 +12,7 @@ import Orders from './pages/Orders'
 import OrderDetail from './pages/OrderDetail'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
+import Support from './pages/Support'
 
 const basename = (()=>{ const b = import.meta.env.BASE_URL || '/'; return b === '/' ? '/' : b.replace(/\/$/, '') })()
 
@@ -33,6 +34,7 @@ export default function App(){
               <Route path="/orders/:id" element={<OrderDetail/>}/>
               <Route path="/login" element={<Login/>}/>
               <Route path="/admin" element={<Admin/>}/>
+              <Route path="/support" element={<Support/>}/>
             </Routes>
             <footer className="border-t border-white/10 mt-8 py-6 text-center text-xs text-white/40">
               © 2026 ZTC SHOP • FR / EN / AR • TND
