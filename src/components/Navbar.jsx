@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShoppingCart, User, Shield, LogOut, Gamepad2, Package, MessageCircle } from 'lucide-react'
+import { ShoppingCart, User, Shield, LogOut, Package, MessageCircle } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLang, LANGS } from '../context/LanguageContext'
@@ -11,11 +11,12 @@ export default function Navbar(){
   const { count } = useCart()
   const { user, logout } = useAuth()
   const { lang, setLang, t } = useLang()
+  const logoUrl = `${import.meta.env.BASE_URL}logo.png`
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center"><Gamepad2 size={18}/></div>
+          <img src={logoUrl} alt="ZTC Shop" className="w-10 h-10 rounded-xl object-contain bg-white/5 border border-white/10"/>
           <span className="hidden sm:inline">ZTC<span className="text-violet-500"> SHOP</span></span>
         </Link>
         <nav className="hidden md:flex items-center gap-5 ml-4 text-sm text-white/70">
