@@ -11,12 +11,12 @@ export default function Navbar(){
   const { count } = useCart()
   const { user, logout } = useAuth()
   const { lang, setLang, t } = useLang()
-  const logoUrl = `${import.meta.env.BASE_URL}logo.svg`
+  const logoUrl = `${import.meta.env.BASE_URL}logo.jpg`
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight">
-          <img src={logoUrl} alt="ZTC Shop" className="w-10 h-10 rounded-xl object-contain bg-white/5 border border-white/10"/>
+          <img src={logoUrl} alt="ZTC Shop" className="w-10 h-10 rounded-xl object-cover bg-white p-0.5 border border-white/20"/>
           <span className="hidden sm:inline">ZTC<span className="text-violet-500"> SHOP</span></span>
         </Link>
         <nav className="hidden md:flex items-center gap-5 ml-4 text-sm text-white/70">

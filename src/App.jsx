@@ -37,7 +37,7 @@ export default function App(){
               <Route path="/support" element={<Support/>}/>
             </Routes>
             <footer className="border-t border-white/10 mt-8 py-6 text-center text-xs text-white/40">
-              <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="ZTC Shop" className="w-10 h-10 mx-auto mb-2 rounded-xl object-contain opacity-90"/>
+              <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="ZTC Shop" className="w-12 h-12 mx-auto mb-2 rounded-2xl object-cover bg-white p-1"/>
               © 2026 ZTC SHOP • FR / EN / AR • TND
             </footer>
           </div>
