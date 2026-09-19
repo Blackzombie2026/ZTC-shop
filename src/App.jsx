@@ -13,12 +13,14 @@ import OrderDetail from './pages/OrderDetail'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
 
+const basename = (()=>{ const b = import.meta.env.BASE_URL || '/'; return b === '/' ? '/' : b.replace(/\/$/, '') })()
+
 export default function App(){
   return (
     <LanguageProvider>
     <AuthProvider>
       <CartProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <div className="min-h-screen bg-[#0a0a0c]">
             <Navbar/>
             <Routes>

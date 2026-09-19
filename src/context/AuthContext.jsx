@@ -263,10 +263,11 @@ export function AuthProvider({ children }){
   }
 
   // ---- Discord / Facebook (démo locale ; commandes locales) ----
+  const oauthRedirect = ()=> encodeURIComponent(window.location.origin + import.meta.env.BASE_URL + 'login')
   const loginWithDiscord = ()=>{
     const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID
     if(clientId){
-      const redirect = encodeURIComponent(window.location.origin + '/login')
+      const redirect = oauthRedirect()
       const url = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirect}&response_type=token&scope=identify%20email&state=discord_${Date.now()}`
       window.location.href = url
       return null
@@ -277,7 +278,7 @@ export function AuthProvider({ children }){
   const loginWithFacebook = ()=>{
     const appId = import.meta.env.VITE_FACEBOOK_APP_ID
     if(appId){
-      const redirect = encodeURIComponent(window.location.origin + '/login')
+      const redirect = oauthRedirect()
       const url = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirect}&scope=email&response_type=token&state=facebook_${Date.now()}`
       window.location.href = url
       return null
