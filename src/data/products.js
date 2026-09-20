@@ -123,10 +123,11 @@ export const initialProducts = [
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd5HuED_JGEoLag7MWcOoH5IXb-RT85bqifrp5p71oBQ&s=10',
     badge: 'PROMO', description: 'Diamants Free Fire. Livraison par ID ou code.',
     variants: [
-      { id: 'ff-100', label: '100 Diamonds', price: 1.29 },
-      { id: 'ff-520', label: '520 Diamonds', price: 5.99 },
-      { id: 'ff-1060', label: '1060 Diamonds', price: 11.99 },
-      { id: 'ff-2180', label: '2180 Diamonds', price: 22.99 },
+      { id: 'ff-100', label: '100 Diamonds', price: 5.00 },
+      { id: 'ff-210', label: '210 Diamonds', price: 10.00 },
+      { id: 'ff-520', label: '520 Diamonds', price: 21.00 },
+      { id: 'ff-1080', label: '1080 Diamonds', price: 42.00 },
+      { id: 'ff-2200', label: '2200 Diamonds', price: 80.00 },
     ],
     stock: 150, rating: 4.6
   },
