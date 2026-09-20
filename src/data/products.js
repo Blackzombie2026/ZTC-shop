@@ -34,6 +34,7 @@ export const initialProducts = [
       { id: 'lol-1380', label: '1380 RP', price: 10.00 },
       { id: 'lol-2800', label: '2800 RP', price: 20.00 },
       { id: 'lol-5800', label: '5800 RP', price: 40.00 },
+      { id: 'lol-eu50', label: 'Carte €50 EU', price: 185.00 },
     ],
     stock: 89, rating: 4.8
   },
