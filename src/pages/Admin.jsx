@@ -325,7 +325,7 @@ export default function Admin(){
               <option value="valorant">Valorant</option><option value="lol">LoL</option><option value="fc26">FC26</option><option value="fc27">FC27</option><option value="pubg">PUBG</option><option value="warzone">Warzone</option><option value="r6">Rainbow Six</option><option value="roblox">Roblox</option><option value="freefire">Free Fire</option><option value="other">Autres</option>
             </select>
             <select value={trnForm.status} onChange={e=>setTrnForm({...trnForm,status:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10">
-              <option value="soon">{t('tr_soon')}</option><option value="open">{t('tr_open')}</option><option value="done">{t('tr_done')}</option>
+              <option value="soon">{t('tr_soon')}</option><option value="open">{t('tr_open')}</option><option value="done">{t('tr_done')}</option><option value="pending">{t('tr_pending')}</option>
             </select>
             <input type="datetime-local" value={trnForm.date} onChange={e=>setTrnForm({...trnForm,date:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
             <input placeholder={t('tr_prize')} value={trnForm.prize} onChange={e=>setTrnForm({...trnForm,prize:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
@@ -338,15 +338,15 @@ export default function Admin(){
 
           <div className="mt-4 space-y-3">
             {tournaments.map(tr=>(
-              <div key={tr.id} className="p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div key={tr.id} className={`p-4 rounded-2xl border ${tr.status==='pending'?'bg-fuchsia-500/5 border-fuchsia-500/30':'bg-white/5 border-white/10'}`}>
                 <div className="flex flex-wrap items-center gap-3">
-                  <img src={tr.image} alt={tr.title} className="w-16 h-16 rounded-xl object-cover"/>
+                  <img src={tr.image || imgForGame(tr.game)} alt={tr.title} className="w-16 h-16 rounded-xl object-cover"/>
                   <div className="flex-1 min-w-[200px]">
-                    <div className="font-bold">{tr.title}</div>
+                    <div className="font-bold">{tr.title} {tr.status==='pending' && <span className="text-[10px] px-2 py-0.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30 ml-1">{t('tr_pending')}</span>}</div>
                     <div className="text-xs text-white/50">{tr.game} • {tr.date?new Date(tr.date).toLocaleString('fr-FR'):'—'} • 🏆 {tr.prize} • {regsFor(tr.id).length}/{tr.max_teams} • {tr.status}</div>
                   </div>
                   <select value={tr.status} onChange={e=>saveTournament({...tr, status:e.target.value})} className="px-2 py-2 rounded-xl bg-black/30 border border-white/10 text-xs">
-                    <option value="soon">{t('tr_soon')}</option><option value="open">{t('tr_open')}</option><option value="done">{t('tr_done')}</option>
+                    <option value="soon">{t('tr_soon')}</option><option value="open">{t('tr_open')}</option><option value="done">{t('tr_done')}</option><option value="pending">{t('tr_pending')}</option>
                   </select>
                   <button onClick={()=>handleDeleteTrn(tr.id)} className="p-2 rounded-xl bg-red-500/20 text-red-400"><Trash2 size={14}/></button>
                 </div>

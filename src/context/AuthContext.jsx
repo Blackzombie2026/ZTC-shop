@@ -150,7 +150,7 @@ export function AuthProvider({ children }){
   useEffect(()=> localStorage.setItem('ztc_tournaments', JSON.stringify(tournaments.filter(x=>!x.cloud))), [tournaments])
   useEffect(()=> localStorage.setItem('ztc_regs', JSON.stringify(regs.filter(x=>!x.cloud))), [regs])
 
-  const mapCloudTournament = (r)=> ({ id: r.id, game: r.game, title: r.title, date: r.date, prize: r.prize||'', max_teams: r.max_teams??16, entry_fee: Number(r.entry_fee||0), status: r.status||'soon', rules: r.rules||'', image: r.image||'', cloud: true })
+  const mapCloudTournament = (r)=> ({ id: r.id, game: r.game, title: r.title, date: r.date, prize: r.prize||'', max_teams: r.max_teams??16, entry_fee: Number(r.entry_fee||0), status: r.status||'soon', rules: r.rules||'', image: r.image||'', createdBy: r.created_by||null, cloud: true })
   const mapCloudReg = (r)=> ({ id: r.id, tournament_id: r.tournament_id, team: r.team, captain: r.captain||'', phone: r.phone||'', game_id: r.game_id||'', userId: r.user_id, date: r.created_at, cloud: true })
 
   const refreshTournaments = useCallback(async ()=>{
@@ -448,7 +448,10 @@ export function AuthProvider({ children }){
 
   // ---- Tournois : CRUD admin + inscriptions ----
   const saveTournament = async (t)=>{
-    const row = { ...t, id: t.id || ('trn-'+Date.now().toString(36)) }
+    // Un non-admin ne peut que PROPOSER (statut pending, validé par l'admin)
+    const isNew = !t.id
+    const forcedStatus = user?.isAdmin ? (t.status||'soon') : 'pending'
+    const row = { ...t, id: t.id || ('trn-'+Date.now().toString(36)), status: forcedStatus, createdBy: t.createdBy || user?.id || null }
     setTournamentsState(prev=> {
       const i = prev.findIndex(x=> x.id===row.id)
       if(i>=0){ const c=[...prev]; c[i]=row; return c }
@@ -456,11 +459,13 @@ export function AuthProvider({ children }){
     })
     if(cloud){
       try{
-        const { error } = await supabase.from('tournaments').upsert({
+        const payload = {
           id: row.id, game: row.game, title: row.title, date: row.date || null,
           prize: row.prize||'', max_teams: Number(row.max_teams)||16, entry_fee: Number(row.entry_fee)||0,
-          status: row.status||'soon', rules: row.rules||'', image: row.image||'',
-        }, { onConflict: 'id' })
+          status: row.status, rules: row.rules||'', image: row.image||'',
+        }
+        if(isNew) payload.created_by = sbUserId.current || (user?.cloud ? user?.id : null)
+        const { error } = await supabase.from('tournaments').upsert(payload, { onConflict: 'id' })
         if(error) throw error
         refreshTournaments()
       }catch(e){ console.warn('cloud save tournament:', e.message); throw e }
