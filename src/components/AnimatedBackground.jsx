@@ -6,6 +6,8 @@ import { useEffect, useRef } from 'react'
 // - image fixe si prefers-reduced-motion
 export default function AnimatedBackground(){
   const ref = useRef(null)
+  const glowRef = useRef(null)
+  const mouse = useRef({ x: -9999, y: -9999 })
 
   useEffect(()=>{
     const canvas = ref.current
@@ -23,6 +25,14 @@ export default function AnimatedBackground(){
     }
     resize()
     window.addEventListener('resize', resize)
+    // Souris : halo lumineux + particules qui s'écartent (desktop uniquement)
+    const finePointer = window.matchMedia('(pointer:fine)').matches
+    const onMove = (e)=>{
+      mouse.current.x = e.clientX
+      mouse.current.y = e.clientY
+      if(glowRef.current) glowRef.current.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)'
+    }
+    if(finePointer) window.addEventListener('mousemove', onMove)
 
     const COLORS = ['124,58,237', '217,70,239', '16,185,129', '96,165,250']
     const N = w < 640 ? 38 : 72
@@ -63,9 +73,18 @@ export default function AnimatedBackground(){
           }
         }
       }
-      // particules qui montent + scintillent
+      // particules qui montent + scintillent (+ repulsion douce autour de la souris)
+      const mx = mouse.current.x, my = mouse.current.y
       for(const p of parts){
         p.tw += p.ts
+        const dxm = p.x - mx, dym = p.y - my
+        const dm2 = dxm * dxm + dym * dym
+        if(dm2 < 22500){
+          const dm = Math.sqrt(dm2) || 1
+          const f = (1 - dm / 150) * 1.8
+          p.x += (dxm / dm) * f
+          p.y += (dym / dm) * f
+        }
         const alpha = 0.35 + Math.abs(Math.sin(p.tw)) * 0.45
         ctx.fillStyle = 'rgba(' + p.c + ',' + alpha.toFixed(3) + ')'
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill()
@@ -78,8 +97,14 @@ export default function AnimatedBackground(){
     }
     frame()
 
-    return ()=>{ cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+    return ()=>{ cancelAnimationFrame(raf); window.removeEventListener('resize', resize); if(finePointer) window.removeEventListener('mousemove', onMove) }
   }, [])
 
-  return <canvas ref={ref} aria-hidden className="fixed inset-0 z-0 pointer-events-none" />
+  return (
+    <>
+      <canvas ref={ref} aria-hidden className="fixed inset-0 z-0 pointer-events-none" />
+      <div ref={glowRef} aria-hidden className="fixed top-0 left-0 z-0 pointer-events-none w-72 h-72 -ml-36 -mt-36 rounded-full"
+        style={{ background: 'radial-gradient(circle, rgba(124,58,237,0.20), transparent 70%)', transform: 'translate(-500px,-500px)' }} />
+    </>
+  )
 }
