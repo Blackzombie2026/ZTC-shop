@@ -150,7 +150,7 @@ export function AuthProvider({ children }){
   useEffect(()=> localStorage.setItem('ztc_tournaments', JSON.stringify(tournaments.filter(x=>!x.cloud))), [tournaments])
   useEffect(()=> localStorage.setItem('ztc_regs', JSON.stringify(regs.filter(x=>!x.cloud))), [regs])
 
-  const mapCloudTournament = (r)=> ({ id: r.id, game: r.game, title: r.title, date: r.date, prize: r.prize||'', max_teams: r.max_teams??16, entry_fee: Number(r.entry_fee||0), status: r.status||'soon', rules: r.rules||'', image: r.image||'', createdBy: r.created_by||null, cloud: true })
+  const mapCloudTournament = (r)=> ({ id: r.id, game: r.game, title: r.title, date: r.date, prize: r.prize||'', max_teams: r.max_teams??16, entry_fee: Number(r.entry_fee||0), status: r.status||'soon', rules: r.rules||'', image: r.image||'', createdBy: r.created_by||null, bracket: Array.isArray(r.bracket) ? r.bracket : [], cloud: true })
   const mapCloudReg = (r)=> ({ id: r.id, tournament_id: r.tournament_id, team: r.team, captain: r.captain||'', phone: r.phone||'', game_id: r.game_id||'', userId: r.user_id, date: r.created_at, cloud: true })
 
   const refreshTournaments = useCallback(async ()=>{
@@ -463,6 +463,7 @@ export function AuthProvider({ children }){
           id: row.id, game: row.game, title: row.title, date: row.date || null,
           prize: row.prize||'', max_teams: Number(row.max_teams)||16, entry_fee: Number(row.entry_fee)||0,
           status: row.status, rules: row.rules||'', image: row.image||'',
+          bracket: Array.isArray(row.bracket) ? row.bracket : [],
         }
         if(isNew) payload.created_by = sbUserId.current || (user?.cloud ? user?.id : null)
         const { error } = await supabase.from('tournaments').upsert(payload, { onConflict: 'id' })
@@ -512,6 +513,26 @@ export function AuthProvider({ children }){
       const { error } = await supabase.from('tournament_regs').delete().eq('id', id)
       if(error){ refreshRegs(); throw new Error('del_need_policy') }
     }
+  }
+  // Ajout manuel d'équipe par l'admin (rejoint les inscrits dans le bracket)
+  const addTeamManual = async (tournamentId, team)=>{
+    const name = (team||'').trim()
+    if(!name) throw new Error('team')
+    const reg = {
+      id: genId('reg'), tournament_id: tournamentId, team: name,
+      captain: '', phone: '', game_id: '', userId: user?.id || null,
+      date: new Date().toISOString(), cloud: !!(cloud && user?.cloud),
+    }
+    if(reg.cloud){
+      const { data, error } = await supabase.from('tournament_regs').insert({
+        tournament_id: tournamentId, team: name, captain: '', phone: '', game_id: '',
+        user_id: sbUserId.current || user.id,
+      }).select()
+      if(error) throw error
+      if(data?.[0]) { const m = mapCloudReg(data[0]); setRegs(prev=> [m, ...prev]); refreshRegs(); return m }
+    }
+    setRegs(prev=> [reg, ...prev])
+    return reg
   }
   const regsFor = (tid)=> regs.filter(x=> x.tournament_id===tid)
   const myRegs = (u=user)=>{
@@ -626,6 +647,6 @@ export function AuthProvider({ children }){
   // L'admin a-t-il la vue globale cloud ? (false tant que le SQL is_admin n'est pas exécuté)
   const needsDbGrant = cloud && !!user?.isAdmin && cloudProfiles === null
 
-  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, messages, sendMessage, markThreadRead, myThread, adminThreads, tournaments, regs, saveTournament, deleteTournament, registerTournament, deleteReg, regsFor, myRegs, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, messages, sendMessage, markThreadRead, myThread, adminThreads, tournaments, regs, saveTournament, deleteTournament, registerTournament, deleteReg, regsFor, myRegs, addTeamManual, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
 }
 export const useAuth = ()=> useContext(AuthCtx)

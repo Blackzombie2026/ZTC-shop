@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Trophy, Calendar, Users, Gift, Ticket, Check } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
+import BracketView from '../components/BracketView'
+import { computeStandings } from '../lib/bracket'
 
 export default function TournamentDetail(){
   const { id } = useParams()
@@ -62,6 +64,27 @@ export default function TournamentDetail(){
             {regs.map(r=> <span key={r.id} className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10">🛡️ {r.team}</span>)}
           </div>
         </div>
+
+      <div className="mt-6 lg:col-span-2">
+        <h2 className="font-black mb-3">🏆 {t('bracket')}</h2>
+        <div className="rounded-2xl bg-white/5 border border-white/10 p-4 overflow-x-auto">
+          <BracketView bracket={tr.bracket || []} />
+        </div>
+        {computeStandings(tr.bracket || []).length>0 && (
+          <div className="mt-4">
+            <h2 className="font-black mb-2">📊 {t('standings')}</h2>
+            <div className="rounded-xl overflow-hidden border border-white/10 text-sm max-w-md">
+              <div className="grid grid-cols-[1fr_50px_50px_50px] bg-white/5 px-3 py-2 text-xs text-white/50 font-bold"><span>{t('tr_participants')}</span><span className="text-center">{t('wins')}</span><span className="text-center">{t('losses')}</span><span className="text-center">{t('pts')}</span></div>
+              {computeStandings(tr.bracket || []).map((s,i)=>(
+                <div key={s.team} className="grid grid-cols-[1fr_50px_50px_50px] px-3 py-2 border-t border-white/5">
+                  <span className="font-bold truncate">{i===0?'🥇 ':i===1?'🥈 ':i===2?'🥉 ':''}{s.team}</span>
+                  <span className="text-center">{s.w}</span><span className="text-center">{s.l}</span><span className="text-center font-black text-amber-300">{s.pts}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
         <div className="rounded-2xl bg-white/5 border border-white/10 p-5 h-fit">
           {done ? (
             <div className="text-center py-6">

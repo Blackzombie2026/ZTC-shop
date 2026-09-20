@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 import { initialProducts, categories } from '../data/products'
 import { Plus, Trash2, Phone, Check, Truck, X, Users, Search, RefreshCw, MessageCircle, Send, Trophy } from 'lucide-react'
+import TournamentManager from '../components/TournamentManager'
 
 export default function Admin(){
   const { user, orders, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll, adminThreads, sendMessage, markThreadRead, messages, tournaments, saveTournament, deleteTournament, regsFor, deleteReg } = useAuth()
@@ -350,18 +351,7 @@ export default function Admin(){
                   </select>
                   <button onClick={()=>handleDeleteTrn(tr.id)} className="p-2 rounded-xl bg-red-500/20 text-red-400"><Trash2 size={14}/></button>
                 </div>
-                {regsFor(tr.id).length>0 && (
-                  <div className="mt-2 text-xs space-y-1 bg-black/30 rounded-xl p-2.5 border border-white/5">
-                    {regsFor(tr.id).map(r=>(
-                      <div key={r.id} className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
-                        <span className="font-bold">🛡️ {r.team}</span>
-                        <span className="text-white/50">{r.captain} {r.game_id?`(${r.game_id})`:''}</span>
-                        {r.phone && <a href={`tel:${r.phone}`} className="text-emerald-300 font-bold">📞 {r.phone}</a>}
-                        <button onClick={async()=>{ if(window.confirm(t('del_order_q'))){ try{ await deleteReg(r.id) }catch{ alert(t('del_need_policy')) } } }} className="ml-auto text-red-400 hover:text-red-300"><X size={13}/></button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <TournamentManager tr={tr} />
               </div>
             ))}
           </div>

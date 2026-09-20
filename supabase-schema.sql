@@ -231,6 +231,8 @@ alter publication supabase_realtime add table public.tournament_regs;
 
 -- propositions de tournois par les clients (validées par l'admin)
 alter table public.tournaments add column if not exists created_by uuid references auth.users(id) on delete set null;
+-- bracket + scores (JSON, géré par l'admin)
+alter table public.tournaments add column if not exists bracket jsonb default '[]';
 drop policy if exists "tournaments_insert_pending" on public.tournaments;
 create policy "tournaments_insert_pending" on public.tournaments
   for insert with check (status = 'pending');
