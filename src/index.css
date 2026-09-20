@@ -42,7 +42,8 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #
 
 @media (prefers-reduced-motion: reduce) {
   .anim-glow::before, .animate-support-ring, .animate-support-bounce,
-  .marquee-track, .blob, .reveal, .badge-pop, .btn-shine::after { animation: none !important; }
+  .marquee-track, .blob, .reveal, .badge-pop, .btn-shine::after,
+  .slide-zoom-a, .slide-zoom-b { animation: none !important; }
 }
 
 /* Apparition en fondu */
@@ -83,3 +84,16 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #
 
 /* Halo renforcé au survol */
 .anim-glow:hover::before { opacity: .5; }
+
+/* Diaporama fond vidéo : fondu + zoom lent */
+.slide-img { transition: opacity 1.6s ease; will-change: opacity, transform; }
+@keyframes kenburns-a {
+  from { transform: scale(1) translate(0,0); }
+  to { transform: scale(1.12) translate(-1.5%,1%); }
+}
+@keyframes kenburns-b {
+  from { transform: scale(1.12) translate(1.5%,-1%); }
+  to { transform: scale(1) translate(0,0); }
+}
+.slide-zoom-a { animation: kenburns-a 7s ease-out forwards; }
+.slide-zoom-b { animation: kenburns-b 7s ease-out forwards; }

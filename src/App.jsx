@@ -14,6 +14,7 @@ import Login from './pages/Login'
 import Admin from './pages/Admin'
 import Support from './pages/Support'
 import AnimatedBackground from './components/AnimatedBackground'
+import VideoBackground from './components/VideoBackground'
 
 const basename = (()=>{ const b = import.meta.env.BASE_URL || '/'; return b === '/' ? '/' : b.replace(/\/$/, '') })()
 
@@ -23,6 +24,7 @@ export default function App(){
     <AuthProvider>
       <CartProvider>
         <BrowserRouter basename={basename}>
+          <VideoBackground/>
           <AnimatedBackground/>
           <div className="relative z-[1] min-h-screen">
             <Navbar/>
