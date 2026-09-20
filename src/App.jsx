@@ -13,6 +13,9 @@ import OrderDetail from './pages/OrderDetail'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
 import Support from './pages/Support'
+import About from './pages/About'
+import Tournaments from './pages/Tournaments'
+import TournamentDetail from './pages/TournamentDetail'
 import AnimatedBackground from './components/AnimatedBackground'
 import VideoBackground from './components/VideoBackground'
 
@@ -39,6 +42,9 @@ export default function App(){
               <Route path="/login" element={<Login/>}/>
               <Route path="/admin" element={<Admin/>}/>
               <Route path="/support" element={<Support/>}/>
+              <Route path="/about" element={<About/>}/>
+              <Route path="/tournaments" element={<Tournaments/>}/>
+              <Route path="/tournaments/:id" element={<TournamentDetail/>}/>
             </Routes>
             <footer className="border-t border-white/10 mt-8 py-6 text-center text-xs text-white/40">
               <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="ZTC Shop" className="w-12 h-12 mx-auto mb-2 rounded-2xl object-cover bg-white p-1"/>

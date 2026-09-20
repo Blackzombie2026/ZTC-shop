@@ -3,10 +3,23 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 import { initialProducts, categories } from '../data/products'
-import { Plus, Trash2, Phone, Check, Truck, X, Users, Search, RefreshCw, MessageCircle, Send } from 'lucide-react'
+import { Plus, Trash2, Phone, Check, Truck, X, Users, Search, RefreshCw, MessageCircle, Send, Trophy } from 'lucide-react'
 
 export default function Admin(){
-  const { user, orders, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll, adminThreads, sendMessage, markThreadRead, messages } = useAuth()
+  const { user, orders, updateOrderStatus, deleteOrder, deleteAccount, products, setProducts, saveProducts, allAccounts, cloud, needsDbGrant, refreshAll, adminThreads, sendMessage, markThreadRead, messages, tournaments, saveTournament, deleteTournament, regsFor, deleteReg } = useAuth()
+  const [trnForm, setTrnForm] = useState({ title:'', game:'valorant', date:'', prize:'', max_teams:16, entry_fee:0, status:'soon', rules:'', image:'' })
+  const imgForGame = (g)=> initialProducts.find(p=>p.category===g)?.image || ''
+  const handleCreateTrn = async ()=>{
+    if(!trnForm.title) return alert('Titre requis')
+    try{
+      await saveTournament({ ...trnForm, max_teams: Number(trnForm.max_teams)||16, entry_fee: Number(trnForm.entry_fee)||0, image: trnForm.image || imgForGame(trnForm.game) })
+      setTrnForm({ title:'', game:'valorant', date:'', prize:'', max_teams:16, entry_fee:0, status:'soon', rules:'', image:'' })
+    }catch{ alert('Écriture cloud refusée — vérifie ton droit admin (SQL is_admin)') }
+  }
+  const handleDeleteTrn = async (id)=>{
+    if(!window.confirm(t('tr_delete_q'))) return
+    try{ await deleteTournament(id) }catch{ alert(t('del_need_policy')) }
+  }
   const threads = adminThreads()
   const totalUnread = threads.reduce((s,th)=> s+th.unread, 0)
   const [activeThread, setActiveThread] = useState(null)
@@ -120,6 +133,7 @@ export default function Admin(){
         <button onClick={()=>setTab('products')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='products'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}>{t('products_stock')}</button>
         <button onClick={()=>setTab('users')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='users'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><Users size={15}/> Comptes ({accounts.length})</button>
         <button onClick={()=>setTab('messages')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='messages'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><MessageCircle size={15}/> {t('messages_tab')} {totalUnread>0 && <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-xs animate-pulse">{totalUnread}</span>}</button>
+        <button onClick={()=>setTab('tournaments')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='tournaments'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><Trophy size={15}/> {t('tournaments')} ({tournaments.length})</button>
         <button onClick={initIfNeeded} className="ml-auto text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10">Réinitialiser DB démo</button>
       </div>
 
@@ -299,6 +313,57 @@ export default function Admin(){
                 </form>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {tab==='tournaments' && (
+        <div className="mt-6">
+          <div className="rounded-2xl bg-white/5 border border-white/10 p-4 grid md:grid-cols-4 gap-3">
+            <input placeholder={t('tr_title_ph')} value={trnForm.title} onChange={e=>setTrnForm({...trnForm,title:e.target.value})} className="md:col-span-2 px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
+            <select value={trnForm.game} onChange={e=>setTrnForm({...trnForm,game:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10">
+              <option value="valorant">Valorant</option><option value="lol">LoL</option><option value="fc26">FC26</option><option value="fc27">FC27</option><option value="pubg">PUBG</option><option value="warzone">Warzone</option><option value="r6">Rainbow Six</option><option value="roblox">Roblox</option><option value="freefire">Free Fire</option><option value="other">Autres</option>
+            </select>
+            <select value={trnForm.status} onChange={e=>setTrnForm({...trnForm,status:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10">
+              <option value="soon">{t('tr_soon')}</option><option value="open">{t('tr_open')}</option><option value="done">{t('tr_done')}</option>
+            </select>
+            <input type="datetime-local" value={trnForm.date} onChange={e=>setTrnForm({...trnForm,date:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
+            <input placeholder={t('tr_prize')} value={trnForm.prize} onChange={e=>setTrnForm({...trnForm,prize:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
+            <input placeholder={t('tr_max')} type="number" value={trnForm.max_teams} onChange={e=>setTrnForm({...trnForm,max_teams:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
+            <input placeholder={t('tr_fee')} type="number" value={trnForm.entry_fee} onChange={e=>setTrnForm({...trnForm,entry_fee:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
+            <input placeholder={t('tr_image_ph')} value={trnForm.image} onChange={e=>setTrnForm({...trnForm,image:e.target.value})} className="md:col-span-3 px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
+            <input placeholder={t('tr_rules')} value={trnForm.rules} onChange={e=>setTrnForm({...trnForm,rules:e.target.value})} className="md:col-span-4 px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
+            <button onClick={handleCreateTrn} className="md:col-span-4 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black flex items-center justify-center gap-2"><Plus size={16}/> {t('tr_create')}</button>
+          </div>
+
+          <div className="mt-4 space-y-3">
+            {tournaments.map(tr=>(
+              <div key={tr.id} className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex flex-wrap items-center gap-3">
+                  <img src={tr.image} alt={tr.title} className="w-16 h-16 rounded-xl object-cover"/>
+                  <div className="flex-1 min-w-[200px]">
+                    <div className="font-bold">{tr.title}</div>
+                    <div className="text-xs text-white/50">{tr.game} • {tr.date?new Date(tr.date).toLocaleString('fr-FR'):'—'} • 🏆 {tr.prize} • {regsFor(tr.id).length}/{tr.max_teams} • {tr.status}</div>
+                  </div>
+                  <select value={tr.status} onChange={e=>saveTournament({...tr, status:e.target.value})} className="px-2 py-2 rounded-xl bg-black/30 border border-white/10 text-xs">
+                    <option value="soon">{t('tr_soon')}</option><option value="open">{t('tr_open')}</option><option value="done">{t('tr_done')}</option>
+                  </select>
+                  <button onClick={()=>handleDeleteTrn(tr.id)} className="p-2 rounded-xl bg-red-500/20 text-red-400"><Trash2 size={14}/></button>
+                </div>
+                {regsFor(tr.id).length>0 && (
+                  <div className="mt-2 text-xs space-y-1 bg-black/30 rounded-xl p-2.5 border border-white/5">
+                    {regsFor(tr.id).map(r=>(
+                      <div key={r.id} className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                        <span className="font-bold">🛡️ {r.team}</span>
+                        <span className="text-white/50">{r.captain} {r.game_id?`(${r.game_id})`:''}</span>
+                        {r.phone && <a href={`tel:${r.phone}`} className="text-emerald-300 font-bold">📞 {r.phone}</a>}
+                        <button onClick={async()=>{ if(window.confirm(t('del_order_q'))){ try{ await deleteReg(r.id) }catch{ alert(t('del_need_policy')) } } }} className="ml-auto text-red-400 hover:text-red-300"><X size={13}/></button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       )}

@@ -1,0 +1,95 @@
+import { useState } from 'react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Trophy, Calendar, Users, Gift, Ticket, Check } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
+import { useLang } from '../context/LanguageContext'
+
+export default function TournamentDetail(){
+  const { id } = useParams()
+  const nav = useNavigate()
+  const { tournaments, regsFor, myRegs, registerTournament, user } = useAuth()
+  const { t } = useLang()
+  const tr = tournaments.find(x=> x.id===id)
+  const [form, setForm] = useState({ team:'', captain:'', phone:'', gameId:'' })
+  const [error, setError] = useState('')
+  const [done, setDone] = useState(false)
+
+  if(!tr) return <div className="max-w-[800px] mx-auto px-4 py-16 text-center">{t('no_result')} <Link to="/tournaments" className="text-amber-300">← {t('tournaments')}</Link></div>
+
+  const regs = regsFor(tr.id)
+  const full = regs.length >= (tr.max_teams||16)
+  const mine = user ? regs.find(r=> r.userId===user.id) : myRegs().find(r=> r.tournament_id===tr.id)
+  const canRegister = tr.status==='open' && !full && !mine
+
+  const submit = async (e)=>{
+    e.preventDefault(); setError('')
+    if(!user) return nav('/login', { state: { from: `/tournaments/${tr.id}` } })
+    try{
+      await registerTournament({ tournamentId: tr.id, team: form.team, captain: form.captain, phone: form.phone, gameId: form.gameId })
+      setDone(true)
+    }catch(err){
+      setError(err.message==='phone' ? 'Téléphone invalide (8-15 chiffres)' : err.message==='team' ? t('team_ph') : err.message)
+    }
+  }
+
+  return (
+    <div className="max-w-[1000px] mx-auto px-4 py-8">
+      <Link to="/tournaments" className="text-sm text-white/60 hover:text-white">← {t('tournaments')}</Link>
+      <div className="mt-4 rounded-3xl overflow-hidden bg-white/5 border border-white/10">
+        <div className="relative h-56 md:h-72">
+          <img src={tr.image} alt={tr.title} className="w-full h-full object-cover"/>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"/>
+          <div className="absolute bottom-4 left-4 right-4">
+            <div className="text-xs font-black text-amber-400 uppercase tracking-widest">{tr.game} • {tr.status==='open'?t('tr_open'):tr.status==='done'?t('tr_done'):t('tr_soon')}</div>
+            <h1 className="text-2xl md:text-4xl font-black">{tr.title}</h1>
+          </div>
+        </div>
+        <div className="p-5 grid sm:grid-cols-4 gap-3 text-sm">
+          <div className="rounded-xl bg-black/30 border border-white/10 p-3"><div className="text-white/50 text-xs flex items-center gap-1"><Calendar size={12}/> Date</div><div className="font-bold mt-0.5">{tr.date ? new Date(tr.date).toLocaleString() : '—'}</div></div>
+          <div className="rounded-xl bg-black/30 border border-white/10 p-3"><div className="text-white/50 text-xs flex items-center gap-1"><Gift size={12}/> {t('tr_prize')}</div><div className="font-bold mt-0.5 text-amber-300">{tr.prize||'—'}</div></div>
+          <div className="rounded-xl bg-black/30 border border-white/10 p-3"><div className="text-white/50 text-xs flex items-center gap-1"><Users size={12}/> {t('tr_slots')}</div><div className="font-bold mt-0.5">{regs.length}/{tr.max_teams||16}</div></div>
+          <div className="rounded-xl bg-black/30 border border-white/10 p-3"><div className="text-white/50 text-xs flex items-center gap-1"><Ticket size={12}/> {t('tr_entry')}</div><div className="font-bold mt-0.5">{Number(tr.entry_fee)>0 ? `${tr.entry_fee} TND` : t('tr_free')}</div></div>
+        </div>
+      </div>
+
+      <div className="mt-6 grid lg:grid-cols-2 gap-6">
+        <div>
+          <h2 className="font-black mb-2">{t('tr_rules')}</h2>
+          <p className="text-sm text-white/70 leading-relaxed whitespace-pre-line">{tr.rules||'—'}</p>
+          <h2 className="font-black mt-6 mb-2">{t('tr_participants')} ({regs.length})</h2>
+          <div className="flex flex-wrap gap-2">
+            {regs.length===0 && <span className="text-sm text-white/40">—</span>}
+            {regs.map(r=> <span key={r.id} className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10">🛡️ {r.team}</span>)}
+          </div>
+        </div>
+        <div className="rounded-2xl bg-white/5 border border-white/10 p-5 h-fit">
+          {done ? (
+            <div className="text-center py-6">
+              <Check size={32} className="mx-auto text-emerald-400"/>
+              <div className="font-black mt-2">{t('tr_register_ok')}</div>
+            </div>
+          ) : mine ? (
+            <div className="text-center py-6">
+              <Check size={32} className="mx-auto text-emerald-400"/>
+              <div className="font-black mt-2">{t('tr_myteam')}</div>
+              <div className="text-sm text-white/60">{mine.team}</div>
+            </div>
+          ) : !canRegister ? (
+            <div className="text-center py-6 text-white/50 text-sm">{full ? t('tr_full') : tr.status!=='open' ? (tr.status==='done'?t('tr_done'):t('tr_soon')) : t('tr_login_needed')}</div>
+          ) : (
+            <form onSubmit={submit} className="space-y-3">
+              <h3 className="font-black">{t('tr_register')}</h3>
+              <input placeholder={t('team_ph')} value={form.team} onChange={e=>setForm({...form,team:e.target.value})} className="w-full px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-amber-500"/>
+              <input placeholder={t('captain_ph')} value={form.captain} onChange={e=>setForm({...form,captain:e.target.value})} className="w-full px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-amber-500"/>
+              <input placeholder={t('phone_ph')} value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} className="w-full px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-amber-500"/>
+              <input placeholder={t('gameid_ph')} value={form.gameId} onChange={e=>setForm({...form,gameId:e.target.value})} className="w-full px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-amber-500"/>
+              {error && <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-2.5">{error}</div>}
+              <button className="btn-shine w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black">{t('tr_register')}</button>
+              {!user && <p className="text-[11px] text-white/40 text-center">{t('tr_login_needed')}</p>}
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}

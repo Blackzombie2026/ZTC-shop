@@ -136,6 +136,54 @@ export function AuthProvider({ children }){
   })
   useEffect(()=> localStorage.setItem('ztc_messages', JSON.stringify(messages.filter(m=>!m.cloud))), [messages])
 
+  // ---- Tournois ----
+  const seedTournaments = [
+    { id:'val-cup-1', game:'valorant', title:'Valorant Clash Cup #1', date: new Date(Date.now()+9*864e5).toISOString(), prize:'1000 TND + 5000 VP', max_teams:16, entry_fee:10, status:'open', rules:'5v5 • Maps : Ascent, Bind, Haven • Demi-finales BO3, finale BO5. Check-in Discord 30 min avant.', image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7raq6TZniTT-h3tAcCp4gTt1qayp_6_4m5VYdEKZf2w&s=10' },
+    { id:'lol-clash-1', game:'lol', title:'LoL Tunisian Showdown', date: new Date(Date.now()+23*864e5).toISOString(), prize:'2000 TND cash prize', max_teams:32, entry_fee:0, status:'soon', rules:'5v5 Summoners Rift • Tournoi à élimination directe.', image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNztnpwTexsNw2a58jD4GD3VukhzYqPHAouBNgep7nzA&s=10' },
+  ]
+  const [tournaments, setTournamentsState] = useState(()=>{
+    try{ const s = JSON.parse(localStorage.getItem('ztc_tournaments')||'null'); return Array.isArray(s) && s.length ? s : seedTournaments }catch{ return seedTournaments }
+  })
+  const [regs, setRegs] = useState(()=>{
+    try{ return JSON.parse(localStorage.getItem('ztc_regs')||'[]')}catch{return []}
+  })
+  useEffect(()=> localStorage.setItem('ztc_tournaments', JSON.stringify(tournaments.filter(x=>!x.cloud))), [tournaments])
+  useEffect(()=> localStorage.setItem('ztc_regs', JSON.stringify(regs.filter(x=>!x.cloud))), [regs])
+
+  const mapCloudTournament = (r)=> ({ id: r.id, game: r.game, title: r.title, date: r.date, prize: r.prize||'', max_teams: r.max_teams??16, entry_fee: Number(r.entry_fee||0), status: r.status||'soon', rules: r.rules||'', image: r.image||'', cloud: true })
+  const mapCloudReg = (r)=> ({ id: r.id, tournament_id: r.tournament_id, team: r.team, captain: r.captain||'', phone: r.phone||'', game_id: r.game_id||'', userId: r.user_id, date: r.created_at, cloud: true })
+
+  const refreshTournaments = useCallback(async ()=>{
+    if(!cloud) return
+    try{
+      const { data, error } = await supabase.from('tournaments').select('*').order('date', { ascending: true })
+      if(error) throw error
+      if(data){
+        const mapped = data.map(mapCloudTournament)
+        setTournamentsState(prev=>{
+          const map = new Map()
+          prev.forEach(x=> map.set(x.id, x))
+          mapped.forEach(x=> map.set(x.id, x))
+          return [...map.values()]
+        })
+      }
+    }catch(e){ console.warn('cloud tournaments:', e.message) }
+  }, [])
+  const refreshRegs = useCallback(async ()=>{
+    if(!cloud) return
+    try{
+      const { data, error } = await supabase.from('tournament_regs').select('*').order('created_at', { ascending: false }).limit(500)
+      if(error) throw error
+      const mapped = (data||[]).map(mapCloudReg)
+      setRegs(prev=>{
+        const map = new Map()
+        prev.forEach(x=> map.set(x.id, x))
+        mapped.forEach(x=> map.set(x.id, x))
+        return [...map.values()]
+      })
+    }catch(e){ console.warn('cloud regs:', e.message) }
+  }, [])
+
   const refreshCloudMessages = useCallback(async ()=>{
     if(!cloud) return
     try{
@@ -152,8 +200,8 @@ export function AuthProvider({ children }){
   }, [])
 
   const refreshAll = useCallback(()=>{
-    refreshCloudOrders(); refreshCloudProducts(); refreshCloudProfiles(); refreshCloudMessages()
-  }, [refreshCloudOrders, refreshCloudProducts, refreshCloudProfiles, refreshCloudMessages])
+    refreshCloudOrders(); refreshCloudProducts(); refreshCloudProfiles(); refreshCloudMessages(); refreshTournaments(); refreshRegs()
+  }, [refreshCloudOrders, refreshCloudProducts, refreshCloudProfiles, refreshCloudMessages, refreshTournaments, refreshRegs])
 
   // Session cloud au démarrage + realtime + refresh au focus
   useEffect(()=>{
@@ -173,6 +221,8 @@ export function AuthProvider({ children }){
       .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, ()=> refreshCloudProfiles())
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, ()=> refreshCloudMessages())
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages' }, ()=> refreshCloudMessages())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tournaments' }, ()=> refreshTournaments())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tournament_regs' }, ()=> refreshRegs())
       .subscribe()
     const onFocus = ()=> refreshAll()
     window.addEventListener('focus', onFocus)
@@ -396,6 +446,74 @@ export function AuthProvider({ children }){
     }
   }
 
+  // ---- Tournois : CRUD admin + inscriptions ----
+  const saveTournament = async (t)=>{
+    const row = { ...t, id: t.id || ('trn-'+Date.now().toString(36)) }
+    setTournamentsState(prev=> {
+      const i = prev.findIndex(x=> x.id===row.id)
+      if(i>=0){ const c=[...prev]; c[i]=row; return c }
+      return [row, ...prev]
+    })
+    if(cloud){
+      try{
+        const { error } = await supabase.from('tournaments').upsert({
+          id: row.id, game: row.game, title: row.title, date: row.date || null,
+          prize: row.prize||'', max_teams: Number(row.max_teams)||16, entry_fee: Number(row.entry_fee)||0,
+          status: row.status||'soon', rules: row.rules||'', image: row.image||'',
+        }, { onConflict: 'id' })
+        if(error) throw error
+        refreshTournaments()
+      }catch(e){ console.warn('cloud save tournament:', e.message); throw e }
+    }
+    return row
+  }
+  const deleteTournament = async (id)=>{
+    setTournamentsState(prev=> prev.filter(x=> x.id!==id))
+    setRegs(prev=> prev.filter(x=> x.tournament_id!==id))
+    if(cloud){
+      try{
+        const { error } = await supabase.from('tournaments').delete().eq('id', id)
+        if(error) throw error
+        refreshTournaments(); refreshRegs()
+      }catch(e){ refreshTournaments(); throw new Error('del_need_policy') }
+    }
+  }
+  const registerTournament = async ({ tournamentId, team, captain, phone, gameId })=>{
+    if(!user) throw new Error('login')
+    if(!team?.trim()) throw new Error('team')
+    const ph = (phone||'').replace(/[\s.-]/g,'')
+    if(!/^[0-9+]{8,15}$/.test(ph)) throw new Error('phone')
+    const reg = {
+      id: genId('reg'), tournament_id: tournamentId, team: team.trim(),
+      captain: (captain||'').trim(), phone: ph, game_id: (gameId||'').trim(),
+      userId: user.cloud ? user.id : user.id, date: new Date().toISOString(),
+      cloud: !!(cloud && user.cloud),
+    }
+    if(reg.cloud){
+      const { data, error } = await supabase.from('tournament_regs').insert({
+        tournament_id: tournamentId, team: reg.team, captain: reg.captain,
+        phone: reg.phone, game_id: reg.game_id, user_id: sbUserId.current || user.id,
+      }).select()
+      if(error) throw error
+      if(data?.[0]) { setRegs(prev=> [mapCloudReg(data[0]), ...prev]); refreshRegs(); return mapCloudReg(data[0]) }
+    }
+    setRegs(prev=> [reg, ...prev])
+    return reg
+  }
+  const deleteReg = async (id)=>{
+    const target = regs.find(x=> x.id===id)
+    setRegs(prev=> prev.filter(x=> x.id!==id))
+    if(cloud && target?.cloud){
+      const { error } = await supabase.from('tournament_regs').delete().eq('id', id)
+      if(error){ refreshRegs(); throw new Error('del_need_policy') }
+    }
+  }
+  const regsFor = (tid)=> regs.filter(x=> x.tournament_id===tid)
+  const myRegs = (u=user)=>{
+    if(!u) return []
+    return regs.filter(x=> x.userId===u.id)
+  }
+
   // ---- Produits : écriture cloud (remplacement table, admin) ou locale ----
   const setProducts = (next)=>{
     setProductsState(next)
@@ -503,6 +621,6 @@ export function AuthProvider({ children }){
   // L'admin a-t-il la vue globale cloud ? (false tant que le SQL is_admin n'est pas exécuté)
   const needsDbGrant = cloud && !!user?.isAdmin && cloudProfiles === null
 
-  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, messages, sendMessage, markThreadRead, myThread, adminThreads, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, messages, sendMessage, markThreadRead, myThread, adminThreads, tournaments, regs, saveTournament, deleteTournament, registerTournament, deleteReg, regsFor, myRegs, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
 }
 export const useAuth = ()=> useContext(AuthCtx)

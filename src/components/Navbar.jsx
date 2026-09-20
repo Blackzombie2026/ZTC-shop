@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShoppingCart, User, Shield, LogOut, Package, MessageCircle } from 'lucide-react'
+import { ShoppingCart, User, Shield, LogOut, Package, MessageCircle, Info, Trophy } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLang, LANGS } from '../context/LanguageContext'
@@ -26,7 +26,13 @@ export default function Navbar(){
           <Link to="/catalog?cat=netflix" className="hover:text-white">Netflix</Link>
         </nav>
         <div className="flex-1" />
-        {/* Support animé -> page dédiée */}
+        {/* À propos + Tournois + Support */}
+        <Link to="/about" title={t('about')} className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm font-semibold">
+          <Info size={16}/> {t('about')}
+        </Link>
+        <Link to="/tournaments" title={t('tournaments')} className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 hover:bg-amber-500/25 text-amber-300 text-sm font-bold">
+          <Trophy size={16}/> {t('tournaments')}
+        </Link>
         <Link to="/support" title={t('support')}
           className="relative flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 hover:brightness-110 text-white text-sm font-black animate-support-ring">
           <MessageCircle size={17} className="animate-support-bounce"/>
