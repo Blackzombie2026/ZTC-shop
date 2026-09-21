@@ -19,9 +19,12 @@ export const initialProducts = [
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7raq6TZniTT-h3tAcCp4gTt1qayp_6_4m5VYdEKZf2w&s=10',
     badge: 'HOT', description: 'Recharge ton compte Valorant en quelques secondes. Code officiel Riot. Carte EU.',
     variants: [
-      { id: 'val-1000', label: '1000 VP', price: 38.00 },
-      { id: 'val-2050', label: '2050 VP', price: 76.00 },
-      { id: 'val-2450', label: '2450 VP', price: 92.00 },
+      { id: 'val-eu10', label: 'Carte 10€', price: 38.00 },
+      { id: 'val-eu15', label: 'Carte 15€', price: 60.00 },
+      { id: 'val-eu20', label: 'Carte 20€', price: 77.00 },
+      { id: 'val-eu25', label: 'Carte 25€', price: 96.00 },
+      { id: 'val-eu35', label: 'Carte 35€', price: 135.00 },
+      { id: 'val-eu50', label: 'Carte 50€', price: 197.00 },
     ],
     stock: 124, rating: 4.9
   },
