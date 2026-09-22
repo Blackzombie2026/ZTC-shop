@@ -22,6 +22,11 @@ export default function Home(){
     {title: t('trust2t'), desc: t('trust2d')},
     {title: t('trust3t'), desc: t('trust3d')},
   ]
+  const reviews = [
+    { name: 'Neyla B.', rating: 4, text: t('rev1'), tag: 'Netflix' },
+    { name: 'Mehrez T.', rating: 5, text: t('rev2'), tag: 'Valorant' },
+    { name: 'Steel', rating: 5, text: t('rev3'), tag: 'FC 26' },
+  ]
   return (
     <div>
       <section className="relative overflow-hidden">
@@ -106,6 +111,32 @@ export default function Home(){
                 </div>
               </div>
             </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Avis clients */}
+      <section className="max-w-[1280px] mx-auto px-4 pb-4">
+        <div className="text-center mb-6 reveal">
+          <h2 className="text-2xl font-black">{t('reviews_t')}</h2>
+          <p className="text-sm text-white/50 mt-1">{t('reviews_sub')} • <span className="text-amber-400 font-black">★ 4.7/5</span></p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {reviews.map((r,i)=>(
+            <div key={r.name} className="reveal rounded-2xl p-5 bg-white/[0.04] border border-white/10" style={{animationDelay:`${i*80}ms`}}>
+              <div className="text-lg tracking-wider">
+                {[1,2,3,4,5].map(s=> <span key={s} className={s<=r.rating?'text-amber-400':'text-white/20'}>★</span>)}
+                <span className="text-xs text-white/50 ml-2">{r.rating}/5</span>
+              </div>
+              <p className="text-sm text-white/70 mt-2 leading-relaxed">“{r.text}”</p>
+              <div className="mt-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center font-black text-sm">{r.name[0]}</div>
+                  <span className="font-bold text-sm">{r.name}</span>
+                </div>
+                <span className="text-[11px] px-2 py-1 rounded-full bg-violet-600/20 border border-violet-500/20 text-violet-300">{r.tag}</span>
+              </div>
             </div>
           ))}
         </div>
