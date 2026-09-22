@@ -178,7 +178,7 @@ export const initialProducts = [
   },
   {
     id: 'steam-1', category: 'other', name: 'Steam Wallet Code', subtitle: 'EUR',
-    image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=600&q=80&auto=format&fit=crop',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBt5pqA1fBJMEFHNDI_MsG9_INeuXR-mb-TOtzdLTcsw&s=10',
     badge: null, description: 'Code Steam Wallet à activer sur votre compte Steam.',
     variants: [
       { id: 'stm-eu10', label: 'Carte 10€', price: 45.00 },

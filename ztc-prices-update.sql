@@ -37,5 +37,9 @@ on conflict (id) do update set category=excluded.category, name=excluded.name, s
 -- image Battle.net (au cas où la ligne existait déjà sans image)
 update public.products set image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxpXqKxg_9IdZaofj07PB2EW0EOxCkrD3E2J6dX5Rqzw&s=10' where id = 'bnet-1';
 
+-- Steam en double : supprimer l'extra (1 variante) + image officielle sur la vraie
+delete from public.products where id = 'custom-1789985803499';
+update public.products set image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBt5pqA1fBJMEFHNDI_MsG9_INeuXR-mb-TOtzdLTcsw&s=10' where id = 'steam-1';
+
 -- vérif :
 -- select id, category, jsonb_array_length(variants) as nb from public.products where id in ('lol-1','steam-1','roblox-1','psn-1','xbox-1','bnet-1');
