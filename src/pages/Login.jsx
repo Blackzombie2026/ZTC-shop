@@ -3,10 +3,10 @@ import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 import { isCloudEnabled } from '../lib/supabase'
-import { Shield, Mail, MessageCircle, ThumbsUp, UserPlus, LogIn } from 'lucide-react'
+import { Shield, Mail, UserPlus, LogIn } from 'lucide-react'
 
 export default function Login(){
-  const { user, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook } = useAuth()
+  const { user, loginAdmin, loginWithEmail, signupWithEmail } = useAuth()
   const { t } = useLang()
   const nav = useNavigate()
   const loc = useLocation()
@@ -44,9 +44,6 @@ export default function Login(){
     finally{ setBusy(false) }
   }
 
-  const discordConfigured = !!import.meta.env.VITE_DISCORD_CLIENT_ID
-  const fbConfigured = !!import.meta.env.VITE_FACEBOOK_APP_ID
-
   return (
     <div className="max-w-[560px] mx-auto px-4 py-10">
       <div className="rounded-3xl bg-white/5 border border-white/10 p-6 sm:p-8">
@@ -73,18 +70,6 @@ export default function Login(){
             </button>
             {isCloudEnabled && <p className="text-[11px] text-emerald-300/80 text-center">☁️ Compte partagé — mêmes commandes sur tous tes appareils</p>}
           </form>
-        </div>
-
-        <div className="flex items-center gap-3 my-4 text-xs text-white/40"><div className="flex-1 h-px bg-white/10"/><span>{t('or_with')}</span><div className="flex-1 h-px bg-white/10"/></div>
-
-        {/* SOCIAL */}
-        <div className="grid sm:grid-cols-2 gap-3">
-          <button onClick={()=>{ loginWithDiscord(); }} className="py-3.5 rounded-xl bg-[#5865F2] hover:brightness-110 font-bold flex items-center justify-center gap-2 text-white">
-            <MessageCircle size={18}/> Discord {!discordConfigured && <span className="text-[10px] opacity-70 font-normal">(démo)</span>}
-          </button>
-          <button onClick={()=>{ loginWithFacebook(); }} className="py-3.5 rounded-xl bg-[#1877F2] hover:brightness-110 font-bold flex items-center justify-center gap-2 text-white">
-            <ThumbsUp size={18}/> Facebook {!fbConfigured && <span className="text-[10px] opacity-70 font-normal">(démo)</span>}
-          </button>
         </div>
 
         <div className="mt-6 rounded-2xl bg-amber-500/5 border border-amber-500/20 p-4">

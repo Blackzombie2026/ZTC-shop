@@ -1,0 +1,38 @@
+name: Deploy ZTC to Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_SUPABASE_URL: https://ytdgkvzzcqjaijcbupfp.supabase.co
+          VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZGdrdnp6Y3FqYWlqY2J1cGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3Mzk0MzQsImV4cCI6MjEwNTMxNTQzNH0.McF-7NUw7kDqc4URkwD4gXbZfkAmLzURRlZVW45DsbU
+          VITE_ADMIN_EMAIL: apatchegaming@gmail.com
+          VITE_ADMIN_PASSWORD: Transcom2026*
+      - run: cp dist/index.html dist/404.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

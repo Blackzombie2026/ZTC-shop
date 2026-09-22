@@ -68,10 +68,6 @@ export default function Support(){
         )}
       </div>
 
-      <a href={SUPPORT.discord} target="_blank" rel="noreferrer" className="mt-6 w-full py-3.5 rounded-2xl bg-[#5865F2] hover:brightness-110 text-white font-black flex items-center justify-center gap-2">
-        <Gamepad2 size={18}/> {t('sup_discord')}
-      </a>
-
       <h2 className="font-black mt-8 mb-3">{t('sup_faq_t')}</h2>
       <div className="grid md:grid-cols-3 gap-3">
         {faqs.map((f,i)=>(
