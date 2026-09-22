@@ -99,7 +99,7 @@ export function AuthProvider({ children }){
 
   useEffect(()=> localStorage.setItem('ztc_user', JSON.stringify(user)), [user])
   useEffect(()=> localStorage.setItem('ii_user', JSON.stringify(user)), [user])
-  useEffect(()=> localStorage.setItem('orders', JSON.stringify(orders.filter(o=>!o.cloud))), [orders])
+  useEffect(()=> localStorage.setItem('orders', JSON.stringify(orders.filter(o=>!o.cloud || o.syncError))), [orders])
   useEffect(()=> { if(products) localStorage.setItem('products_db', JSON.stringify(products)) }, [products])
 
   // ---------- Refresh cloud ----------
@@ -432,9 +432,34 @@ export function AuthProvider({ children }){
           items: full.items||[], total: full.total||0, method: full.method||'card', status: full.status,
         })
         refreshCloudOrders()
-      }catch(e){ console.warn('cloud insert order:', e.message) }
+      }catch(e){
+        console.warn('cloud insert order:', e.message)
+        setOrders(prev=> prev.map(x=> x.id===full.id ? {...x, syncError:true} : x))
+      }
     }
     return full
+  }
+  // Réessaie l'envoi d'une commande restée locale (erreur réseau/RLS)
+  const retryOrder = async (id)=>{
+    const target = orders.find(o=> o.id===id)
+    if(!target || !cloud || !user?.cloud) return false
+    try{
+      await supabase.from('orders').insert({
+        id: target.id, user_id: sbUserId.current || user.id,
+        customer: { ...(target.customer||{}), provider: user.provider, principal: user.principal },
+        items: target.items||[], total: target.total||0, method: target.method||'card', status: target.status,
+      })
+      setOrders(prev=> prev.map(x=> x.id===id ? {...x, syncError:false} : x))
+      refreshCloudOrders()
+      return true
+    }catch(e){
+      if(String(e.message||'').includes('23505') || String(e.code||'')==='23505'){
+        setOrders(prev=> prev.map(x=> x.id===id ? {...x, syncError:false} : x))
+        refreshCloudOrders()
+        return true
+      }
+      return false
+    }
   }
   const updateOrderStatus = async (id, status)=>{
     setOrders(prev=> prev.map(x=> x.id===id? {...x, status}:x)) // optimiste
@@ -646,6 +671,6 @@ export function AuthProvider({ children }){
   // L'admin a-t-il la vue globale cloud ? (false tant que le SQL is_admin n'est pas exécuté)
   const needsDbGrant = cloud && !!user?.isAdmin && cloudProfiles === null
 
-  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, updateOrderStatus, deleteOrder, deleteAccount, messages, sendMessage, markThreadRead, myThread, adminThreads, tournaments, regs, saveTournament, deleteTournament, registerTournament, deleteReg, regsFor, myRegs, addTeamManual, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{user, setUser, cloud, needsDbGrant, refreshAll, login, loginAdmin, loginWithEmail, signupWithEmail, loginWithDiscord, loginWithFacebook, logout, orders, myOrders, allAccounts, addOrder, retryOrder, updateOrderStatus, deleteOrder, deleteAccount, messages, sendMessage, markThreadRead, myThread, adminThreads, tournaments, regs, saveTournament, deleteTournament, registerTournament, deleteReg, regsFor, myRegs, addTeamManual, products, setProducts, saveProducts}}>{children}</AuthCtx.Provider>
 }
 export const useAuth = ()=> useContext(AuthCtx)
