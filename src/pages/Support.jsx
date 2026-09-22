@@ -7,13 +7,20 @@ import { SUPPORT } from '../data/support'
 
 export default function Support(){
   const { t } = useLang()
-  const { user, myThread, sendMessage } = useAuth()
+  const { user, myThread, sendMessage, refreshAll } = useAuth()
   const [draft, setDraft] = useState('')
   const [sending, setSending] = useState(false)
   const bottomRef = useRef(null)
   const thread = myThread()
 
   useEffect(()=>{ bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [thread.length])
+
+  // Polling de sécurité : nouveaux messages admin en direct même si realtime coupé
+  useEffect(()=>{
+    if(!user) return
+    const id = setInterval(()=>{ try{ refreshAll() }catch{} }, 10000)
+    return ()=>clearInterval(id)
+  }, [user])
 
   const faqs = [
     { q: t('faq1q'), a: t('faq1a') },
