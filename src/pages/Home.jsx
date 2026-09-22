@@ -97,7 +97,7 @@ export default function Home(){
             <div key={p.id} className="anim-glow reveal" style={{animationDelay:`${(i%8)*70}ms`}}>
             <Link to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 hover:-translate-y-1 transition group block">
               <div className="relative h-36 overflow-hidden">
-                <img src={p.image} className="w-full h-full object-cover group-hover:scale-105 transition" alt={p.name}/>
+                <img src={p.image || `${import.meta.env.BASE_URL}favicon.svg`} className="w-full h-full object-cover group-hover:scale-105 transition" alt={p.name}/>
                 {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600 text-white">{p.badge}</span>}
                 <span className="absolute top-2 right-2 text-[11px] bg-black/60 backdrop-blur px-2 py-1 rounded-full">⭐ {p.rating}</span>
               </div>

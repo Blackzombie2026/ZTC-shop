@@ -143,7 +143,7 @@ export default function Admin(){
           <div className="rounded-2xl bg-white/5 border border-white/10 p-4 grid md:grid-cols-5 gap-3">
             <input placeholder="Nom produit" value={newProd.name} onChange={e=>setNewProd({...newProd,name:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
             <select value={newProd.category} onChange={e=>setNewProd({...newProd,category:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10">
-              <option value="valorant">Valorant</option><option value="lol">LoL</option><option value="fc26">FC26</option><option value="fc27">FC27</option><option value="pubg">PUBG</option><option value="warzone">Warzone</option><option value="r6">Rainbow Six</option><option value="roblox">Roblox</option><option value="freefire">Free Fire</option><option value="netflix">Netflix</option><option value="other">Autres</option>
+              <option value="valorant">Valorant</option><option value="lol">LoL</option><option value="battlenet">Battle.net</option><option value="fc26">FC26</option><option value="fc27">FC27</option><option value="pubg">PUBG</option><option value="warzone">Warzone</option><option value="r6">Rainbow Six</option><option value="roblox">Roblox</option><option value="freefire">Free Fire</option><option value="netflix">Netflix</option><option value="other">Autres</option>
             </select>
             <input placeholder="Label (ex 1000 VP)" value={newProd.label} onChange={e=>setNewProd({...newProd,label:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
             <input placeholder="Prix TND" type="number" value={newProd.price} onChange={e=>setNewProd({...newProd,price:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
@@ -162,7 +162,7 @@ export default function Admin(){
             {visibleProds.map(p=>(
               <div key={p.id} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10">
                 <div className="relative h-40 overflow-hidden">
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover"/>
+                  <img src={p.image || `${import.meta.env.BASE_URL}favicon.svg`} alt={p.name} className="w-full h-full object-cover"/>
                   {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600">{p.badge}</span>}
                   <span className="absolute bottom-2 right-2 text-xs bg-black/60 backdrop-blur px-2 py-1 rounded-full border border-white/10">{p.stock} {t('in_stock')}</span>
                   <button onClick={()=>deleteProd(p.id)} title="Supprimer" className="absolute top-2 right-2 p-2 rounded-xl bg-red-600/90 text-white"><Trash2 size={14}/></button>
@@ -323,7 +323,7 @@ export default function Admin(){
           <div className="rounded-2xl bg-white/5 border border-white/10 p-4 grid md:grid-cols-4 gap-3">
             <input placeholder={t('tr_title_ph')} value={trnForm.title} onChange={e=>setTrnForm({...trnForm,title:e.target.value})} className="md:col-span-2 px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
             <select value={trnForm.game} onChange={e=>setTrnForm({...trnForm,game:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10">
-              <option value="valorant">Valorant</option><option value="lol">LoL</option><option value="fc26">FC26</option><option value="fc27">FC27</option><option value="pubg">PUBG</option><option value="warzone">Warzone</option><option value="r6">Rainbow Six</option><option value="roblox">Roblox</option><option value="freefire">Free Fire</option><option value="other">Autres</option>
+              <option value="valorant">Valorant</option><option value="lol">LoL</option><option value="battlenet">Battle.net</option><option value="fc26">FC26</option><option value="fc27">FC27</option><option value="pubg">PUBG</option><option value="warzone">Warzone</option><option value="r6">Rainbow Six</option><option value="roblox">Roblox</option><option value="freefire">Free Fire</option><option value="other">Autres</option>
             </select>
             <select value={trnForm.status} onChange={e=>setTrnForm({...trnForm,status:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10">
               <option value="soon">{t('tr_soon')}</option><option value="open">{t('tr_open')}</option><option value="done">{t('tr_done')}</option><option value="pending">{t('tr_pending')}</option>

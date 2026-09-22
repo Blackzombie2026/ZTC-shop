@@ -10,6 +10,7 @@ export const categories = [
   { id: 'roblox', label: 'Roblox' },
   { id: 'freefire', label: 'Free Fire' },
   { id: 'netflix', label: 'Netflix' },
+  { id: 'battlenet', label: 'Battle.net' },
   { id: 'other', label: 'Autres' },
 ]
 
@@ -29,15 +30,17 @@ export const initialProducts = [
     stock: 124, rating: 4.9
   },
   {
-    id: 'lol-1', category: 'lol', name: 'League of Legends RP', subtitle: 'Riot Points EUW / EUNE',
+    id: 'lol-1', category: 'lol', name: 'League of Legends RP', subtitle: 'Cartes € • Europe',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNztnpwTexsNw2a58jD4GD3VukhzYqPHAouBNgep7nzA&s=10',
     badge: 'BEST SELLER', description: 'Débloque skins, champions et chromas. Code valable Europe.',
     variants: [
-      { id: 'lol-650', label: '650 RP', price: 5.00 },
-      { id: 'lol-1380', label: '1380 RP', price: 10.00 },
-      { id: 'lol-2800', label: '2800 RP', price: 20.00 },
-      { id: 'lol-5800', label: '5800 RP', price: 40.00 },
-      { id: 'lol-eu50', label: 'Carte €50 EU', price: 185.00 },
+      { id: 'lol-eu10', label: 'Carte 10€', price: 38.00 },
+      { id: 'lol-eu15', label: 'Carte 15€', price: 59.00 },
+      { id: 'lol-eu20', label: 'Carte 20€', price: 78.00 },
+      { id: 'lol-eu25', label: 'Carte 25€', price: 96.00 },
+      { id: 'lol-eu35', label: 'Carte 35€', price: 135.00 },
+      { id: 'lol-eu50', label: 'Carte 50€', price: 195.00 },
+      { id: 'lol-eu100', label: 'Carte 100€', price: 380.00 },
     ],
     stock: 89, rating: 4.8
   },
@@ -116,9 +119,8 @@ export const initialProducts = [
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyCcKCRn3kSwAHeU7aumRfEv7QvfvG639Rn5HkcsNUiA&s=10',
     badge: null, description: 'Carte Roblox officielle. Échangeable en Robux ou abonnement Premium.',
     variants: [
-      { id: 'rbx-10', label: '10 TND (≈800 Robux)', price: 10.00 },
-      { id: 'rbx-20', label: '20 TND (≈1700 Robux)', price: 20.00 },
-      { id: 'rbx-50', label: '50 TND (≈4500 Robux)', price: 50.00 },
+      { id: 'rbx-eu10', label: 'Roblox 10€', price: 40.00 },
+      { id: 'rbx-eu20', label: 'Roblox 20€', price: 78.00 },
     ],
     stock: 67, rating: 4.9
   },
@@ -151,9 +153,11 @@ export const initialProducts = [
     image: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=600&q=80&auto=format&fit=crop',
     badge: null, description: 'Recharge portefeuille PSN. Jeux, add-ons, PS Plus.',
     variants: [
-      { id: 'psn-20', label: '20 TND', price: 20.00 },
-      { id: 'psn-50', label: '50 TND', price: 50.00 },
-      { id: 'psn-100', label: '100 TND', price: 100.00 },
+      { id: 'psn-eu10', label: 'Carte 10€', price: 42.00 },
+      { id: 'psn-eu20', label: 'Carte 20€', price: 82.00 },
+      { id: 'psn-eu25', label: 'Carte 25€', price: 105.00 },
+      { id: 'psn-eu50', label: 'Carte 50€', price: 202.00 },
+      { id: 'psn-eu100', label: 'Carte 100€', price: 398.00 },
     ],
     stock: 55, rating: 4.9
   },
@@ -162,9 +166,13 @@ export const initialProducts = [
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdUTxVzAMksOUL5_nc1gzb-P20RB_y8e27POgEpdp2LQ&s',
     badge: null, description: 'Pour Game Pass, jeux et contenus Xbox & PC.',
     variants: [
-      { id: 'xbx-15', label: '15 TND', price: 15.00 },
-      { id: 'xbx-25', label: '25 TND', price: 25.00 },
-      { id: 'xbx-50', label: '50 TND', price: 50.00 },
+      { id: 'xbx-eu10', label: 'Carte 10€', price: 39.00 },
+      { id: 'xbx-eu15', label: 'Carte 15€', price: 58.00 },
+      { id: 'xbx-eu20', label: 'Carte 20€', price: 75.00 },
+      { id: 'xbx-eu25', label: 'Carte 25€', price: 95.00 },
+      { id: 'xbx-eu30', label: 'Carte 30€', price: 115.00 },
+      { id: 'xbx-eu50', label: 'Carte 50€', price: 190.00 },
+      { id: 'xbx-eu100', label: 'Carte 100€', price: 380.00 },
     ],
     stock: 40, rating: 4.7
   },
@@ -173,10 +181,24 @@ export const initialProducts = [
     image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=600&q=80&auto=format&fit=crop',
     badge: null, description: 'Code Steam Wallet à activer sur votre compte Steam.',
     variants: [
-      { id: 'stm-20', label: '20 TND', price: 20.00 },
-      { id: 'stm-50', label: '50 TND', price: 50.00 },
-      { id: 'stm-100', label: '100 TND', price: 100.00 },
+      { id: 'stm-eu10', label: 'Carte 10€', price: 45.00 },
+      { id: 'stm-eu15', label: 'Carte 15€', price: 60.00 },
+      { id: 'stm-eu20', label: 'Carte 20€', price: 84.00 },
+      { id: 'stm-eu25', label: 'Carte 25€', price: 105.00 },
+      { id: 'stm-eu35', label: 'Carte 35€', price: 145.00 },
+      { id: 'stm-eu50', label: 'Carte 50€', price: 220.00 },
+      { id: 'stm-eu100', label: 'Carte 100€', price: 430.00 },
     ],
     stock: 71, rating: 4.9
+  },
+  {
+    id: 'bnet-1', category: 'battlenet', name: 'Battle.net Gift Card', subtitle: 'Cartes € • Europe',
+    image: '',
+    badge: 'NEW', description: 'Cartes Battle.net Europe pour jeux Blizzard et solde Battle.net.',
+    variants: [
+      { id: 'bnet-eu20', label: 'Carte 20€', price: 80.00 },
+      { id: 'bnet-eu50', label: 'Carte 50€', price: 200.00 },
+    ],
+    stock: 50, rating: 4.8
   },
 ]

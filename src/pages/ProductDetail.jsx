@@ -28,7 +28,7 @@ export default function ProductDetail(){
   return (
     <div className="max-w-[1280px] mx-auto px-4 py-8 grid lg:grid-cols-2 gap-8">
       <div className="rounded-3xl overflow-hidden bg-white/5 border border-white/10">
-        <img src={product.image} alt={product.name} className="w-full h-[420px] object-cover"/>
+        <img src={product.image || `${import.meta.env.BASE_URL}favicon.svg`} alt={product.name} className="w-full h-[420px] object-cover"/>
         <div className="p-4 flex gap-2 overflow-auto">
           {product.variants.map(v=>(
             <div key={v.id} className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs whitespace-nowrap">{v.label} • {v.price.toFixed(2)} TND</div>

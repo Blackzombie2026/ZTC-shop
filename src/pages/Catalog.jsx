@@ -64,7 +64,7 @@ export default function Catalog(){
           <div key={p.id} className="anim-glow reveal" style={{animationDelay:`${(i%12)*50}ms`}}>
           <Link to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 transition group block">
             <div className="relative h-40 overflow-hidden">
-              <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500"/>
+              <img src={p.image || `${import.meta.env.BASE_URL}favicon.svg`} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500"/>
               {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600">{p.badge}</span>}
               <span className="absolute bottom-2 right-2 text-xs bg-black/60 backdrop-blur px-2 py-1 rounded-full border border-white/10">{p.stock} {t('in_stock')}</span>
             </div>
