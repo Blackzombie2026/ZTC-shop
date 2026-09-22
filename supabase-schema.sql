@@ -84,8 +84,9 @@ drop policy if exists "profiles_select_own_or_admin" on public.profiles;
 create policy "profiles_select_own_or_admin" on public.profiles
   for select using (id = auth.uid() or public.is_admin());
 drop policy if exists "profiles_insert_own" on public.profiles;
+-- VERROUILLE : nul ne peut se mettre admin a l'inscription (admin = SQL/service_role uniquement)
 create policy "profiles_insert_own" on public.profiles
-  for insert with check (id = auth.uid());
+  for insert with check (id = auth.uid() and coalesce(is_admin, false) = false);
 drop policy if exists "profiles_update_own" on public.profiles;
 create policy "profiles_update_own" on public.profiles
   for update using (id = auth.uid()) with check (id = auth.uid());
@@ -95,8 +96,9 @@ drop policy if exists "orders_select_own_or_admin" on public.orders;
 create policy "orders_select_own_or_admin" on public.orders
   for select using (user_id = auth.uid() or public.is_admin());
 drop policy if exists "orders_insert_own" on public.orders;
+-- VERROUILLE : statut "En attente" obligatoire a la creation (pas de fausse commande confirmee)
 create policy "orders_insert_own" on public.orders
-  for insert with check (user_id = auth.uid());
+  for insert with check (user_id = auth.uid() and status like 'En attente%');
 drop policy if exists "orders_update_admin" on public.orders;
 create policy "orders_update_admin" on public.orders
   for update using (public.is_admin());
@@ -171,8 +173,9 @@ drop policy if exists "messages_select_own_or_admin" on public.messages;
 create policy "messages_select_own_or_admin" on public.messages
   for select using (user_id = auth.uid() or public.is_admin());
 drop policy if exists "messages_insert_own" on public.messages;
+-- VERROUILLE : un client ne peut pas ecrire en tant qu'admin
 create policy "messages_insert_own" on public.messages
-  for insert with check (user_id = auth.uid());
+  for insert with check (user_id = auth.uid() and sender = 'client');
 drop policy if exists "messages_insert_admin" on public.messages;
 create policy "messages_insert_admin" on public.messages
   for insert with check (public.is_admin());
@@ -213,7 +216,9 @@ alter table public.tournaments enable row level security;
 alter table public.tournament_regs enable row level security;
 
 drop policy if exists "tournaments_public_read" on public.tournaments;
-create policy "tournaments_public_read" on public.tournaments for select using (true);
+-- VERROUILLE : propositions en cours invisibles sauf auteur + admin
+create policy "tournaments_public_read" on public.tournaments
+  for select using (status <> 'pending' or created_by = auth.uid() or public.is_admin());
 drop policy if exists "tournaments_write_admin" on public.tournaments;
 create policy "tournaments_write_admin" on public.tournaments for all using (public.is_admin()) with check (public.is_admin());
 
@@ -234,8 +239,9 @@ alter table public.tournaments add column if not exists created_by uuid referenc
 -- bracket + scores (JSON, géré par l'admin)
 alter table public.tournaments add column if not exists bracket jsonb default '[]';
 drop policy if exists "tournaments_insert_pending" on public.tournaments;
+-- VERROUILLE : comptes verifies uniquement (pas de spam anonyme)
 create policy "tournaments_insert_pending" on public.tournaments
-  for insert with check (status = 'pending');
+  for insert with check (status = 'pending' and auth.uid() is not null);
 
 -- 2 tournois d'exemple
 insert into public.tournaments (id, game, title, date, prize, max_teams, entry_fee, status, rules, image) values
