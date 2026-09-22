@@ -193,7 +193,7 @@ export const initialProducts = [
   },
   {
     id: 'bnet-1', category: 'battlenet', name: 'Battle.net Gift Card', subtitle: 'Cartes € • Europe',
-    image: '',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxpXqKxg_9IdZaofj07PB2EW0EOxCkrD3E2J6dX5Rqzw&s=10',
     badge: 'NEW', description: 'Cartes Battle.net Europe pour jeux Blizzard et solde Battle.net.',
     variants: [
       { id: 'bnet-eu20', label: 'Carte 20€', price: 80.00 },

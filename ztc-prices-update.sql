@@ -30,9 +30,12 @@ where id = 'xbox-1';
 
 -- Battle.net (NOUVEAU — image à compléter)
 insert into public.products (id, category, name, subtitle, image, badge, description, variants, stock, rating) values
-('bnet-1','battlenet','Battle.net Gift Card','Cartes € • Europe',null,'NEW','Cartes Battle.net Europe pour jeux Blizzard et solde Battle.net.',
+('bnet-1','battlenet','Battle.net Gift Card','Cartes € • Europe','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxpXqKxg_9IdZaofj07PB2EW0EOxCkrD3E2J6dX5Rqzw&s=10','NEW','Cartes Battle.net Europe pour jeux Blizzard et solde Battle.net.',
 '[{"id":"bnet-eu20","label":"Carte 20€","price":80},{"id":"bnet-eu50","label":"Carte 50€","price":200}]',50,4.8)
 on conflict (id) do update set category=excluded.category, name=excluded.name, subtitle=excluded.subtitle, description=excluded.description, variants=excluded.variants, stock=excluded.stock;
+
+-- image Battle.net (au cas où la ligne existait déjà sans image)
+update public.products set image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxpXqKxg_9IdZaofj07PB2EW0EOxCkrD3E2J6dX5Rqzw&s=10' where id = 'bnet-1';
 
 -- vérif :
 -- select id, category, jsonb_array_length(variants) as nb from public.products where id in ('lol-1','steam-1','roblox-1','psn-1','xbox-1','bnet-1');
