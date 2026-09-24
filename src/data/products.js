@@ -23,7 +23,7 @@ export const MENUS = [
   { id: 'accounts', icon: 'User', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
   { id: 'giftcards', icon: 'Gift', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
   { id: 'steamfresh', icon: 'Sparkles', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: ['sf-fc27'] },
-  { id: 'steam', icon: 'Monitor', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Wallet Euro', en: 'Steam Wallet Euro', ar: 'Steam Wallet Euro' }, products: ['steam-1'] },
+  { id: 'steam', icon: 'Monitor', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Wallet Euro', en: 'Steam Wallet Euro', ar: 'Steam Wallet Euro' }, products: ['steam-1', 'stm-usd'] },
   { id: 'subs', icon: 'Crown', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
 ]
 
@@ -222,5 +222,18 @@ export const initialProducts = [
       { id: 'sf-fc27-std', label: 'Standard Edition', price: 135.00 },
     ],
     stock: 20, rating: 5.0
+  },
+  {
+    id: 'stm-usd', category: 'other', name: 'Steam Wallet Dollars', subtitle: 'Cartes $ • USA',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBt5pqA1fBJMEFHNDI_MsG9_INeuXR-mb-TOtzdLTcsw&s=10',
+    badge: null, description: 'Code Steam Wallet USD à activer sur votre compte Steam.',
+    variants: [
+      { id: 'stm-usd10', label: 'Carte 10$', price: 40.00 },
+      { id: 'stm-usd20', label: 'Carte 20$', price: 77.00 },
+      { id: 'stm-usd30', label: 'Carte 30$', price: 120.00 },
+      { id: 'stm-usd50', label: 'Carte 50$', price: 190.00 },
+      { id: 'stm-usd100', label: 'Carte 100$', price: 380.00 },
+    ],
+    stock: 50, rating: 4.9
   },
 ]

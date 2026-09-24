@@ -50,5 +50,11 @@ on conflict (id) do update set category=excluded.category, name=excluded.name, s
 -- Steam : nom section Euro (+ Dollars à venir)
 update public.products set name = 'Steam Wallet Euro', subtitle = 'Cartes € • Europe' where id = 'steam-1';
 
+-- Steam Wallet Dollars (même image que Euro)
+insert into public.products (id, category, name, subtitle, image, badge, description, variants, stock, rating) values
+('stm-usd','other','Steam Wallet Dollars','Cartes $ • USA','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBt5pqA1fBJMEFHNDI_MsG9_INeuXR-mb-TOtzdLTcsw&s=10',null,'Code Steam Wallet USD à activer sur votre compte Steam.',
+'[{"id":"stm-usd10","label":"Carte 10$","price":40},{"id":"stm-usd20","label":"Carte 20$","price":77},{"id":"stm-usd30","label":"Carte 30$","price":120},{"id":"stm-usd50","label":"Carte 50$","price":190},{"id":"stm-usd100","label":"Carte 100$","price":380}]',50,4.9)
+on conflict (id) do update set category=excluded.category, name=excluded.name, subtitle=excluded.subtitle, image=excluded.image, description=excluded.description, variants=excluded.variants, stock=excluded.stock;
+
 -- vérif :
 -- select id, category, jsonb_array_length(variants) as nb from public.products where id in ('lol-1','steam-1','roblox-1','psn-1','xbox-1','bnet-1');
