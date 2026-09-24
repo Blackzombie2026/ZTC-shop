@@ -41,5 +41,11 @@ update public.products set image = 'https://encrypted-tbn0.gstatic.com/images?q=
 delete from public.products where id = 'custom-1789985803499';
 update public.products set image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBt5pqA1fBJMEFHNDI_MsG9_INeuXR-mb-TOtzdLTcsw&s=10' where id = 'steam-1';
 
+-- Steam Fresh Account : EA FC 27 Standard (v1)
+insert into public.products (id, category, name, subtitle, image, badge, description, variants, stock, rating) values
+('sf-fc27','steamfresh','EA FC 27 — Fresh Account','0H Played • Full Access','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQReH_mDCUQAdNNtUM4zFpCRmDeInuB9-ggZWxMZtkWxQ&s','NEW','Compte Steam fresh : 0H Played • Full Access • Can Change Data (email + mot de passe modifiables).',
+'[{"id":"sf-fc27-std","label":"Standard Edition","price":135}]',20,5.0)
+on conflict (id) do update set category=excluded.category, name=excluded.name, subtitle=excluded.subtitle, image=excluded.image, badge=excluded.badge, description=excluded.description, variants=excluded.variants, stock=excluded.stock;
+
 -- vérif :
 -- select id, category, jsonb_array_length(variants) as nb from public.products where id in ('lol-1','steam-1','roblox-1','psn-1','xbox-1','bnet-1');

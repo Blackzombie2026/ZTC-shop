@@ -22,7 +22,7 @@ export const MENUS = [
   { id: 'login', icon: 'KeyRound', label: { fr: 'Login Games', en: 'Login Games', ar: 'ألعاب الدخول' }, products: ['fc27-pc', 'fc27-ps5'] },
   { id: 'accounts', icon: 'User', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
   { id: 'giftcards', icon: 'Gift', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
-  { id: 'steamfresh', icon: 'Sparkles', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: [] },
+  { id: 'steamfresh', icon: 'Sparkles', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: ['sf-fc27'] },
   { id: 'subs', icon: 'Crown', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
 ]
 
@@ -212,5 +212,14 @@ export const initialProducts = [
       { id: 'bnet-eu50', label: 'Carte 50€', price: 200.00 },
     ],
     stock: 50, rating: 4.8
+  },
+  {
+    id: 'sf-fc27', category: 'steamfresh', name: 'EA FC 27 — Fresh Account', subtitle: '0H Played • Full Access',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQReH_mDCUQAdNNtUM4zFpCRmDeInuB9-ggZWxMZtkWxQ&s',
+    badge: 'NEW', description: 'Compte Steam fresh : 0H Played • Full Access • Can Change Data (email + mot de passe modifiables).',
+    variants: [
+      { id: 'sf-fc27-std', label: 'Standard Edition', price: 135.00 },
+    ],
+    stock: 20, rating: 5.0
   },
 ]
