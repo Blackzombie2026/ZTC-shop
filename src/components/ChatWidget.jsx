@@ -14,7 +14,6 @@ export default function ChatWidget(){
   const [sending, setSending] = useState(false)
   const bottomRef = useRef(null)
   const fileRef = useRef(null)
-  if(user?.isAdmin) return null
   const thread = myThread()
   const hasNew = thread.length>0 && thread[thread.length-1]?.sender==='admin'
 
@@ -24,6 +23,8 @@ export default function ChatWidget(){
     const id = setInterval(()=>{ try{ refreshAll() }catch{} }, 10000)
     return ()=>clearInterval(id)
   }, [open, user])
+
+  if(user?.isAdmin) return null
 
   const doSend = async (e)=>{
     e.preventDefault()
