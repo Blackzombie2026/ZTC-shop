@@ -1,17 +1,22 @@
 import { Link } from 'react-router-dom'
-import { ShoppingCart, User, Shield, LogOut, Package, MessageCircle, Info, Trophy } from 'lucide-react'
+import { ShoppingCart, User, Shield, LogOut, Package, MessageCircle, Info, Trophy, Home, Gamepad2, KeyRound, Gift, Crown, ChevronDown } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLang, LANGS } from '../context/LanguageContext'
+import { MENUS, initialProducts } from '../data/products'
 
 const providerLabel = { email:'Email', discord:'Discord', facebook:'Facebook', 'Internet Identity':'Internet Identity' }
 const providerColor = { email:'bg-emerald-500', discord:'bg-[#5865F2]', facebook:'bg-[#1877F2]', 'Internet Identity':'bg-violet-600' }
+const MENU_ICONS = { Gamepad2, KeyRound, User, Gift, Crown }
 
 export default function Navbar(){
   const { count } = useCart()
-  const { user, logout } = useAuth()
+  const { user, logout, products: dbProducts } = useAuth()
   const { lang, setLang, t } = useLang()
   const logoUrl = `${import.meta.env.BASE_URL}logo.jpg`
+  const allProds = dbProducts || initialProducts
+  const prodById = Object.fromEntries(allProds.map(p=> [p.id, p]))
+  const visibleMenus = MENUS.filter(m=> m.products.length>0)
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-3">
@@ -20,10 +25,29 @@ export default function Navbar(){
           <span className="hidden sm:inline">ZTC<span className="text-violet-500"> SHOP</span></span>
         </Link>
         <nav className="hidden md:flex items-center gap-5 ml-4 text-sm text-white/70">
+          <Link to="/" className="hover:text-white flex items-center gap-1"><Home size={15}/></Link>
+          {visibleMenus.map(m=>{
+            const Icon = MENU_ICONS[m.icon] || Gift
+            return (
+              <div key={m.id} className="relative group">
+                <Link to={`/catalog?menu=${m.id}`} className="hover:text-white flex items-center gap-1 py-4">
+                  <Icon size={15}/>{m.label[lang]||m.label.en}<ChevronDown size={12} className="opacity-60"/>
+                </Link>
+                <div className="absolute top-full left-0 min-w-[220px] rounded-2xl bg-[#141417] border border-white/10 shadow-2xl p-2 hidden group-hover:block">
+                  {m.products.map(pid=> prodById[pid] && (
+                    <Link key={pid} to={`/product/${pid}`} className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 text-white/80 hover:text-white text-[13px]">
+                      {prodById[pid].image
+                        ? <img src={prodById[pid].image} alt="" className="w-8 h-8 rounded-lg object-cover"/>
+                        : <span className="w-8 h-8 rounded-lg bg-violet-600/30 flex items-center justify-center text-xs font-black">{prodById[pid].name[0]}</span>}
+                      <span className="truncate">{prodById[pid].name}</span>
+                    </Link>
+                  ))}
+                  <Link to={`/catalog?menu=${m.id}`} className="block text-center mt-1 px-3 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-bold">Tout voir →</Link>
+                </div>
+              </div>
+            )
+          })}
           <Link to="/catalog" className="hover:text-white">{t('catalog')}</Link>
-          <Link to="/catalog?cat=valorant" className="hover:text-white">Valorant</Link>
-          <Link to="/catalog?cat=fc26" className="hover:text-white">FC 26</Link>
-          <Link to="/catalog?cat=netflix" className="hover:text-white">Netflix</Link>
         </nav>
         <div className="flex-1" />
         {/* À propos + Tournois + Support */}
@@ -74,6 +98,15 @@ export default function Navbar(){
             <User size={16}/> {t('login')}
           </Link>
         )}
+      </div>
+      <div className="md:hidden border-t border-white/10">
+        <div className="max-w-[1280px] mx-auto px-4 py-2 flex gap-2 overflow-x-auto text-[13px] text-white/70">
+          <Link to="/" className="flex items-center gap-1 whitespace-nowrap px-2 py-1"><Home size={14}/></Link>
+          {visibleMenus.map(m=>{ const Icon = MENU_ICONS[m.icon] || Gift; return (
+            <Link key={m.id} to={`/catalog?menu=${m.id}`} className="flex items-center gap-1 whitespace-nowrap px-2 py-1"><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
+          )})}
+          <Link to="/catalog" className="whitespace-nowrap px-2 py-1">{t('catalog')}</Link>
+        </div>
       </div>
     </header>
   )

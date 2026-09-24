@@ -1,29 +1,32 @@
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Search, SlidersHorizontal } from 'lucide-react'
-import { categories, initialProducts } from '../data/products'
+import { categories, initialProducts, MENUS } from '../data/products'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 
 export default function Catalog(){
   const [params, setParams] = useSearchParams()
   const catParam = params.get('cat') || 'all'
+  const menuParam = params.get('menu') || ''
   const [q, setQ] = useState(params.get('q')||'')
   const [sort, setSort] = useState('popular')
   const [category, setCategory] = useState(catParam)
   const { products: dbProducts } = useAuth()
-  const { t } = useLang()
+  const { lang, t } = useLang()
   const products = dbProducts || initialProducts
+  const menu = MENUS.find(m=> m.id===menuParam && m.products.length>0) || null
 
   const filtered = useMemo(()=>{
     let arr = [...products]
-    if(category!=='all') arr = arr.filter(p=> p.category===category)
+    if(menu) arr = arr.filter(p=> menu.products.includes(p.id))
+    else if(category!=='all') arr = arr.filter(p=> p.category===category)
     if(q) arr = arr.filter(p=> (p.name+' '+p.subtitle+' '+p.category).toLowerCase().includes(q.toLowerCase()))
     if(sort==='price-asc') arr.sort((a,b)=> Math.min(...a.variants.map(v=>v.price)) - Math.min(...b.variants.map(v=>v.price)))
     if(sort==='price-desc') arr.sort((a,b)=> Math.min(...b.variants.map(v=>v.price)) - Math.min(...a.variants.map(v=>v.price)))
     if(sort==='name') arr.sort((a,b)=> a.name.localeCompare(b.name))
     return arr
-  }, [products, category, q, sort])
+  }, [products, category, q, sort, menuParam])
 
   const setCat = (c)=>{
     setCategory(c)
@@ -34,8 +37,8 @@ export default function Catalog(){
 
   return (
     <div className="max-w-[1280px] mx-auto px-4 py-8">
-      <h1 className="text-3xl font-black">{t('catalog')}</h1>
-      <p className="text-white/60 text-sm mt-1">Valorant, LoL, FC 26, PUBG, Roblox, Free Fire, Netflix…</p>
+      <h1 className="text-3xl font-black">{menu ? (menu.label[lang]||menu.label.en) : t('catalog')}</h1>
+      <p className="text-white/60 text-sm mt-1">{menu ? <Link to="/catalog" className="underline">← {t('catalog')}</Link> : 'Valorant, LoL, FC 26, PUBG, Roblox, Free Fire, Netflix…'}</p>
 
       <div className="mt-6 flex flex-col lg:flex-row gap-3">
         <div className="flex-1 relative">
@@ -53,11 +56,13 @@ export default function Catalog(){
         </div>
       </div>
 
+      {!menu && (
       <div className="mt-4 flex gap-2 overflow-auto pb-2">
         {categories.map(c=>(
           <button key={c.id} onClick={()=>setCat(c.id)} className={`cat-pill px-4 py-2 rounded-full text-sm font-semibold border whitespace-nowrap ${category===c.id? 'bg-violet-600 border-violet-600 text-white':'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}`}>{catLabel(c.id)}</button>
         ))}
       </div>
+      )}
 
       <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filtered.map((p,i)=>(
