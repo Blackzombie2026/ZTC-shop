@@ -11,6 +11,7 @@ export const categories = [
   { id: 'freefire', label: 'Free Fire' },
   { id: 'netflix', label: 'Netflix' },
   { id: 'battlenet', label: 'Battle.net' },
+  { id: 'steamfresh', label: 'Steam Fresh Account' },
   { id: 'other', label: 'Autres' },
 ]
 
@@ -21,6 +22,7 @@ export const MENUS = [
   { id: 'login', icon: 'KeyRound', label: { fr: 'Login Games', en: 'Login Games', ar: 'ألعاب الدخول' }, products: ['fc27-pc', 'fc27-ps5'] },
   { id: 'accounts', icon: 'User', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
   { id: 'giftcards', icon: 'Gift', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
+  { id: 'steamfresh', icon: 'Sparkles', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: [] },
   { id: 'subs', icon: 'Crown', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
 ]
 

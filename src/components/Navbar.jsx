@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShoppingCart, User, Shield, LogOut, Package, MessageCircle, Info, Trophy, Home, Gamepad2, KeyRound, Gift, Crown, ChevronDown } from 'lucide-react'
+import { ShoppingCart, User, Shield, LogOut, Package, MessageCircle, Info, Trophy, Home, Gamepad2, KeyRound, Gift, Crown, Sparkles, ChevronDown } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLang, LANGS } from '../context/LanguageContext'
@@ -7,7 +7,7 @@ import { MENUS, initialProducts } from '../data/products'
 
 const providerLabel = { email:'Email', discord:'Discord', facebook:'Facebook', 'Internet Identity':'Internet Identity' }
 const providerColor = { email:'bg-emerald-500', discord:'bg-[#5865F2]', facebook:'bg-[#1877F2]', 'Internet Identity':'bg-violet-600' }
-const MENU_ICONS = { Gamepad2, KeyRound, User, Gift, Crown }
+const MENU_ICONS = { Gamepad2, KeyRound, User, Gift, Crown, Sparkles }
 
 export default function Navbar(){
   const { count } = useCart()
