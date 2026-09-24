@@ -18,6 +18,7 @@ import Tournaments from './pages/Tournaments'
 import TournamentDetail from './pages/TournamentDetail'
 import AnimatedBackground from './components/AnimatedBackground'
 import VideoBackground from './components/VideoBackground'
+import ChatWidget from './components/ChatWidget'
 
 const basename = (()=>{ const b = import.meta.env.BASE_URL || '/'; return b === '/' ? '/' : b.replace(/\/$/, '') })()
 
@@ -51,6 +52,7 @@ export default function App(){
               © 2026 ZTC SHOP • FR / EN / AR • TND
             </footer>
           </div>
+          <ChatWidget/>
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>
