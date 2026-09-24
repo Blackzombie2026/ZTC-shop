@@ -1,20 +1,22 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { CreditCard, Truck, Lock } from 'lucide-react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Smartphone, Copy, Check, Lock } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLang } from '../context/LanguageContext'
 
 function genCode(){ const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s=''; for(let i=0;i<16;i++) s+=chars[Math.floor(Math.random()*chars.length)]; return s.match(/.{1,4}/g).join('-') }
 
+export const D17_NUMBER = '20074821'
+
 export default function Checkout(){
   const { cart, total, clearCart } = useCart()
   const { user, addOrder } = useAuth()
   const { t } = useLang()
   const nav = useNavigate()
-  const [method, setMethod] = useState('card')
-  const [form, setForm] = useState({ name:'', email:'', phone:'', address:'', cardNumber:'', exp:'', cvc:'' })
+  const [form, setForm] = useState({ name:'', email:'', phone:'', address:'' })
   const [loading, setLoading] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   if(cart.length===0) return <div className="max-w-[600px] mx-auto px-4 py-16 text-center">Panier vide.</div>
   if(!user) return (
@@ -26,9 +28,12 @@ export default function Checkout(){
     </div>
   )
 
+  const copyNum = async ()=>{
+    try{ await navigator.clipboard.writeText(D17_NUMBER); setCopied(true); setTimeout(()=>setCopied(false), 2000) }catch{}
+  }
+
   const handlePay = async (e)=>{
     e.preventDefault()
-    if(method==='card' && (!form.cardNumber || !form.exp || !form.cvc)) return alert('Remplis les infos carte')
     if(!form.email || !form.name) return alert('Nom et email requis')
     const phoneClean = (form.phone||'').replace(/[\s.-]/g,'')
     if(!phoneClean) return alert('Numéro de téléphone requis pour te contacter (livraison)')
@@ -39,10 +44,10 @@ export default function Checkout(){
       id: 'ORD-'+Date.now().toString().slice(-8),
       date: new Date().toISOString(),
       items: cart.map(c=> ({...c, code: genCode()})),
-      total, method, customer: { name: form.name, email: form.email, phone: (form.phone||'').replace(/[\s.-]/g,''), address: form.address },
+      total, method: 'd17', customer: { name: form.name, email: form.email, phone: (form.phone||'').replace(/[\s.-]/g,''), address: form.address },
       userId: user.id, principal: user.principal, provider: user.provider,
-      // Tout code reste verrouillé jusqu'à confirmation admin (même payé par carte)
-      status: method==='cod' ? 'En attente (paiement à la livraison)' : 'En attente de confirmation (paiement reçu)'
+      // Tout code reste verrouillé jusqu'à confirmation admin après réception D17
+      status: 'En attente de confirmation (paiement reçu)'
     }
     addOrder(order)
     clearCart()
@@ -66,28 +71,23 @@ export default function Checkout(){
         </div>
 
         <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
-          <h3 className="font-bold mb-3">{t('pay_method')}</h3>
-          <div className="grid sm:grid-cols-2 gap-3">
-            <button type="button" onClick={()=>setMethod('card')} className={`p-4 rounded-xl border text-left flex gap-3 ${method==='card'?'bg-violet-600 border-violet-600':'bg-black/20 border-white/10'}`}>
-              <CreditCard size={20}/><div><div className="font-bold text-sm">{t('card')}</div><div className="text-xs opacity-70">{t('card_d')}</div></div>
-            </button>
-            <button type="button" onClick={()=>setMethod('cod')} className={`p-4 rounded-xl border text-left flex gap-3 ${method==='cod'?'bg-violet-600 border-violet-600':'bg-black/20 border-white/10'}`}>
-              <Truck size={20}/><div><div className="font-bold text-sm">{t('cod')}</div><div className="text-xs opacity-70">{t('cod_d')}</div></div>
-            </button>
-          </div>
-          {method==='card' && (
-            <div className="grid sm:grid-cols-3 gap-3 mt-4">
-              <input placeholder="Numéro de carte 4242 4242 4242 4242" value={form.cardNumber} onChange={e=>setForm({...form,cardNumber:e.target.value})} className="sm:col-span-3 px-3 py-3 rounded-xl bg-black/30 border border-white/10"/>
-              <input placeholder="MM/AA" value={form.exp} onChange={e=>setForm({...form,exp:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10"/>
-              <input placeholder="CVC" value={form.cvc} onChange={e=>setForm({...form,cvc:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10"/>
-              <div className="text-xs text-white/40 flex items-center gap-1"><Lock size={12}/> Chiffrement SSL • Aucun stockage carte</div>
+          <h3 className="font-bold mb-3 flex items-center gap-2"><Smartphone size={18} className="text-emerald-400"/> {t('d17t')}</h3>
+          <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-4 text-center">
+            <div className="text-xs text-white/60">{t('d17s1')}</div>
+            <div className="flex items-center justify-center gap-3 mt-1">
+              <span className="text-3xl font-black tracking-widest text-emerald-300">{D17_NUMBER}</span>
+              <button type="button" onClick={copyNum} className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-sm font-bold flex items-center gap-1">{copied ? <Check size={15}/> : <Copy size={15}/>} {copied ? t('d17copied') : t('d17copy')}</button>
             </div>
-          )}
-          {method==='cod' && <p className="text-xs text-amber-300 mt-3 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">Tu recevras une confirmation instantanée. Le code sera marqué “à révéler après livraison”. Notre livreur confirmera le paiement.</p>}
+            <div className="text-lg font-black mt-2">{t('pay')} {total.toFixed(2)} TND</div>
+          </div>
+          <ul className="text-sm text-white/70 mt-3 space-y-1.5">
+            <li>{t('d17s2')} 📸</li>
+            <li>{t('d17s3')} 💬 <Link to="/support" className="text-emerald-300 underline font-bold">Support</Link></li>
+          </ul>
         </div>
 
         <button disabled={loading} className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-700 font-black disabled:opacity-60">
-          {loading? '...' : method==='card' ? `${t('pay')} ${total.toFixed(2)} TND` : `${t('confirm_cod')} ${total.toFixed(2)} TND ${t('at_delivery')}`}
+          {loading? '...' : `${t('d17paybtn')} • ${total.toFixed(2)} TND`}
         </button>
       </form>
 

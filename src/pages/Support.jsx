@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MessageCircle, Clock, ChevronRight, Send, Gamepad2 } from 'lucide-react'
+import { MessageCircle, Clock, ChevronRight, Send, Image as ImageIcon } from 'lucide-react'
 import { useLang } from '../context/LanguageContext'
 import { useAuth } from '../context/AuthContext'
-import { SUPPORT } from '../data/support'
+
+export const isImgMsg = (txt)=> typeof txt==='string' && txt.startsWith('data:image')
 
 export default function Support(){
   const { t } = useLang()
@@ -11,6 +12,7 @@ export default function Support(){
   const [draft, setDraft] = useState('')
   const [sending, setSending] = useState(false)
   const bottomRef = useRef(null)
+  const fileRef = useRef(null)
   const thread = myThread()
 
   useEffect(()=>{ bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [thread.length])
@@ -34,6 +36,19 @@ export default function Support(){
     setSending(true)
     try{ await sendMessage({ text: draft }); setDraft('') }catch{}
     finally{ setSending(false) }
+  }
+
+  const handleFile = (e)=>{
+    const f = e.target.files?.[0]; if(!f) return
+    if(!f.type.startsWith('image/')) return alert('Image uniquement')
+    if(f.size > 3*1024*1024) return alert('Image trop lourde (max 3 Mo) — compresse la capture')
+    const rd = new FileReader()
+    rd.onload = async ()=>{
+      setSending(true)
+      try{ await sendMessage({ text: String(rd.result) }) }catch{}
+      finally{ setSending(false); if(fileRef.current) fileRef.current.value='' }
+    }
+    rd.readAsDataURL(f)
   }
 
   return (
@@ -61,7 +76,9 @@ export default function Support(){
               {thread.map(m=>(
                 <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-emerald-600/20 border border-emerald-500/30 mr-auto' : 'bg-violet-600 ml-auto'}`}>
                   {m.sender==='admin' && <div className="text-[10px] font-black text-emerald-300">ZTC ✓</div>}
-                  <div className="leading-snug">{m.text}</div>
+                  {isImgMsg(m.text)
+                    ? <a href={m.text} target="_blank" rel="noreferrer"><img src={m.text} alt="reçu" className="max-w-full rounded-xl max-h-64 object-contain"/></a>
+                    : <div className="leading-snug">{m.text}</div>}
                   <div className="text-[10px] opacity-60 mt-0.5">{m.date ? new Date(m.date).toLocaleString([], {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : ''}</div>
                 </div>
               ))}
@@ -69,6 +86,8 @@ export default function Support(){
             </div>
             <form onSubmit={handleSend} className="flex gap-2 mt-4">
               <input value={draft} onChange={e=>setDraft(e.target.value)} placeholder={t('chat_placeholder')} className="flex-1 px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-emerald-500"/>
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile}/>
+              <button type="button" onClick={()=>fileRef.current?.click()} title="Envoyer une capture (reçu D17)" className="px-4 rounded-xl bg-white/10 border border-white/10 hover:bg-white/20 font-black flex items-center"><ImageIcon size={16}/></button>
               <button disabled={sending || !draft.trim()} className="btn-shine px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-black disabled:opacity-50 flex items-center gap-2"><Send size={16}/> {t('sup_chat_tab')}</button>
             </form>
           </>
