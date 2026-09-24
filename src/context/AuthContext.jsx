@@ -597,7 +597,8 @@ export function AuthProvider({ children }){
       id: genId('msg'), userId: threadUserId, orderId,
       sender: isAdminMsg ? 'admin' : 'client',
       name: user.name || user.email || 'Client',
-      text: clean.slice(0, 1000), isRead: false,
+      // Images (data URL) gardées entières, textes limités à 1000
+      text: clean.startsWith('data:image') ? clean : clean.slice(0, 1000), isRead: false,
       date: new Date().toISOString(), cloud: !!(cloud && (user.cloud || isAdminMsg)),
     }
     setMessages(prev=> [...prev, msg])
