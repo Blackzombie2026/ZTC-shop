@@ -17,10 +17,10 @@ export const categories = [
 // Menus navigation (style top-up store) : menu -> IDs produits.
 // Les menus vides sont masqués auto. Envoie-moi la répartition exacte et je l'ajuste.
 export const MENUS = [
-  { id: 'topup', icon: 'Gamepad2', label: { fr: 'Top-Up Games', en: 'Top-Up Games', ar: 'شحن الألعاب' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1'] },
+  { id: 'topup', icon: 'Gamepad2', label: { fr: 'Top-Up Games', en: 'Top-Up Games', ar: 'شحن الألعاب' }, products: [] },
   { id: 'login', icon: 'KeyRound', label: { fr: 'Login Games', en: 'Login Games', ar: 'ألعاب الدخول' }, products: ['fc27-pc', 'fc27-ps5'] },
   { id: 'accounts', icon: 'User', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
-  { id: 'giftcards', icon: 'Gift', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
+  { id: 'giftcards', icon: 'Gift', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
   { id: 'subs', icon: 'Crown', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
 ]
 
