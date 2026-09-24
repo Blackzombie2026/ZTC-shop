@@ -23,6 +23,7 @@ export const MENUS = [
   { id: 'accounts', icon: 'User', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
   { id: 'giftcards', icon: 'Gift', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
   { id: 'steamfresh', icon: 'Sparkles', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: ['sf-fc27'] },
+  { id: 'steam', icon: 'Monitor', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam', en: 'Steam', ar: 'ستيم' }, products: ['steam-1'] },
   { id: 'subs', icon: 'Crown', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
 ]
 
