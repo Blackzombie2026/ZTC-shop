@@ -11,6 +11,7 @@ export default function Support(){
   const { user, myThread, sendMessage, refreshAll } = useAuth()
   const [draft, setDraft] = useState('')
   const [sending, setSending] = useState(false)
+  const [lightbox, setLightbox] = useState(null)
   const bottomRef = useRef(null)
   const fileRef = useRef(null)
   const thread = myThread()
@@ -41,14 +42,25 @@ export default function Support(){
   const handleFile = (e)=>{
     const f = e.target.files?.[0]; if(!f) return
     if(!f.type.startsWith('image/')) return alert('Image uniquement')
-    if(f.size > 3*1024*1024) return alert('Image trop lourde (max 3 Mo) — compresse la capture')
-    const rd = new FileReader()
-    rd.onload = async ()=>{
-      setSending(true)
-      try{ await sendMessage({ text: String(rd.result) }) }catch{}
-      finally{ setSending(false); if(fileRef.current) fileRef.current.value='' }
+    if(f.size > 8*1024*1024) return alert('Image trop lourde (max 8 Mo)')
+    // Compression locale : max 1280px + JPEG 72% → image légère qui s'affiche partout
+    const objUrl = URL.createObjectURL(f)
+    const img = new Image()
+    img.onload = async ()=>{
+      try{
+        const max = 1280
+        const scale = Math.min(1, max / Math.max(img.width, img.height))
+        const w = Math.max(1, Math.round(img.width*scale)), h = Math.max(1, Math.round(img.height*scale))
+        const cv = document.createElement('canvas'); cv.width = w; cv.height = h
+        cv.getContext('2d').drawImage(img, 0, 0, w, h)
+        const url = cv.toDataURL('image/jpeg', 0.72)
+        setSending(true)
+        try{ await sendMessage({ text: url }) }catch{}
+        finally{ setSending(false) }
+      }finally{ URL.revokeObjectURL(objUrl); if(fileRef.current) fileRef.current.value='' }
     }
-    rd.readAsDataURL(f)
+    img.onerror = ()=>{ URL.revokeObjectURL(objUrl); alert('Image illisible') }
+    img.src = objUrl
   }
 
   return (
@@ -77,7 +89,7 @@ export default function Support(){
                 <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-emerald-600/20 border border-emerald-500/30 mr-auto' : 'bg-violet-600 ml-auto'}`}>
                   {m.sender==='admin' && <div className="text-[10px] font-black text-emerald-300">ZTC ✓</div>}
                   {isImgMsg(m.text)
-                    ? <a href={m.text} target="_blank" rel="noreferrer"><img src={m.text} alt="reçu" className="max-w-full rounded-xl max-h-64 object-contain"/></a>
+                    ? <button type="button" onClick={()=>setLightbox(m.text)}><img src={m.text} alt="reçu" className="max-w-full rounded-xl max-h-64 object-contain"/></button>
                     : <div className="leading-snug">{m.text}</div>}
                   <div className="text-[10px] opacity-60 mt-0.5">{m.date ? new Date(m.date).toLocaleString([], {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : ''}</div>
                 </div>
@@ -103,6 +115,11 @@ export default function Support(){
           </details>
         ))}
       </div>
+      {lightbox && (
+        <div onClick={()=>setLightbox(null)} className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+          <img src={lightbox} alt="reçu plein écran" className="max-w-full max-h-full rounded-xl object-contain"/>
+        </div>
+      )}
     </div>
   )
 }

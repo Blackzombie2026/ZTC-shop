@@ -25,6 +25,7 @@ export default function Admin(){
   const totalUnread = threads.reduce((s,th)=> s+th.unread, 0)
   const [activeThread, setActiveThread] = useState(null)
   const [reply, setReply] = useState('')
+  const [lightbox, setLightbox] = useState(null)
   const currentThread = threads.find(th=> th.userId===activeThread)
   const threadMessages = messages.filter(m=> m.userId===activeThread).sort((a,b)=> new Date(a.date||0)-new Date(b.date||0))
   const openThread = (id)=>{ setActiveThread(id); setReply(''); markThreadRead(id) }
@@ -304,7 +305,7 @@ export default function Admin(){
                   {threadMessages.map(m=>(
                     <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-violet-600 ml-auto' : 'bg-white/10 border border-white/10 mr-auto'}`}>
                       {typeof m.text==='string' && m.text.startsWith('data:image')
-                        ? <a href={m.text} target="_blank" rel="noreferrer"><img src={m.text} alt="reçu" className="max-w-full rounded-xl max-h-72 object-contain"/></a>
+                        ? <button type="button" onClick={()=>setLightbox(m.text)}><img src={m.text} alt="reçu" className="max-w-full rounded-xl max-h-72 object-contain"/></button>
                         : <div className="leading-snug">{m.text}</div>}
                       <div className="text-[10px] opacity-60 mt-0.5">{m.date ? new Date(m.date).toLocaleString('fr-FR') : ''}</div>
                     </div>
@@ -314,6 +315,11 @@ export default function Admin(){
                   <input value={reply} onChange={e=>setReply(e.target.value)} placeholder={t('chat_placeholder')} className="flex-1 px-3 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm focus:outline-none focus:border-violet-500"/>
                   <button className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 font-black disabled:opacity-50" disabled={!reply.trim()}><Send size={16}/></button>
                 </form>
+                {lightbox && (
+                  <div onClick={()=>setLightbox(null)} className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+                    <img src={lightbox} alt="reçu plein écran" className="max-w-full max-h-full rounded-xl object-contain"/>
+                  </div>
+                )}
               </>
             )}
           </div>
