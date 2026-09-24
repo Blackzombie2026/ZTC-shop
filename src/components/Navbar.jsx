@@ -30,10 +30,11 @@ export default function Navbar(){
             const Icon = MENU_ICONS[m.icon] || Gift
             return (
               <div key={m.id} className="relative group">
-                <Link to={`/catalog?menu=${m.id}`} className="hover:text-white flex items-center gap-1 py-4">
+                <Link to={`/catalog?menu=${m.id}`} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border backdrop-blur transition hover:brightness-150 ${m.chip||'bg-white/5 border-white/10 text-white/70'}`}>
                   <Icon size={15}/>{m.label[lang]||m.label.en}<ChevronDown size={12} className="opacity-60"/>
                 </Link>
-                <div className="absolute top-full left-0 min-w-[220px] rounded-2xl bg-[#141417] border border-white/10 shadow-2xl p-2 hidden group-hover:block">
+                <div className="absolute top-full left-0 min-w-[220px] pt-2 hidden group-hover:block">
+                <div className="rounded-2xl bg-[#141417] border border-white/10 shadow-2xl p-2">
                   {m.products.map(pid=> prodById[pid] && (
                     <Link key={pid} to={`/product/${pid}`} className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 text-white/80 hover:text-white text-[13px]">
                       {prodById[pid].image
@@ -44,10 +45,11 @@ export default function Navbar(){
                   ))}
                   <Link to={`/catalog?menu=${m.id}`} className="block text-center mt-1 px-3 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-bold">Tout voir →</Link>
                 </div>
+                </div>
               </div>
             )
           })}
-          <Link to="/catalog" className="hover:text-white">{t('catalog')}</Link>
+          <Link to="/catalog" className="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/10 transition text-sm">{t('catalog')}</Link>
         </nav>
         <div className="flex-1" />
         {/* À propos + Tournois + Support */}
@@ -103,9 +105,9 @@ export default function Navbar(){
         <div className="max-w-[1280px] mx-auto px-4 py-2 flex gap-2 overflow-x-auto text-[13px] text-white/70">
           <Link to="/" className="flex items-center gap-1 whitespace-nowrap px-2 py-1"><Home size={14}/></Link>
           {visibleMenus.map(m=>{ const Icon = MENU_ICONS[m.icon] || Gift; return (
-            <Link key={m.id} to={`/catalog?menu=${m.id}`} className="flex items-center gap-1 whitespace-nowrap px-2 py-1"><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
+            <Link key={m.id} to={`/catalog?menu=${m.id}`} className={`flex items-center gap-1 whitespace-nowrap px-3 py-1.5 rounded-full border ${m.chip||'bg-white/5 border-white/10 text-white/70'}`}><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
           )})}
-          <Link to="/catalog" className="whitespace-nowrap px-2 py-1">{t('catalog')}</Link>
+          <Link to="/catalog" className="whitespace-nowrap px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/70">{t('catalog')}</Link>
         </div>
       </div>
     </header>

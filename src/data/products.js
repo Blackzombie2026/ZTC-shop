@@ -18,12 +18,12 @@ export const categories = [
 // Menus navigation (style top-up store) : menu -> IDs produits.
 // Les menus vides sont masqués auto. Envoie-moi la répartition exacte et je l'ajuste.
 export const MENUS = [
-  { id: 'topup', icon: 'Gamepad2', label: { fr: 'Top-Up Games', en: 'Top-Up Games', ar: 'شحن الألعاب' }, products: [] },
-  { id: 'login', icon: 'KeyRound', label: { fr: 'Login Games', en: 'Login Games', ar: 'ألعاب الدخول' }, products: ['fc27-pc', 'fc27-ps5'] },
-  { id: 'accounts', icon: 'User', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
-  { id: 'giftcards', icon: 'Gift', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
-  { id: 'steamfresh', icon: 'Sparkles', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: ['sf-fc27'] },
-  { id: 'subs', icon: 'Crown', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
+  { id: 'topup', icon: 'Gamepad2', chip: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-200', label: { fr: 'Top-Up Games', en: 'Top-Up Games', ar: 'شحن الألعاب' }, products: [] },
+  { id: 'login', icon: 'KeyRound', chip: 'bg-amber-500/10 border-amber-500/20 text-amber-200', label: { fr: 'Login Games', en: 'Login Games', ar: 'ألعاب الدخول' }, products: ['fc27-pc', 'fc27-ps5'] },
+  { id: 'accounts', icon: 'User', chip: 'bg-sky-500/10 border-sky-500/20 text-sky-200', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
+  { id: 'giftcards', icon: 'Gift', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
+  { id: 'steamfresh', icon: 'Sparkles', chip: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-200', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: ['sf-fc27'] },
+  { id: 'subs', icon: 'Crown', chip: 'bg-pink-500/10 border-pink-500/20 text-pink-200', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
 ]
 
 export const initialProducts = [
