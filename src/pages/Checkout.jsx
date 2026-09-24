@@ -73,7 +73,8 @@ export default function Checkout(){
         <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
           <h3 className="font-bold mb-3 flex items-center gap-2"><Smartphone size={18} className="text-emerald-400"/> {t('d17t')}</h3>
           <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-4 text-center">
-            <div className="text-xs text-white/60">{t('d17s1')}</div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqjUIA-tQu6Cns_hL30KEbbam8v8Fn32EmahoDQDE35Q&s=10" alt="D17" className="mx-auto h-14 w-14 rounded-2xl object-cover"/>
+            <div className="text-xs text-white/60 mt-2">{t('d17s1')}</div>
             <div className="flex items-center justify-center gap-3 mt-1">
               <span className="text-3xl font-black tracking-widest text-emerald-300">{D17_NUMBER}</span>
               <button type="button" onClick={copyNum} className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-sm font-bold flex items-center gap-1">{copied ? <Check size={15}/> : <Copy size={15}/>} {copied ? t('d17copied') : t('d17copy')}</button>
