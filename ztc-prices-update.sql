@@ -47,5 +47,8 @@ insert into public.products (id, category, name, subtitle, image, badge, descrip
 '[{"id":"sf-fc27-std","label":"Standard Edition","price":135}]',20,5.0)
 on conflict (id) do update set category=excluded.category, name=excluded.name, subtitle=excluded.subtitle, image=excluded.image, badge=excluded.badge, description=excluded.description, variants=excluded.variants, stock=excluded.stock;
 
+-- Steam : nom section Euro (+ Dollars à venir)
+update public.products set name = 'Steam Wallet Euro', subtitle = 'Cartes € • Europe' where id = 'steam-1';
+
 -- vérif :
 -- select id, category, jsonb_array_length(variants) as nb from public.products where id in ('lol-1','steam-1','roblox-1','psn-1','xbox-1','bnet-1');

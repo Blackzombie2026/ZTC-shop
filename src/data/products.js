@@ -23,7 +23,7 @@ export const MENUS = [
   { id: 'accounts', icon: 'User', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Accounts', en: 'Accounts', ar: 'حسابات' }, products: [] },
   { id: 'giftcards', icon: 'Gift', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Gift Cards', en: 'Gift Cards', ar: 'بطاقات الهدايا' }, products: ['val-1', 'pubg-1', 'ff-1', 'wz-1', 'r6-1', 'fc26-1', 'lol-1', 'steam-1', 'roblox-1', 'bnet-1', 'psn-1', 'xbox-1'] },
   { id: 'steamfresh', icon: 'Sparkles', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: ['sf-fc27'] },
-  { id: 'steam', icon: 'Monitor', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam', en: 'Steam', ar: 'ستيم' }, products: ['steam-1'] },
+  { id: 'steam', icon: 'Monitor', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Wallet Euro', en: 'Steam Wallet Euro', ar: 'Steam Wallet Euro' }, products: ['steam-1'] },
   { id: 'subs', icon: 'Crown', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
 ]
 
@@ -190,7 +190,7 @@ export const initialProducts = [
     stock: 40, rating: 4.7
   },
   {
-    id: 'steam-1', category: 'other', name: 'Steam Wallet Code', subtitle: 'EUR',
+    id: 'steam-1', category: 'other', name: 'Steam Wallet Euro', subtitle: 'Cartes € • Europe',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBt5pqA1fBJMEFHNDI_MsG9_INeuXR-mb-TOtzdLTcsw&s=10',
     badge: null, description: 'Code Steam Wallet à activer sur votre compte Steam.',
     variants: [
