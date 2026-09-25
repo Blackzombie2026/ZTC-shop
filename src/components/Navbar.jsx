@@ -30,7 +30,7 @@ export default function Navbar(){
             const Icon = MENU_ICONS[m.icon] || Gift
             return (
               <div key={m.id} className="relative group">
-                <Link to={`/catalog?menu=${m.id}`} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border backdrop-blur transition hover:brightness-150 ${m.chip||'bg-white/5 border-white/10 text-white/70'}`}>
+                <Link to={`/catalog?menu=${m.id}`} className="flex items-center gap-1.5 py-4 text-white font-semibold hover:text-lime-400 transition">
                   <Icon size={15}/>{m.label[lang]||m.label.en}<ChevronDown size={12} className="opacity-60"/>
                 </Link>
                 <div className="absolute top-full left-0 min-w-[220px] pt-2 hidden group-hover:block">
@@ -101,7 +101,7 @@ export default function Navbar(){
         <div className="max-w-[1536px] mx-auto px-4 py-2 flex gap-2 overflow-x-auto text-[13px] text-white/70">
           <Link to="/" className="flex items-center gap-1 whitespace-nowrap px-2 py-1"><Home size={14}/></Link>
           {visibleMenus.map(m=>{ const Icon = MENU_ICONS[m.icon] || Gift; return (
-            <Link key={m.id} to={`/catalog?menu=${m.id}`} className={`flex items-center gap-1 whitespace-nowrap px-3 py-1.5 rounded-full border ${m.chip||'bg-white/5 border-white/10 text-white/70'}`}><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
+            <Link key={m.id} to={`/catalog?menu=${m.id}`} className="flex items-center gap-1 whitespace-nowrap px-2 py-1 text-white font-semibold"><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
           )})}
         </div>
       </div>
