@@ -241,4 +241,148 @@ export const initialProducts = [
     ],
     stock: 50, rating: 4.9
   },
+  {
+    id: 'stmg-1', category: 'steam-games', name: 'GTA V Premium Edition', subtitle: 'Jeu Steam • Clé Europe',
+    image: '', badge: null, description: 'Grand Theft Auto V Premium Edition — clé Steam Europe.',
+    variants: [{ id: 'stmg-1-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'stmg-2', category: 'steam-games', name: 'Elden Ring', subtitle: 'Jeu Steam • Clé Europe',
+    image: '', badge: null, description: 'Elden Ring — clé Steam Europe.',
+    variants: [{ id: 'stmg-2-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'stmg-3', category: 'steam-games', name: 'Red Dead Redemption 2', subtitle: 'Jeu Steam • Clé Europe',
+    image: '', badge: null, description: 'Red Dead Redemption 2 — clé Steam Europe.',
+    variants: [{ id: 'stmg-3-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'stmg-4', category: 'steam-games', name: 'Cyberpunk 2077', subtitle: 'Jeu Steam • Clé Europe',
+    image: '', badge: null, description: 'Cyberpunk 2077 — clé Steam Europe.',
+    variants: [{ id: 'stmg-4-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'stmg-5', category: 'steam-games', name: "Baldur's Gate 3", subtitle: 'Jeu Steam • Clé Europe',
+    image: '', badge: null, description: "Baldur's Gate 3 — clé Steam Europe.",
+    variants: [{ id: 'stmg-5-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'stmg-6', category: 'steam-games', name: 'Rust', subtitle: 'Jeu Steam • Clé Europe',
+    image: '', badge: null, description: 'Rust — clé Steam Europe.',
+    variants: [{ id: 'stmg-6-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'bnetg-1', category: 'battlenet-games', name: 'Diablo IV', subtitle: 'Jeu Battle.net • Europe',
+    image: '', badge: null, description: 'Diablo IV — clé Battle.net Europe.',
+    variants: [{ id: 'bnetg-1-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'bnetg-2', category: 'battlenet-games', name: 'Diablo II Resurrected', subtitle: 'Jeu Battle.net • Europe',
+    image: '', badge: null, description: 'Diablo II Resurrected — clé Battle.net Europe.',
+    variants: [{ id: 'bnetg-2-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'bnetg-3', category: 'battlenet-games', name: 'World of Warcraft — 60 jours', subtitle: 'Battle.net • Abonnement',
+    image: '', badge: null, description: 'World of Warcraft — 60 jours de jeu, Battle.net Europe.',
+    variants: [{ id: 'bnetg-3-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'bnetg-4', category: 'battlenet-games', name: 'Call of Duty: Black Ops 6', subtitle: 'Jeu Battle.net • Europe',
+    image: '', badge: null, description: 'Call of Duty: Black Ops 6 — clé Battle.net Europe.',
+    variants: [{ id: 'bnetg-4-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'bnetg-5', category: 'battlenet-games', name: 'Overwatch 2 — Pack pièces', subtitle: 'Battle.net • Europe',
+    image: '', badge: null, description: 'Overwatch 2 — pack de pièces, Battle.net Europe.',
+    variants: [{ id: 'bnetg-5-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'bnetg-6', category: 'battlenet-games', name: 'StarCraft Remastered', subtitle: 'Jeu Battle.net • Europe',
+    image: '', badge: null, description: 'StarCraft Remastered — clé Battle.net Europe.',
+    variants: [{ id: 'bnetg-6-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'xboxg-1', category: 'xbox-games', name: 'Forza Horizon 5', subtitle: 'Jeu Xbox • Europe',
+    image: '', badge: null, description: 'Forza Horizon 5 — clé Xbox Europe.',
+    variants: [{ id: 'xboxg-1-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'xboxg-2', category: 'xbox-games', name: 'Starfield', subtitle: 'Jeu Xbox • Europe',
+    image: '', badge: null, description: 'Starfield — clé Xbox Europe.',
+    variants: [{ id: 'xboxg-2-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'xboxg-3', category: 'xbox-games', name: 'Sea of Thieves', subtitle: 'Jeu Xbox • Europe',
+    image: '', badge: null, description: 'Sea of Thieves — clé Xbox Europe.',
+    variants: [{ id: 'xboxg-3-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'xboxg-4', category: 'xbox-games', name: 'Halo Infinite — Campagne', subtitle: 'Jeu Xbox • Europe',
+    image: '', badge: null, description: 'Halo Infinite Campagne — clé Xbox Europe.',
+    variants: [{ id: 'xboxg-4-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'xboxg-5', category: 'xbox-games', name: 'Gears 5', subtitle: 'Jeu Xbox • Europe',
+    image: '', badge: null, description: 'Gears 5 — clé Xbox Europe.',
+    variants: [{ id: 'xboxg-5-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'xboxg-6', category: 'xbox-games', name: 'Minecraft', subtitle: 'Jeu Xbox • Europe',
+    image: '', badge: null, description: 'Minecraft — clé Xbox Europe.',
+    variants: [{ id: 'xboxg-6-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'ps5g-1', category: 'ps5-games', name: 'God of War Ragnarök', subtitle: 'Jeu PS5 • Europe',
+    image: '', badge: null, description: 'God of War Ragnarök — PS5 Europe.',
+    variants: [{ id: 'ps5g-1-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'ps5g-2', category: 'ps5-games', name: "Marvel's Spider-Man 2", subtitle: 'Jeu PS5 • Europe',
+    image: '', badge: null, description: "Marvel's Spider-Man 2 — PS5 Europe.",
+    variants: [{ id: 'ps5g-2-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'ps5g-3', category: 'ps5-games', name: 'Horizon Forbidden West', subtitle: 'Jeu PS5 • Europe',
+    image: '', badge: null, description: 'Horizon Forbidden West — PS5 Europe.',
+    variants: [{ id: 'ps5g-3-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'ps5g-4', category: 'ps5-games', name: 'The Last of Us Part II Remastered', subtitle: 'Jeu PS5 • Europe',
+    image: '', badge: null, description: 'The Last of Us Part II Remastered — PS5 Europe.',
+    variants: [{ id: 'ps5g-4-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'ps5g-5', category: 'ps5-games', name: 'Ghost of Tsushima Director’s Cut', subtitle: 'Jeu PS5 • Europe',
+    image: '', badge: null, description: 'Ghost of Tsushima Director’s Cut — PS5 Europe.',
+    variants: [{ id: 'ps5g-5-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
+  {
+    id: 'ps5g-6', category: 'ps5-games', name: 'Gran Turismo 7', subtitle: 'Jeu PS5 • Europe',
+    image: '', badge: null, description: 'Gran Turismo 7 — PS5 Europe.',
+    variants: [{ id: 'ps5g-6-std', label: 'Standard', price: 0.00 }],
+    stock: 20, rating: 4.8
+  },
 ]

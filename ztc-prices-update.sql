@@ -59,5 +59,33 @@ on conflict (id) do update set category=excluded.category, name=excluded.name, s
 -- FC27 PC : affiche accueil 130 / 240
 update public.products set variants = '[{"id":"fc27-pc-std","label":"Standard Edition – Full Access","price":130},{"id":"fc27-pc-ult","label":"Ultimate Edition – Full Access","price":240}]'::jsonb where id = 'fc27-pc';
 
+-- Jeux plateformes (prix 0 = à fixer par le propriétaire)
+insert into public.products (id, category, name, subtitle, image, badge, description, variants, stock, rating) values
+('stmg-1','steam-games','GTA V Premium Edition','Jeu Steam • Clé Europe',null,null,'Grand Theft Auto V Premium Edition — clé Steam Europe.','[{"id":"stmg-1-std","label":"Standard","price":0}]',20,4.8),
+('stmg-2','steam-games','Elden Ring','Jeu Steam • Clé Europe',null,null,'Elden Ring — clé Steam Europe.','[{"id":"stmg-2-std","label":"Standard","price":0}]',20,4.8),
+('stmg-3','steam-games','Red Dead Redemption 2','Jeu Steam • Clé Europe',null,null,'Red Dead Redemption 2 — clé Steam Europe.','[{"id":"stmg-3-std","label":"Standard","price":0}]',20,4.8),
+('stmg-4','steam-games','Cyberpunk 2077','Jeu Steam • Clé Europe',null,null,'Cyberpunk 2077 — clé Steam Europe.','[{"id":"stmg-4-std","label":"Standard","price":0}]',20,4.8),
+('stmg-5','steam-games','Baldur''s Gate 3','Jeu Steam • Clé Europe',null,null,'Baldur''s Gate 3 — clé Steam Europe.','[{"id":"stmg-5-std","label":"Standard","price":0}]',20,4.8),
+('stmg-6','steam-games','Rust','Jeu Steam • Clé Europe',null,null,'Rust — clé Steam Europe.','[{"id":"stmg-6-std","label":"Standard","price":0}]',20,4.8),
+('bnetg-1','battlenet-games','Diablo IV','Jeu Battle.net • Europe',null,null,'Diablo IV — clé Battle.net Europe.','[{"id":"bnetg-1-std","label":"Standard","price":0}]',20,4.8),
+('bnetg-2','battlenet-games','Diablo II Resurrected','Jeu Battle.net • Europe',null,null,'Diablo II Resurrected — clé Battle.net Europe.','[{"id":"bnetg-2-std","label":"Standard","price":0}]',20,4.8),
+('bnetg-3','battlenet-games','World of Warcraft — 60 jours','Battle.net • Abonnement',null,null,'World of Warcraft — 60 jours de jeu, Battle.net Europe.','[{"id":"bnetg-3-std","label":"Standard","price":0}]',20,4.8),
+('bnetg-4','battlenet-games','Call of Duty: Black Ops 6','Jeu Battle.net • Europe',null,null,'Call of Duty: Black Ops 6 — clé Battle.net Europe.','[{"id":"bnetg-4-std","label":"Standard","price":0}]',20,4.8),
+('bnetg-5','battlenet-games','Overwatch 2 — Pack pièces','Battle.net • Europe',null,null,'Overwatch 2 — pack de pièces, Battle.net Europe.','[{"id":"bnetg-5-std","label":"Standard","price":0}]',20,4.8),
+('bnetg-6','battlenet-games','StarCraft Remastered','Jeu Battle.net • Europe',null,null,'StarCraft Remastered — clé Battle.net Europe.','[{"id":"bnetg-6-std","label":"Standard","price":0}]',20,4.8),
+('xboxg-1','xbox-games','Forza Horizon 5','Jeu Xbox • Europe',null,null,'Forza Horizon 5 — clé Xbox Europe.','[{"id":"xboxg-1-std","label":"Standard","price":0}]',20,4.8),
+('xboxg-2','xbox-games','Starfield','Jeu Xbox • Europe',null,null,'Starfield — clé Xbox Europe.','[{"id":"xboxg-2-std","label":"Standard","price":0}]',20,4.8),
+('xboxg-3','xbox-games','Sea of Thieves','Jeu Xbox • Europe',null,null,'Sea of Thieves — clé Xbox Europe.','[{"id":"xboxg-3-std","label":"Standard","price":0}]',20,4.8),
+('xboxg-4','xbox-games','Halo Infinite — Campagne','Jeu Xbox • Europe',null,null,'Halo Infinite Campagne — clé Xbox Europe.','[{"id":"xboxg-4-std","label":"Standard","price":0}]',20,4.8),
+('xboxg-5','xbox-games','Gears 5','Jeu Xbox • Europe',null,null,'Gears 5 — clé Xbox Europe.','[{"id":"xboxg-5-std","label":"Standard","price":0}]',20,4.8),
+('xboxg-6','xbox-games','Minecraft','Jeu Xbox • Europe',null,null,'Minecraft — clé Xbox Europe.','[{"id":"xboxg-6-std","label":"Standard","price":0}]',20,4.8),
+('ps5g-1','ps5-games','God of War Ragnarök','Jeu PS5 • Europe',null,null,'God of War Ragnarök — PS5 Europe.','[{"id":"ps5g-1-std","label":"Standard","price":0}]',20,4.8),
+('ps5g-2','ps5-games','Marvel''s Spider-Man 2','Jeu PS5 • Europe',null,null,'Marvel''s Spider-Man 2 — PS5 Europe.','[{"id":"ps5g-2-std","label":"Standard","price":0}]',20,4.8),
+('ps5g-3','ps5-games','Horizon Forbidden West','Jeu PS5 • Europe',null,null,'Horizon Forbidden West — PS5 Europe.','[{"id":"ps5g-3-std","label":"Standard","price":0}]',20,4.8),
+('ps5g-4','ps5-games','The Last of Us Part II Remastered','Jeu PS5 • Europe',null,null,'The Last of Us Part II Remastered — PS5 Europe.','[{"id":"ps5g-4-std","label":"Standard","price":0}]',20,4.8),
+('ps5g-5','ps5-games','Ghost of Tsushima Director’s Cut','Jeu PS5 • Europe',null,null,'Ghost of Tsushima Director’s Cut — PS5 Europe.','[{"id":"ps5g-5-std","label":"Standard","price":0}]',20,4.8),
+('ps5g-6','ps5-games','Gran Turismo 7','Jeu PS5 • Europe',null,null,'Gran Turismo 7 — PS5 Europe.','[{"id":"ps5g-6-std","label":"Standard","price":0}]',20,4.8)
+on conflict (id) do update set category=excluded.category, name=excluded.name, subtitle=excluded.subtitle, description=excluded.description, variants=excluded.variants, stock=excluded.stock;
+
 -- vérif :
 -- select id, category, jsonb_array_length(variants) as nb from public.products where id in ('lol-1','steam-1','roblox-1','psn-1','xbox-1','bnet-1');
