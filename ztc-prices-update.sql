@@ -56,5 +56,8 @@ insert into public.products (id, category, name, subtitle, image, badge, descrip
 '[{"id":"stm-usd10","label":"Carte 10$","price":40},{"id":"stm-usd20","label":"Carte 20$","price":77},{"id":"stm-usd30","label":"Carte 30$","price":120},{"id":"stm-usd50","label":"Carte 50$","price":190},{"id":"stm-usd100","label":"Carte 100$","price":380}]',50,4.9)
 on conflict (id) do update set category=excluded.category, name=excluded.name, subtitle=excluded.subtitle, image=excluded.image, description=excluded.description, variants=excluded.variants, stock=excluded.stock;
 
+-- FC27 PC : affiche accueil 130 / 240
+update public.products set variants = '[{"id":"fc27-pc-std","label":"Standard Edition – Full Access","price":130},{"id":"fc27-pc-ult","label":"Ultimate Edition – Full Access","price":240}]'::jsonb where id = 'fc27-pc';
+
 -- vérif :
 -- select id, category, jsonb_array_length(variants) as nb from public.products where id in ('lol-1','steam-1','roblox-1','psn-1','xbox-1','bnet-1');

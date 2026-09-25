@@ -74,8 +74,23 @@ export default function Home(){
         </div>
       </section>
 
-      {/* Bandeau défilant */}
-      <div className="marquee overflow-hidden border-y border-white/10 bg-white/[0.03] py-3 select-none" dir="ltr">
+      {/* Affiche FC27 PC Steam */}
+      <section className="max-w-[1280px] mx-auto px-4 -mt-2 mb-2">
+        <div className="reveal rounded-3xl overflow-hidden border border-emerald-500/30 bg-gradient-to-r from-emerald-900/40 via-[#141417] to-[#141417] grid md:grid-cols-[220px_1fr] items-stretch">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhc6Hl7O2D2ZMM5mGE1Ou40bK_4_xPxWdJW8VsQ7faUHqHInv68ByFjCMH&s=10" alt="EA FC 27 PC" className="w-full h-44 md:h-full object-cover"/>
+          <div className="p-5 md:p-6 flex flex-col justify-center gap-2">
+            <span className="w-fit text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-500 text-black">{t('promo27_badge')}</span>
+            <h2 className="text-2xl md:text-3xl font-black">{t('promo27_title')}</h2>
+            <p className="text-sm text-white/60">{t('promo27_sub')}</p>
+            <div className="flex flex-wrap gap-2.5 mt-2">
+              <Link to="/product/fc27-pc" className="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-black text-sm">{t('promo27_std')} • 130 TND</Link>
+              <Link to="/product/fc27-pc" className="px-5 py-3 rounded-xl bg-white text-black hover:bg-white/85 font-black text-sm">{t('promo27_ult')} • 240 TND</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bandeau défilant */}      <div className="marquee overflow-hidden border-y border-white/10 bg-white/[0.03] py-3 select-none" dir="ltr">
         <div className="marquee-track text-sm font-black tracking-widest text-white/70">
           {[0,1].map(half=>(
             <div key={half} className="flex gap-10 items-center shrink-0" aria-hidden={half===1}>

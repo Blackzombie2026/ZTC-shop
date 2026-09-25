@@ -75,8 +75,8 @@ export const initialProducts = [
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhc6Hl7O2D2ZMM5mGE1Ou40bK_4_xPxWdJW8VsQ7faUHqHInv68ByFjCMH&s=10',
     badge: 'NEW', description: 'Compte Steam FC 27 version PC en plein accès : email et mot de passe modifiables, jeu à vie. Livraison 5-30 min avec identifiants + guide d’activation.',
     variants: [
-      { id: 'fc27-pc-std', label: 'Standard Edition – Full Access', price: 140.00 },
-      { id: 'fc27-pc-ult', label: 'Ultimate Edition – Full Access', price: 220.00 },
+      { id: 'fc27-pc-std', label: 'Standard Edition – Full Access', price: 130.00 },
+      { id: 'fc27-pc-ult', label: 'Ultimate Edition – Full Access', price: 240.00 },
     ],
     stock: 25, rating: 5.0
   },
