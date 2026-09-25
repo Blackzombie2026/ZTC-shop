@@ -7,10 +7,12 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(){}
   render(){
     if(this.state.err){
+      const msg = String(this.state.err && this.state.err.message || this.state.err)
       return (
-        <div style={{maxWidth:520,margin:'60px auto',padding:24,textAlign:'center',fontFamily:'sans-serif',color:'#fff',background:'#141417',borderRadius:16}}>
+        <div style={{maxWidth:560,margin:'60px auto',padding:24,textAlign:'center',fontFamily:'sans-serif',color:'#fff',background:'#141417',borderRadius:16}}>
           <h2>Oups — problème d'affichage</h2>
           <p style={{opacity:.7,fontSize:14}}>Le site a besoin d'être rechargé (nouvelle version).</p>
+          <p style={{opacity:.6,fontSize:11,marginTop:8,direction:'ltr',wordBreak:'break-all'}}>Erreur : {msg.slice(0,300)}</p>
           <button onClick={()=>{ try{ localStorage.removeItem('products_db') }catch{}; location.reload() }} style={{marginTop:12,padding:'12px 24px',borderRadius:12,border:0,background:'#a3e635',color:'#000',fontWeight:800,cursor:'pointer'}}>↻ Recharger le site</button>
         </div>
       )
