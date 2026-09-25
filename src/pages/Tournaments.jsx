@@ -8,7 +8,7 @@ const statusStyle = {
   open: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
   soon: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
   done: 'bg-white/10 text-white/50 border-white/10',
-  pending: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30',
+  pending: 'bg-lime-500/20 text-lime-300 border-lime-500/30',
 }
 
 export default function Tournaments(){
@@ -79,16 +79,16 @@ export default function Tournaments(){
       {list.length===0 && <div className="text-center py-16 text-white/50">{t('no_result')}</div>}
 
       {/* Proposer un tournoi */}
-      <div className="mt-12 rounded-3xl bg-gradient-to-b from-fuchsia-600/15 to-transparent border border-fuchsia-500/20 p-6">
-        <h2 className="text-xl font-black flex items-center gap-2"><Plus size={18} className="text-fuchsia-400"/> {t('tr_propose_t')}</h2>
+      <div className="mt-12 rounded-3xl bg-gradient-to-b from-lime-600/15 to-transparent border border-lime-500/20 p-6">
+        <h2 className="text-xl font-black flex items-center gap-2"><Plus size={18} className="text-lime-400"/> {t('tr_propose_t')}</h2>
         <p className="text-sm text-white/60 mt-1">{t('tr_propose_d')}</p>
         {!user ? (
-          <Link to="/login" state={{ from: '/tournaments' }} className="inline-block mt-4 px-6 py-3 rounded-xl bg-violet-600 font-bold">{t('login')}</Link>
+          <Link to="/login" state={{ from: '/tournaments' }} className="inline-block mt-4 px-6 py-3 rounded-xl bg-lime-400 text-black font-black">{t('login')}</Link>
         ) : sent ? (
           <div className="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-bold flex items-center gap-2"><Check size={18}/> {t('tr_propose_ok')}</div>
         ) : (
           <form onSubmit={propose} className="mt-4 grid sm:grid-cols-2 gap-3">
-            <input placeholder={t('tr_title_ph')} value={form.title} onChange={e=>setForm({...form,title:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-fuchsia-500"/>
+            <input placeholder={t('tr_title_ph')} value={form.title} onChange={e=>setForm({...form,title:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-lime-500"/>
             <select value={form.game} onChange={e=>setForm({...form,game:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10">
               <option value="valorant">Valorant</option><option value="lol">LoL</option><option value="fc26">FC26</option><option value="fc27">FC27</option><option value="pubg">PUBG</option><option value="warzone">Warzone</option><option value="r6">Rainbow Six</option><option value="roblox">Roblox</option><option value="freefire">Free Fire</option><option value="other">Autres</option>
             </select>
@@ -96,14 +96,14 @@ export default function Tournaments(){
             <input placeholder={t('tr_prize')} value={form.prize} onChange={e=>setForm({...form,prize:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10"/>
             <input placeholder={t('tr_max')} type="number" value={form.max_teams} onChange={e=>setForm({...form,max_teams:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10"/>
             <input placeholder={t('tr_rules')} value={form.rules} onChange={e=>setForm({...form,rules:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10"/>
-            <button className="btn-shine sm:col-span-2 py-3.5 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 font-black">{t('tr_submit')}</button>
+            <button className="btn-shine sm:col-span-2 py-3.5 rounded-xl bg-lime-600 hover:bg-lime-500 font-black">{t('tr_submit')}</button>
           </form>
         )}
         {mine.length>0 && (
           <div className="mt-4">
             <div className="text-sm font-black mb-2">{t('tr_my_proposals')}</div>
             <div className="flex flex-wrap gap-2">
-              {mine.map(m=> <span key={m.id} className="text-xs px-3 py-1.5 rounded-full bg-fuchsia-500/15 border border-fuchsia-500/30 text-fuchsia-300">⏳ {m.title}</span>)}
+              {mine.map(m=> <span key={m.id} className="text-xs px-3 py-1.5 rounded-full bg-lime-500/15 border border-lime-500/30 text-lime-300">⏳ {m.title}</span>)}
             </div>
           </div>
         )}

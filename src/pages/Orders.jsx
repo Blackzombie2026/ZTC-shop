@@ -8,7 +8,7 @@ export default function Orders(){
   const { t } = useLang()
   const [retrying, setRetrying] = useState(null)
   const [retryMsg, setRetryMsg] = useState('')
-  if(!user) return <div className="max-w-[800px] mx-auto px-4 py-16 text-center">{t('login_required')}<br/><Link to="/login" className="inline-block mt-4 px-6 py-3 rounded-xl bg-violet-600 font-bold">{t('login')}</Link></div>
+  if(!user) return <div className="max-w-[800px] mx-auto px-4 py-16 text-center">{t('login_required')}<br/><Link to="/login" className="inline-block mt-4 px-6 py-3 rounded-xl bg-lime-400 text-black font-black">{t('login')}</Link></div>
   const list = myOrders()
   const badge = (s)=>{
     if(s.includes('Annulée')) return 'bg-red-500/20 text-red-300 border-red-500/30'
@@ -20,7 +20,7 @@ export default function Orders(){
     <div className="max-w-[800px] mx-auto px-4 py-16 text-center">
       <h2 className="text-xl font-black">{t('no_orders')}</h2>
       <p className="text-white/60 text-sm mt-1">{t('no_orders_d')}</p>
-      <Link to="/catalog" className="inline-block mt-4 px-6 py-3 rounded-xl bg-violet-600 font-bold">{t('go_catalog')}</Link>
+      <Link to="/catalog" className="inline-block mt-4 px-6 py-3 rounded-xl bg-lime-400 text-black font-black">{t('go_catalog')}</Link>
     </div>
   )
   return (
@@ -31,7 +31,7 @@ export default function Orders(){
       {retryMsg && <p className="mt-2 text-xs text-white/70">{retryMsg}</p>}
       <div className="mt-6 space-y-3">
         {list.map(o=>(
-          <div key={o.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-violet-500/30">
+          <div key={o.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-lime-400/40">
             <Link to={`/orders/${o.id}`} className="block">
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="font-bold">{o.id} • {new Date(o.date).toLocaleString()}</div>
@@ -42,7 +42,7 @@ export default function Orders(){
             {o.syncError && (
               <div className="mt-2 flex items-center gap-2 text-xs">
                 <span className="px-2 py-1 rounded-full font-bold border bg-red-500/20 text-red-300 border-red-500/30">⚠️ Non envoyée au support</span>
-                <button disabled={retrying===o.id} onClick={async()=>{ setRetrying(o.id); setRetryMsg(''); const ok = await retryOrder(o.id); setRetrying(null); setRetryMsg(ok ? '✓ Envoyée !' : '✗ Échec — vérifie ta connexion puis réessaie.') }} className="px-3 py-1.5 rounded-xl bg-violet-600 font-bold disabled:opacity-60">↻ Renvoyer</button>
+                <button disabled={retrying===o.id} onClick={async()=>{ setRetrying(o.id); setRetryMsg(''); const ok = await retryOrder(o.id); setRetrying(null); setRetryMsg(ok ? '✓ Envoyée !' : '✗ Échec — vérifie ta connexion puis réessaie.') }} className="px-3 py-1.5 rounded-xl bg-lime-400 text-black font-black disabled:opacity-60">↻ Renvoyer</button>
               </div>
             )}
           </div>

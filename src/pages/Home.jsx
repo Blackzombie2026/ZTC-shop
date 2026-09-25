@@ -140,10 +140,10 @@ export default function Home(){
               <p className="text-sm text-white/70 mt-2 leading-relaxed">“{r.text}”</p>
               <div className="mt-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center font-black text-sm">{r.name[0]}</div>
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-lime-400 to-emerald-600 text-black flex items-center justify-center font-black text-sm">{r.name[0]}</div>
                   <span className="font-bold text-sm">{r.name}</span>
                 </div>
-                <span className="text-[11px] px-2 py-1 rounded-full bg-violet-600/20 border border-violet-500/20 text-violet-300">{r.tag}</span>
+                <span className="text-[11px] px-2 py-1 rounded bg-lime-400/15 border border-lime-400/25 text-lime-300">{r.tag}</span>
               </div>
             </div>
           ))}

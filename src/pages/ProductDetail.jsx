@@ -36,7 +36,7 @@ export default function ProductDetail(){
         </div>
       </div>
       <div>
-        <div className="text-xs tracking-widest text-violet-400 uppercase font-bold">{product.category} • ⭐ {product.rating} • {product.stock} en stock</div>
+        <div className="text-xs tracking-widest text-lime-400 uppercase font-bold">{product.category} • ⭐ {product.rating} • {product.stock} en stock</div>
         <h1 className="text-3xl font-black mt-1">{product.name}</h1>
         <div className="text-white/60">{product.subtitle}</div>
         <p className="text-sm text-white/70 mt-3 leading-relaxed">{product.description} Livraison instantanée après paiement. Support 24/7.</p>
@@ -45,9 +45,9 @@ export default function ProductDetail(){
           <div className="text-sm font-bold mb-2">{t('choose_amount')}</div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {product.variants.map(v=>(
-              <button key={v.id} onClick={()=>setSelected(v.id)} className={`p-3 rounded-xl border text-left ${selected===v.id? 'bg-violet-600 border-violet-600 text-white':'bg-white/5 border-white/10 hover:bg-white/10'}`}>
+              <button key={v.id} onClick={()=>setSelected(v.id)} className={`p-3 rounded-xl border text-left ${selected===v.id? 'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10 hover:bg-white/10'}`}>
                 <div className="font-bold text-sm">{v.label}</div>
-                <div className={`text-sm ${selected===v.id? 'text-white':'text-violet-400'}`}>{v.price.toFixed(2)} TND</div>
+                <div className={`text-sm ${selected===v.id? 'text-white':'text-lime-400'}`}>{v.price.toFixed(2)} TND</div>
                 {selected===v.id && <div className="text-[10px] mt-1 flex items-center gap-1"><Check size={12}/> {t('selected')}</div>}
               </button>
             ))}
@@ -62,11 +62,11 @@ export default function ProductDetail(){
           </div>
           <div className="flex-1 text-right">
             <div className="text-xs text-white/50">{t('total')}</div>
-            <div className="text-xl font-black text-violet-400">{(variant.price * qty).toFixed(2)} TND</div>
+            <div className="text-xl font-black text-lime-400">{(variant.price * qty).toFixed(2)} TND</div>
           </div>
         </div>
 
-        <button onClick={handleAdd} className="mt-4 w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-700 font-black flex items-center justify-center gap-2 text-white">
+        <button onClick={handleAdd} className="mt-4 w-full py-4 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-black flex items-center justify-center gap-2 text-white">
           <ShoppingCart size={18}/> {t('add_cart')}
         </button>
         <div className="mt-3 flex items-center justify-center gap-2 text-xs text-white/50"><ShieldCheck size={14} className="text-emerald-400"/> Paiement sécurisé • Livraison instantanée • Code réutilisable dans l'historique</div>

@@ -129,13 +129,13 @@ export default function Admin(){
         </div>
       )}
       <div className="flex flex-wrap gap-2 mt-4">
-        <button onClick={()=>setTab('orders')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='orders'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}>
+        <button onClick={()=>setTab('orders')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='orders'?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10'}`}>
           {t('orders_tab')} ({orders.length}){pendingCount>0 && <span className="ml-2 px-2 py-0.5 rounded-full bg-amber-400 text-black text-xs">{pendingCount} à confirmer</span>}
         </button>
-        <button onClick={()=>setTab('products')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='products'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}>{t('products_stock')}</button>
-        <button onClick={()=>setTab('users')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='users'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><Users size={15}/> Comptes ({accounts.length})</button>
-        <button onClick={()=>setTab('messages')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='messages'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><MessageCircle size={15}/> {t('messages_tab')} {totalUnread>0 && <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-xs animate-pulse">{totalUnread}</span>}</button>
-        <button onClick={()=>setTab('tournaments')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='tournaments'?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10'}`}><Trophy size={15}/> {t('tournaments')} ({tournaments.length})</button>
+        <button onClick={()=>setTab('products')} className={`px-4 py-2 rounded-xl text-sm font-bold border ${tab==='products'?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10'}`}>{t('products_stock')}</button>
+        <button onClick={()=>setTab('users')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='users'?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10'}`}><Users size={15}/> Comptes ({accounts.length})</button>
+        <button onClick={()=>setTab('messages')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='messages'?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10'}`}><MessageCircle size={15}/> {t('messages_tab')} {totalUnread>0 && <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-xs animate-pulse">{totalUnread}</span>}</button>
+        <button onClick={()=>setTab('tournaments')} className={`px-4 py-2 rounded-xl text-sm font-bold border flex items-center gap-1.5 ${tab==='tournaments'?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10'}`}><Trophy size={15}/> {t('tournaments')} ({tournaments.length})</button>
         <button onClick={initIfNeeded} className="ml-auto text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10">Réinitialiser DB démo</button>
       </div>
 
@@ -148,13 +148,13 @@ export default function Admin(){
             </select>
             <input placeholder="Label (ex 1000 VP)" value={newProd.label} onChange={e=>setNewProd({...newProd,label:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
             <input placeholder="Prix TND" type="number" value={newProd.price} onChange={e=>setNewProd({...newProd,price:e.target.value})} className="px-3 py-2.5 rounded-xl bg-black/30 border border-white/10"/>
-            <button onClick={handleAddVariant} className="px-4 py-2.5 rounded-xl bg-violet-600 font-bold flex items-center justify-center gap-2"><Plus size={16}/> Ajouter</button>
+            <button onClick={handleAddVariant} className="px-4 py-2.5 rounded-xl bg-lime-400 text-black font-black flex items-center justify-center gap-2"><Plus size={16}/> Ajouter</button>
           </div>
 
           {/* Mêmes catégories que les clients */}
           <div className="mt-4 flex gap-2 overflow-auto pb-2">
             {categories.map(c=>(
-              <button key={c.id} onClick={()=>setCatFilter(c.id)} className={`cat-pill px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${catFilter===c.id?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 text-white/70'}`}>{c.id==='all'?t('all'):c.label} ({c.id==='all'?prods.length:prods.filter(p=>p.category===c.id).length})</button>
+              <button key={c.id} onClick={()=>setCatFilter(c.id)} className={`cat-pill px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${catFilter===c.id?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10 text-white/70'}`}>{c.id==='all'?t('all'):c.label} ({c.id==='all'?prods.length:prods.filter(p=>p.category===c.id).length})</button>
             ))}
           </div>
 
@@ -164,23 +164,23 @@ export default function Admin(){
               <div key={p.id} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10">
                 <div className="relative h-40 overflow-hidden">
                   <img src={p.image || `${import.meta.env.BASE_URL}favicon.svg`} alt={p.name} className="w-full h-full object-cover"/>
-                  {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600">{p.badge}</span>}
+                  {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded bg-lime-400 text-black">{p.badge}</span>}
                   <span className="absolute bottom-2 right-2 text-xs bg-black/60 backdrop-blur px-2 py-1 rounded-full border border-white/10">{p.stock} {t('in_stock')}</span>
                   <button onClick={()=>deleteProd(p.id)} title="Supprimer" className="absolute top-2 right-2 p-2 rounded-xl bg-red-600/90 text-white"><Trash2 size={14}/></button>
                 </div>
                 <div className="p-4">
-                  <div className="text-[11px] tracking-widest text-violet-400 uppercase font-bold">{p.category}</div>
-                  <Link to={`/product/${p.id}`} className="font-bold hover:text-violet-300">{p.name}</Link>
+                  <div className="text-[11px] tracking-widest text-lime-400 uppercase font-bold">{p.category}</div>
+                  <Link to={`/product/${p.id}`} className="font-bold hover:text-lime-300">{p.name}</Link>
                   <div className="text-xs text-white/50 line-clamp-1">{p.subtitle}</div>
                   <div className="mt-2 flex flex-wrap gap-1">
                     {p.variants.map(v=> <span key={v.id} className="text-[11px] px-2 py-1 rounded-full bg-white/5 border border-white/10">{v.label} • {v.price.toFixed(2)} TND</span>)}
                   </div>
-                  <div className="text-xs mt-2">Stock: <span className="font-bold text-violet-400">{p.stock}</span> codes • ⭐ {p.rating}</div>
+                  <div className="text-xs mt-2">Stock: <span className="font-bold text-lime-400">{p.stock}</span> codes • ⭐ {p.rating}</div>
                   <div className="flex gap-2 mt-3">
                     <button onClick={()=>changeStock(p.id,-10)} className="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-xs">-10</button>
                     <button onClick={()=>changeStock(p.id,-1)} className="flex-1 py-2 rounded-xl bg-white/5 border border-white/10 text-xs">-1</button>
-                    <button onClick={()=>changeStock(p.id,1)} className="flex-1 py-2 rounded-xl bg-violet-600 text-xs font-bold">+1</button>
-                    <button onClick={()=>changeStock(p.id,10)} className="flex-1 py-2 rounded-xl bg-violet-600 text-xs font-bold">+10</button>
+                    <button onClick={()=>changeStock(p.id,1)} className="flex-1 py-2 rounded-xl bg-lime-400 text-black text-xs font-black">+1</button>
+                    <button onClick={()=>changeStock(p.id,10)} className="flex-1 py-2 rounded-xl bg-lime-400 text-black text-xs font-black">+10</button>
                   </div>
                 </div>
               </div>
@@ -193,7 +193,7 @@ export default function Admin(){
       {tab==='orders' && (
         <div className="mt-6">
           <div className="flex flex-wrap items-center gap-2 mb-3">
-            <button onClick={doRefresh} className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-sm font-black flex items-center gap-2">
+            <button onClick={doRefresh} className="px-4 py-2 rounded-xl bg-lime-400 hover:bg-lime-300 text-black text-sm font-black flex items-center gap-2">
               <RefreshCw size={15} className={spinning?'animate-spin':''}/> Actualiser les commandes
             </button>
             <span className="text-xs text-white/40">
@@ -208,7 +208,7 @@ export default function Admin(){
               {id:'delivered', label:'📦 Livrées'},
               {id:'cancelled', label:'❌ Annulées'},
             ].map(f=>(
-              <button key={f.id} onClick={()=>setFilter(f.id)} className={`cat-pill px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${filter===f.id?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 text-white/70'}`}>{f.label}</button>
+              <button key={f.id} onClick={()=>setFilter(f.id)} className={`cat-pill px-4 py-2 rounded-full text-xs font-bold border whitespace-nowrap ${filter===f.id?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10 text-white/70'}`}>{f.label}</button>
             ))}
           </div>
 
@@ -249,14 +249,14 @@ export default function Admin(){
         <div className="mt-6">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={16}/>
-            <input value={qUser} onChange={e=>setQUser(e.target.value)} placeholder="Rechercher nom, email, téléphone..." className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-violet-500/50 text-sm"/>
+            <input value={qUser} onChange={e=>setQUser(e.target.value)} placeholder="Rechercher nom, email, téléphone..." className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-lime-500/50 text-sm"/>
           </div>
           <p className="text-xs text-white/40 mt-2">Chaque compte créé sur le site (email, Discord, Facebook) + infos de ses commandes.</p>
           <div className="mt-4 grid md:grid-cols-2 gap-3">
             {visibleAccounts.map(a=>(
               <div key={a.id} className="p-4 rounded-2xl bg-white/5 border border-white/10">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center font-black text-lg shrink-0">{(a.name||a.email||'?')[0].toUpperCase()}</div>
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-lime-400 to-emerald-600 text-black flex items-center justify-center font-black text-lg shrink-0">{(a.name||a.email||'?')[0].toUpperCase()}</div>
                   <div className="flex-1 min-w-0">
                     <div className="font-bold truncate">{a.name||'Client'} {a.isAdmin && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 ml-1">ADMIN</span>}</div>
                     <div className="text-xs text-white/50 truncate">📧 {a.email||'—'} • {a.provider}</div>
@@ -269,7 +269,7 @@ export default function Admin(){
                   <div className="flex justify-between"><span className="text-white/50">Téléphone(s)</span><span className="font-bold">{a.phones.length? a.phones.map(ph=> <a key={ph} href={`tel:${ph}`} className="text-emerald-300 ml-2">📞 {ph}</a>) : '—'}</span></div>
                   <div className="flex justify-between"><span className="text-white/50">Compte créé</span><span>{a.createdAt? new Date(a.createdAt).toLocaleString('fr-FR') : '—'}</span></div>
                   <div className="flex justify-between"><span className="text-white/50">Dernière activité</span><span>{a.lastSeen? new Date(a.lastSeen).toLocaleString('fr-FR') : '—'}</span></div>
-                  <div className="flex justify-between"><span className="text-white/50">Commandes</span><span className="font-black text-violet-400">{a.ordersCount}</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">Commandes</span><span className="font-black text-lime-400">{a.ordersCount}</span></div>
                   <div className="flex justify-between"><span className="text-white/50">Total dépensé</span><span className="font-black text-emerald-400">{a.totalSpent.toFixed(2)} TND</span></div>
                   {a.orderIds.length>0 && <div className="text-white/40 pt-1">🧾 {a.orderIds.join(' • ')}</div>}
                 </div>
@@ -285,7 +285,7 @@ export default function Admin(){
           <div className="space-y-2 max-h-[60vh] overflow-y-auto">
             {threads.length===0 && <div className="text-white/50 text-center py-8 text-sm">{t('chat_empty_admin')}</div>}
             {threads.map(th=>(
-              <button key={th.userId} onClick={()=>openThread(th.userId)} className={`w-full text-left p-3 rounded-2xl border ${activeThread===th.userId?'bg-violet-600 border-violet-600':'bg-white/5 border-white/10 hover:bg-white/10'}`}>
+              <button key={th.userId} onClick={()=>openThread(th.userId)} className={`w-full text-left p-3 rounded-2xl border ${activeThread===th.userId?'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10 hover:bg-white/10'}`}>
                 <div className="flex items-center justify-between gap-2">
                   <div className="font-bold text-sm truncate">{th.name}</div>
                   {th.unread>0 && <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-[11px] font-black shrink-0">{th.unread}</span>}
@@ -303,7 +303,7 @@ export default function Admin(){
                 <div className="font-black pb-2 border-b border-white/10">💬 {currentThread.name}</div>
                 <div className="flex-1 space-y-2 overflow-y-auto py-3 max-h-[45vh]">
                   {threadMessages.map(m=>(
-                    <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-violet-600 ml-auto' : 'bg-white/10 border border-white/10 mr-auto'}`}>
+                    <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-lime-400 text-black ml-auto' : 'bg-white/10 border border-white/10 mr-auto'}`}>
                       {typeof m.text==='string' && m.text.startsWith('data:image')
                         ? <button type="button" onClick={()=>setLightbox(m.text)}><img src={m.text} alt="reçu" className="max-w-full rounded-xl max-h-72 object-contain"/></button>
                         : <div className="leading-snug">{m.text}</div>}
@@ -312,8 +312,8 @@ export default function Admin(){
                   ))}
                 </div>
                 <form onSubmit={handleReply} className="flex gap-2 pt-2 border-t border-white/10">
-                  <input value={reply} onChange={e=>setReply(e.target.value)} placeholder={t('chat_placeholder')} className="flex-1 px-3 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm focus:outline-none focus:border-violet-500"/>
-                  <button className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 font-black disabled:opacity-50" disabled={!reply.trim()}><Send size={16}/></button>
+                  <input value={reply} onChange={e=>setReply(e.target.value)} placeholder={t('chat_placeholder')} className="flex-1 px-3 py-2.5 rounded-xl bg-black/40 border border-white/10 text-sm focus:outline-none focus:border-lime-500"/>
+                  <button className="px-4 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-black disabled:opacity-60" disabled={!reply.trim()}><Send size={16}/></button>
                 </form>
                 {lightbox && (
                   <div onClick={()=>setLightbox(null)} className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
@@ -347,11 +347,11 @@ export default function Admin(){
 
           <div className="mt-4 space-y-3">
             {tournaments.map(tr=>(
-              <div key={tr.id} className={`p-4 rounded-2xl border ${tr.status==='pending'?'bg-fuchsia-500/5 border-fuchsia-500/30':'bg-white/5 border-white/10'}`}>
+              <div key={tr.id} className={`p-4 rounded-2xl border ${tr.status==='pending'?'bg-amber-500/5 border-amber-500/30':'bg-white/5 border-white/10'}`}>
                 <div className="flex flex-wrap items-center gap-3">
                   <img src={tr.image || imgForGame(tr.game)} alt={tr.title} className="w-16 h-16 rounded-xl object-cover"/>
                   <div className="flex-1 min-w-[200px]">
-                    <div className="font-bold">{tr.title} {tr.status==='pending' && <span className="text-[10px] px-2 py-0.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30 ml-1">{t('tr_pending')}</span>}</div>
+                    <div className="font-bold">{tr.title} {tr.status==='pending' && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 ml-1">{t('tr_pending')}</span>}</div>
                     <div className="text-xs text-white/50">{tr.game} • {tr.date?new Date(tr.date).toLocaleString('fr-FR'):'—'} • 🏆 {tr.prize} • {regsFor(tr.id).length}/{tr.max_teams} • {tr.status}</div>
                   </div>
                   <select value={tr.status} onChange={e=>saveTournament({...tr, status:e.target.value})} className="px-2 py-2 rounded-xl bg-black/30 border border-white/10 text-xs">

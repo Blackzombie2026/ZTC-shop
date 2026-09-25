@@ -55,17 +55,17 @@ export default function Login(){
         {/* EMAIL */}
         <div className="mt-6 rounded-2xl bg-black/30 border border-white/10 p-4">
           <div className="flex gap-2 mb-4">
-            <button onClick={()=>setMode('login')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='login'?'bg-violet-600':'bg-white/5 border border-white/10'}`}><LogIn size={15}/> {t('signin')}</button>
-            <button onClick={()=>setMode('signup')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='signup'?'bg-violet-600':'bg-white/5 border border-white/10'}`}><UserPlus size={15}/> {t('signup')}</button>
+            <button onClick={()=>setMode('login')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='login'?'bg-lime-400 text-black':'bg-white/5 border border-white/10'}`}><LogIn size={15}/> {t('signin')}</button>
+            <button onClick={()=>setMode('signup')} className={`flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 ${mode==='signup'?'bg-lime-400 text-black':'bg-white/5 border border-white/10'}`}><UserPlus size={15}/> {t('signup')}</button>
           </div>
           <form onSubmit={handleEmail} className="space-y-3">
             {mode==='signup' && (
-              <input placeholder={t('pseudo_ph')} value={name} onChange={e=>setName(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
+              <input placeholder={t('pseudo_ph')} value={name} onChange={e=>setName(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-lime-500"/>
             )}
-            <input placeholder="Email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
-            <input placeholder={t('pass_ph')} type="password" required value={password} onChange={e=>setPassword(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-violet-500"/>
+            <input placeholder="Email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-lime-500"/>
+            <input placeholder={t('pass_ph')} type="password" required value={password} onChange={e=>setPassword(e.target.value)} className="w-full px-3 py-3 rounded-xl bg-black/40 border border-white/10 focus:outline-none focus:border-lime-500"/>
             {error && <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl p-2.5">{error}</div>}
-            <button disabled={busy} className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 font-bold flex items-center justify-center gap-2 disabled:opacity-60">
+            <button disabled={busy} className="w-full py-3 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-black flex items-center justify-center gap-2 disabled:opacity-60">
               <Mail size={16}/> {busy ? '...' : mode==='signup' ? t('create_account') : t('login_email')}
             </button>
             {isCloudEnabled && <p className="text-[11px] text-emerald-300/80 text-center">☁️ Compte partagé — mêmes commandes sur tous tes appareils</p>}

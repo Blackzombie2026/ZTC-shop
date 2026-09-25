@@ -5,10 +5,10 @@ import { useLang } from '../context/LanguageContext'
 export default function About(){
   const { t } = useLang()
   const stats = [
-    { icon: <Gamepad2 size={18} className="text-violet-400"/>, v: '12+', l: t('st_games') },
+    { icon: <Gamepad2 size={18} className="text-lime-400"/>, v: '12+', l: t('st_games') },
     { icon: <Clock size={18} className="text-amber-400"/>, v: '< 2 min', l: t('st_delivery') },
     { icon: <Truck size={18} className="text-emerald-400"/>, v: '×2', l: t('st_pay') },
-    { icon: <Languages size={18} className="text-fuchsia-400"/>, v: 'FR/EN/AR', l: t('st_lang') },
+    { icon: <Languages size={18} className="text-lime-400"/>, v: 'FR/EN/AR', l: t('st_lang') },
   ]
   const dos = [
     { title: t('do1t'), desc: t('do1d') },
@@ -28,7 +28,7 @@ export default function About(){
   return (
     <div className="max-w-[1000px] mx-auto px-4 py-10">
       <div className="text-center reveal">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-600/20 border border-violet-500/30 text-xs text-violet-300 mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-lime-400/15 border border-lime-400/30 text-xs text-lime-300 mb-4">
           <Zap size={14}/> ZTC SHOP • ZOMRA TN
         </div>
         <h1 className="text-3xl md:text-5xl font-black tracking-tight">{t('about_title')}</h1>
@@ -58,8 +58,8 @@ export default function About(){
       <h2 className="text-xl font-black mt-10 mb-4">{t('about_how_t')}</h2>
       <div className="grid md:grid-cols-3 gap-3">
         {steps.map((s,i)=>(
-          <div key={i} className="rounded-2xl p-5 bg-gradient-to-b from-violet-600/15 to-transparent border border-violet-500/20">
-            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center font-black">{s.n}</div>
+          <div key={i} className="rounded-2xl p-5 bg-gradient-to-b from-lime-400/15 to-transparent border border-lime-400/20">
+            <div className="w-9 h-9 rounded-xl bg-lime-400 text-black flex items-center justify-center font-black">{s.n}</div>
             <div className="font-bold mt-3">{s.title}</div>
             <div className="text-sm text-white/60 mt-1 leading-relaxed">{s.desc}</div>
           </div>
@@ -77,7 +77,7 @@ export default function About(){
       </div>
 
       <div className="flex flex-wrap justify-center gap-3 mt-10">
-        <Link to="/catalog" className="btn-shine px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 font-bold flex items-center gap-2">{t('browse')} <ArrowRight size={18}/></Link>
+        <Link to="/catalog" className="btn-shine px-6 py-3 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-black flex items-center gap-2">{t('browse')} <ArrowRight size={18}/></Link>
         <Link to="/support" className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold flex items-center gap-2"><MessageCircle size={18}/> {t('support')}</Link>
       </div>
     </div>

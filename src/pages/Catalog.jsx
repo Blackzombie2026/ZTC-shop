@@ -44,7 +44,7 @@ export default function Catalog(){
       <div className="mt-6 flex flex-col lg:flex-row gap-3">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" size={18}/>
-          <input value={q} onChange={e=>setQ(e.target.value)} placeholder={t('search_ph')} className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-violet-500/50"/>
+          <input value={q} onChange={e=>setQ(e.target.value)} placeholder={t('search_ph')} className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:outline-none focus:border-lime-500/50"/>
         </div>
         <div className="flex items-center gap-2">
           <SlidersHorizontal size={18} className="text-white/50"/>
@@ -60,7 +60,7 @@ export default function Catalog(){
       {!menu && (
       <div className="mt-4 flex gap-2 overflow-auto pb-2">
         {categories.map(c=>(
-          <button key={c.id} onClick={()=>setCat(c.id)} className={`cat-pill px-4 py-2 rounded-full text-sm font-semibold border whitespace-nowrap ${category===c.id? 'bg-violet-600 border-violet-600 text-white':'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}`}>{catLabel(c.id)}</button>
+          <button key={c.id} onClick={()=>setCat(c.id)} className={`cat-pill px-4 py-2 rounded-full text-sm font-semibold border whitespace-nowrap ${category===c.id? 'bg-lime-400 border-lime-400 text-black':'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'}`}>{catLabel(c.id)}</button>
         ))}
       </div>
       )}
@@ -68,10 +68,10 @@ export default function Catalog(){
       <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filtered.map((p,i)=>(
           <div key={p.id} className="anim-glow reveal" style={{animationDelay:`${(i%12)*50}ms`}}>
-          <Link to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-violet-500/40 transition group block">
+          <Link to={`/product/${p.id}`} className="rounded-2xl overflow-hidden bg-[#18181b] border border-white/10 hover:border-lime-400/50 transition group block">
             <div className="relative h-40 overflow-hidden">
               <img src={p.image || `${import.meta.env.BASE_URL}favicon.svg`} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500"/>
-              {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded-full bg-violet-600">{p.badge}</span>}
+              {p.badge && <span className="absolute top-2 left-2 text-[10px] font-black px-2 py-1 rounded bg-lime-400 text-black">{p.badge}</span>}
               <span className="absolute bottom-2 right-2 text-xs bg-black/60 backdrop-blur px-2 py-1 rounded-full border border-white/10">{p.stock} {t('in_stock')}</span>
             </div>
             <div className="p-4">
@@ -80,10 +80,10 @@ export default function Catalog(){
               <div className="text-xs text-white/50 line-clamp-1">{p.subtitle}</div>
               <div className="mt-2 flex flex-wrap gap-1">
                 {p.variants.slice(0,3).map(v=> <span key={v.id} className="text-[11px] px-2 py-1 rounded-full bg-white/5 border border-white/10">{v.label}</span>)}
-                {p.variants.length>3 && <span className="text-[11px] px-2 py-1 rounded-full bg-violet-600/20 border border-violet-500/20 text-violet-300">+{p.variants.length-3}</span>}
+                {p.variants.length>3 && <span className="text-[11px] px-2 py-1 rounded bg-lime-400/15 border border-lime-400/25 text-lime-300">+{p.variants.length-3}</span>}
               </div>
               <div className="mt-3 flex items-center justify-between">
-                <span className="font-black text-violet-400">{t('from')} {Math.min(...p.variants.map(v=>v.price)).toFixed(2)} TND</span>
+                <span className="font-black text-lime-400">{t('from')} {Math.min(...p.variants.map(v=>v.price)).toFixed(2)} TND</span>
                 <span className="text-xs px-3 py-1.5 rounded-xl bg-white text-black font-bold">{t('see')}</span>
               </div>
             </div>

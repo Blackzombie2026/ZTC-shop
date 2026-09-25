@@ -79,14 +79,14 @@ export default function Support(){
         {!user ? (
           <div className="text-center py-8">
             <p className="text-white/60">{t('chat_login_needed')}</p>
-            <Link to="/login" className="inline-block mt-4 px-6 py-3 rounded-xl bg-violet-600 font-bold">{t('login')}</Link>
+            <Link to="/login" className="inline-block mt-4 px-6 py-3 rounded-xl bg-lime-400 text-black font-black">{t('login')}</Link>
           </div>
         ) : (
           <>
             <div className="space-y-2 max-h-[50vh] overflow-y-auto bg-black/20 rounded-2xl p-4 border border-white/5">
               {thread.length===0 && <p className="text-sm text-white/40 text-center py-6">{t('chat_empty')}</p>}
               {thread.map(m=>(
-                <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-emerald-600/20 border border-emerald-500/30 mr-auto' : 'bg-violet-600 ml-auto'}`}>
+                <div key={m.id} className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm ${m.sender==='admin' ? 'bg-emerald-600/20 border border-emerald-500/30 mr-auto' : 'bg-lime-400 text-black ml-auto'}`}>
                   {m.sender==='admin' && <div className="text-[10px] font-black text-emerald-300">ZTC ✓</div>}
                   {isImgMsg(m.text)
                     ? <button type="button" onClick={()=>setLightbox(m.text)}><img src={m.text} alt="reçu" className="max-w-full rounded-xl max-h-64 object-contain"/></button>

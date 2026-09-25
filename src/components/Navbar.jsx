@@ -39,11 +39,11 @@ export default function Navbar(){
                     <Link key={pid} to={`/product/${pid}`} className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 text-white/80 hover:text-white text-[13px]">
                       {prodById[pid].image
                         ? <img src={prodById[pid].image} alt="" className="w-8 h-8 rounded-lg object-cover"/>
-                        : <span className="w-8 h-8 rounded-lg bg-violet-600/30 flex items-center justify-center text-xs font-black">{prodById[pid].name[0]}</span>}
+                        : <span className="w-8 h-8 rounded-lg bg-lime-400 text-black/30 flex items-center justify-center text-xs font-black">{prodById[pid].name[0]}</span>}
                       <span className="truncate">{prodById[pid].name}</span>
                     </Link>
                   ))}
-                  <Link to={`/catalog?menu=${m.id}`} className="block text-center mt-1 px-3 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-bold">Tout voir →</Link>
+                  <Link to={`/catalog?menu=${m.id}`} className="block text-center mt-1 px-3 py-2 rounded-xl bg-lime-400 hover:bg-lime-300 text-black text-[13px] font-bold">Tout voir →</Link>
                 </div>
                 </div>
               </div>
@@ -70,14 +70,14 @@ export default function Navbar(){
         <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-xl p-1">
           {LANGS.map(l=>(
             <button key={l.id} onClick={()=>setLang(l.id)} title={l.label}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-black ${lang===l.id?'bg-violet-600 text-white':'text-white/60 hover:text-white'}`}>
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-black ${lang===l.id?'bg-lime-400 text-black':'text-white/60 hover:text-white'}`}>
               {l.id.toUpperCase()}
             </button>
           ))}
         </div>
         <Link to="/cart" className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10">
           <ShoppingCart size={18}/>
-          {count>0 && <span key={count} className="badge-pop absolute -top-1.5 -right-1.5 bg-violet-600 text-white text-[11px] font-bold rounded-full min-w-5 h-5 flex items-center justify-center px-1">{count}</span>}
+          {count>0 && <span key={count} className="badge-pop absolute -top-1.5 -right-1.5 bg-lime-400 text-black text-[11px] font-bold rounded-full min-w-5 h-5 flex items-center justify-center px-1">{count}</span>}
         </Link>
         {user ? (
           <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ export default function Navbar(){
             <div className="hidden lg:flex items-center gap-2">
               {user.avatar
                 ? <img src={user.avatar} alt="" className="w-8 h-8 rounded-full object-cover"/>
-                : <div className={`w-8 h-8 rounded-full ${providerColor[user.provider]||'bg-violet-600'} flex items-center justify-center font-black text-sm`}>{(user.name||user.email||'?')[0].toUpperCase()}</div>
+                : <div className={`w-8 h-8 rounded-full ${providerColor[user.provider]||'bg-lime-600'} flex items-center justify-center font-black text-sm`}>{(user.name||user.email||'?')[0].toUpperCase()}</div>
               }
               <div className="text-xs leading-tight">
                 <div className="text-white font-bold truncate max-w-[120px]">{user.name || user.email || user.principal?.slice(0,12)}</div>

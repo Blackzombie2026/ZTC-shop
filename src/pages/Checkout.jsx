@@ -21,10 +21,10 @@ export default function Checkout(){
   if(cart.length===0) return <div className="max-w-[600px] mx-auto px-4 py-16 text-center">Panier vide.</div>
   if(!user) return (
     <div className="max-w-[600px] mx-auto px-4 py-16 text-center">
-      <Lock className="mx-auto text-violet-400" size={32}/>
+      <Lock className="mx-auto text-lime-400" size={32}/>
       <h2 className="text-xl font-black mt-3">{t('login_required')}</h2>
       <p className="text-white/60 text-sm mt-1">{t('login_required_d')}</p>
-      <button onClick={()=>nav('/login')} className="mt-4 px-6 py-3 rounded-xl bg-violet-600 font-bold">{t('login')}</button>
+      <button onClick={()=>nav('/login')} className="mt-4 px-6 py-3 rounded-xl bg-lime-400 text-black font-black">{t('login')}</button>
     </div>
   )
 
@@ -62,10 +62,10 @@ export default function Checkout(){
         <div className="rounded-2xl bg-white/5 border border-white/10 p-5">
           <h3 className="font-bold mb-3">{t('info')}</h3>
           <div className="grid sm:grid-cols-2 gap-3">
-            <input placeholder={t('name_ph')} value={form.name} onChange={e=>setForm({...form,name:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
-            <input placeholder={t('email_ph')} value={form.email} onChange={e=>setForm({...form,email:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
-            <input placeholder="Téléphone (ex: 98 123 456) *" inputMode="tel" required value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
-            <input placeholder={t('addr_ph')} value={form.address} onChange={e=>setForm({...form,address:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-violet-500"/>
+            <input placeholder={t('name_ph')} value={form.name} onChange={e=>setForm({...form,name:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-lime-500"/>
+            <input placeholder={t('email_ph')} value={form.email} onChange={e=>setForm({...form,email:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-lime-500"/>
+            <input placeholder="Téléphone (ex: 98 123 456) *" inputMode="tel" required value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-lime-500"/>
+            <input placeholder={t('addr_ph')} value={form.address} onChange={e=>setForm({...form,address:e.target.value})} className="px-3 py-3 rounded-xl bg-black/30 border border-white/10 focus:outline-none focus:border-lime-500"/>
           </div>
           <p className="text-[11px] text-white/40 mt-2">* Requis — on t’appelle sur ce numéro en cas de livraison / paiement à la livraison.</p>
         </div>
@@ -87,7 +87,7 @@ export default function Checkout(){
           </ul>
         </div>
 
-        <button disabled={loading} className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-700 font-black disabled:opacity-60">
+        <button disabled={loading} className="w-full py-4 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-black disabled:opacity-60">
           {loading? '...' : `${t('d17paybtn')} • ${total.toFixed(2)} TND`}
         </button>
       </form>
@@ -96,7 +96,7 @@ export default function Checkout(){
         <h3 className="font-black">{t('order')}</h3>
         <div className="mt-3 space-y-2">
           {cart.map(i=> <div key={i.key} className="flex justify-between text-sm"><span className="text-white/70">{i.name} ×{i.qty} <span className="text-white/40">({i.variantLabel})</span></span><span className="font-semibold">{(i.price*i.qty).toFixed(2)} TND</span></div>)}
-          <div className="flex justify-between font-black border-t border-white/10 pt-2"><span>{t('total')}</span><span className="text-violet-400">{total.toFixed(2)} TND</span></div>
+          <div className="flex justify-between font-black border-t border-white/10 pt-2"><span>{t('total')}</span><span className="text-lime-400">{total.toFixed(2)} TND</span></div>
         </div>
         <div className="mt-4 text-xs text-white/40">En confirmant, tes codes seront générés et visibles dans “Mes commandes”.</div>
       </div>

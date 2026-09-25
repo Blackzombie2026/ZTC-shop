@@ -69,7 +69,7 @@ export default function OrderDetail(){
                     <button onClick={()=>setRevealed(r=>({...r,[idx]:!r[idx]}))} className="p-1.5 rounded-lg bg-white/10">
                       {revealed[idx]? <EyeOff size={14}/>:<Eye size={14}/>}
                     </button>
-                    <button onClick={()=>copy(it.code)} className="p-1.5 rounded-lg bg-violet-600">
+                    <button onClick={()=>copy(it.code)} className="p-1.5 rounded-lg bg-lime-400 text-black">
                       {copied===it.code? <Check size={14}/>:<Copy size={14}/>}
                     </button>
                   </div>
@@ -79,7 +79,7 @@ export default function OrderDetail(){
             </div>
           ))}
         </div>
-        <div className="mt-4 p-4 rounded-xl bg-violet-600/10 border border-violet-500/20 text-sm text-violet-200">
+        <div className="mt-4 p-4 rounded-xl bg-lime-400/10 border border-lime-400/25 text-sm text-lime-200">
           Besoin d'aide ? <Link to="/support" className="font-bold underline">Contacte le support</Link> avec ton ID de commande <span className="font-mono font-bold">{order.id}</span>.
         </div>
       </div>

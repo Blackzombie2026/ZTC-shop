@@ -67,14 +67,14 @@ export default function ChatWidget(){
             {!user ? (
               <div className="text-center py-6">
                 <p className="text-xs text-white/60">{t('chat_login_needed')}</p>
-                <Link to="/login" onClick={()=>setOpen(false)} className="inline-block mt-3 px-5 py-2.5 rounded-xl bg-violet-600 text-sm font-bold">{t('login')}</Link>
+                <Link to="/login" onClick={()=>setOpen(false)} className="inline-block mt-3 px-5 py-2.5 rounded-xl bg-lime-400 text-black text-sm font-black">{t('login')}</Link>
               </div>
             ) : (
               <>
                 <div className="space-y-2 max-h-[300px] overflow-y-auto bg-black/20 rounded-xl p-3">
                   {thread.length===0 && <p className="text-xs text-white/40 text-center py-4">{t('chat_empty')}</p>}
                   {thread.map(m=>(
-                    <div key={m.id} className={`max-w-[90%] px-2.5 py-1.5 rounded-2xl text-[13px] ${m.sender==='admin' ? 'bg-emerald-600/20 border border-emerald-500/30 mr-auto' : 'bg-violet-600 ml-auto'}`}>
+                    <div key={m.id} className={`max-w-[90%] px-2.5 py-1.5 rounded-2xl text-[13px] ${m.sender==='admin' ? 'bg-emerald-600/20 border border-emerald-500/30 mr-auto' : 'bg-lime-400 text-black ml-auto'}`}>
                       {isImg(m.text)
                         ? <img src={m.text} alt="reçu" className="max-w-full rounded-lg max-h-40 object-contain"/>
                         : <div className="leading-snug">{m.text}</div>}

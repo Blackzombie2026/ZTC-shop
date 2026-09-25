@@ -12,7 +12,7 @@ export default function Cart(){
       <div className="text-5xl mb-4">🛒</div>
       <h2 className="text-2xl font-black">{t('cart_empty_t')}</h2>
       <p className="text-white/60 mt-2">{t('cart_empty_d')}</p>
-      <Link to="/catalog" className="inline-block mt-6 px-6 py-3 rounded-xl bg-violet-600 font-bold">{t('browse')}</Link>
+      <Link to="/catalog" className="inline-block mt-6 px-6 py-3 rounded-xl bg-lime-400 text-black font-black">{t('browse')}</Link>
     </div>
   )
   return (
@@ -26,7 +26,7 @@ export default function Cart(){
               <div className="flex-1">
                 <div className="font-bold leading-tight">{item.name}</div>
                 <div className="text-xs text-white/50">{item.variantLabel} • {item.category}</div>
-                <div className="text-sm font-bold text-violet-400 mt-1">{item.price.toFixed(2)} TND</div>
+                <div className="text-sm font-bold text-lime-400 mt-1">{item.price.toFixed(2)} TND</div>
               </div>
               <div className="flex flex-col items-end gap-2">
                 <div className="flex items-center gap-1 bg-black/30 rounded-xl p-1 border border-white/10">
@@ -45,9 +45,9 @@ export default function Cart(){
         <div className="mt-4 space-y-2 text-sm">
           <div className="flex justify-between text-white/60"><span>{t('subtotal')}</span><span>{total.toFixed(2)} TND</span></div>
           <div className="flex justify-between text-white/60"><span>{t('fees')}</span><span className="text-emerald-400">{t('free')}</span></div>
-          <div className="flex justify-between font-black text-lg border-t border-white/10 pt-2"><span>{t('total')}</span><span className="text-violet-400">{total.toFixed(2)} TND</span></div>
+          <div className="flex justify-between font-black text-lg border-t border-white/10 pt-2"><span>{t('total')}</span><span className="text-lime-400">{total.toFixed(2)} TND</span></div>
         </div>
-        <button onClick={()=>nav('/checkout')} className="mt-4 w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 font-bold flex items-center justify-center gap-2">{t('checkout_btn')} <ArrowRight size={16}/></button>
+        <button onClick={()=>nav('/checkout')} className="mt-4 w-full py-3 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-black flex items-center justify-center gap-2">{t('checkout_btn')} <ArrowRight size={16}/></button>
         <Link to="/catalog" className="mt-2 block text-center text-sm text-white/60 hover:text-white">{t('continue')}</Link>
         <p className="mt-4 text-xs text-white/40">{t('cod_note')}</p>
       </div>

@@ -60,7 +60,7 @@ export default function TournamentManager({ tr }){
         <label className="text-xs flex items-center gap-1.5 text-white/60">
           <input type="checkbox" checked={shuffle} onChange={e=>setShuffle(e.target.checked)} className="accent-amber-500"/> <Shuffle size={12}/> {t('shuffle')}
         </label>
-        <button onClick={generate} className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-sm font-black">{t('gen_bracket')}</button>
+        <button onClick={generate} className="px-4 py-2 rounded-xl bg-lime-400 hover:bg-lime-300 text-black text-sm font-black">{t('gen_bracket')}</button>
         {bracket.length>0 && (
           <button onClick={reset} className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-xs flex items-center gap-1"><RotateCcw size={12}/> {t('reset_bracket')}</button>
         )}
