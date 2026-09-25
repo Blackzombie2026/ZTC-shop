@@ -19,7 +19,7 @@ export default function Navbar(){
   const visibleMenus = MENUS.filter(m=> m.products.length>0)
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
-      <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-3">
+      <div className="max-w-[1536px] mx-auto px-4 h-16 flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight">
           <img src={logoUrl} alt="ZTC Shop" className="w-10 h-10 rounded-xl object-cover bg-white p-0.5 border border-white/20"/>
           <span className="hidden sm:inline font-display text-2xl tracking-wide">ZTC<span className="text-lime-400"> SHOP</span></span>
@@ -98,7 +98,7 @@ export default function Navbar(){
         )}
       </div>
       <div className="md:hidden border-t border-white/10">
-        <div className="max-w-[1280px] mx-auto px-4 py-2 flex gap-2 overflow-x-auto text-[13px] text-white/70">
+        <div className="max-w-[1536px] mx-auto px-4 py-2 flex gap-2 overflow-x-auto text-[13px] text-white/70">
           <Link to="/" className="flex items-center gap-1 whitespace-nowrap px-2 py-1"><Home size={14}/></Link>
           {visibleMenus.map(m=>{ const Icon = MENU_ICONS[m.icon] || Gift; return (
             <Link key={m.id} to={`/catalog?menu=${m.id}`} className={`flex items-center gap-1 whitespace-nowrap px-3 py-1.5 rounded-full border ${m.chip||'bg-white/5 border-white/10 text-white/70'}`}><Icon size={14}/>{m.label[lang]||m.label.en}</Link>

@@ -117,7 +117,7 @@ export default function Admin(){
   })
 
   return (
-    <div className="max-w-[1200px] mx-auto px-4 py-8">
+    <div className="max-w-[1400px] mx-auto px-4 py-8">
       <h1 className="text-2xl font-black">{t('admin')} {cloud && <span className="text-xs px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 align-middle">☁️ Cloud partagé</span>}</h1>
       <p className="text-sm text-white/50">Chaque commande client arrive ici — confirme-la, appelle le client au besoin.</p>
       {needsDbGrant && (
