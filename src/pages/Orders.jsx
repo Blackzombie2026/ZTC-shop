@@ -25,8 +25,9 @@ export default function Orders(){
   )
   return (
     <div className="max-w-[1000px] mx-auto px-4 py-8">
-      <h1 className="text-2xl font-black">{t('my_orders')}</h1>
+      <h1 className="font-display text-4xl font-bold uppercase tracking-wide">{t('profile')}</h1>
       <p className="text-sm text-white/50">{user.provider}{user.email? ` • ${user.email}`: user.principal? ` • ${user.principal}`:''}</p>
+      <h2 className="text-lg font-black mt-6">{t('my_orders')}</h2>
       {!user.cloud && <p className="mt-2 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-xl p-2.5">⚠️ Compte local : tes commandes restent sur cet appareil. Crée un compte email pour les retrouver partout et que le support les voie.</p>}
       {retryMsg && <p className="mt-2 text-xs text-white/70">{retryMsg}</p>}
       <div className="mt-6 space-y-3">
