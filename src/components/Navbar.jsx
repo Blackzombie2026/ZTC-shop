@@ -49,13 +49,9 @@ export default function Navbar(){
               </div>
             )
           })}
-          <Link to="/catalog" className="px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/70 hover:text-white hover:bg-white/10 transition text-sm">{t('catalog')}</Link>
         </nav>
         <div className="flex-1" />
-        {/* À propos + Tournois + Support */}
-        <Link to="/about" title={t('about')} className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm font-semibold">
-          <Info size={16}/> {t('about')}
-        </Link>
+        {/* Tournois + Support */}
         <Link to="/tournaments" title={t('tournaments')} className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 hover:bg-amber-500/25 text-amber-300 text-sm font-bold">
           <Trophy size={16}/> {t('tournaments')}
         </Link>
@@ -107,7 +103,6 @@ export default function Navbar(){
           {visibleMenus.map(m=>{ const Icon = MENU_ICONS[m.icon] || Gift; return (
             <Link key={m.id} to={`/catalog?menu=${m.id}`} className={`flex items-center gap-1 whitespace-nowrap px-3 py-1.5 rounded-full border ${m.chip||'bg-white/5 border-white/10 text-white/70'}`}><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
           )})}
-          <Link to="/catalog" className="whitespace-nowrap px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/70">{t('catalog')}</Link>
         </div>
       </div>
     </header>
