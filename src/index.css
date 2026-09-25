@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -5,10 +6,15 @@
   --color-primary-dark: #5b21b6;
   --color-dark: #0f0f12;
   --color-card: #1a1a1f;
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --color-lime-glow: #a3e635;
 }
 
-* { scrollbar-width: thin; scrollbar-color: #7c3aed #1a1a1f; }
-body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #0a0a0c; color: #e5e7eb; }
+* { scrollbar-width: thin; scrollbar-color: #65a30d #10130c; }
+::selection { background: #a3e635; color: #0b0e0a; }
+body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #0b0e0a; color: #e5e7eb; }
+.font-display { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; }
 
 /* Bouton support : anneau pulsant + flottement pour attirer l'œil */
 @keyframes support-ring {
@@ -23,18 +29,14 @@ body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #
 }
 .animate-support-bounce { animation: support-bounce 2s ease-in-out infinite; }
 
-/* Halo animé derrière les photos produits */
-.anim-glow { position: relative; border-radius: 18px; }
+/* Halo discret derrière les photos produits (style pro, monochrome lime) */
+.anim-glow { position: relative; border-radius: 14px; }
 .anim-glow::before {
-  content: ''; position: absolute; inset: -4px; border-radius: 22px; z-index: 0;
-  background: conic-gradient(from 0deg, #7c3aed, #d946ef, #10b981, #7c3aed);
-  filter: blur(12px); opacity: .28;
-  animation: glow-spin 7s linear infinite;
+  content: ''; position: absolute; inset: -1px; border-radius: 15px; z-index: 0;
+  background: linear-gradient(135deg, rgba(163,230,53,.35), transparent 60%);
+  filter: blur(8px); opacity: .25;
 }
-.anim-glow:nth-child(3n)::before { filter: blur(12px) hue-rotate(70deg); }
-.anim-glow:nth-child(3n+1)::before { filter: blur(12px) hue-rotate(-40deg); }
 .anim-glow > * { position: relative; z-index: 1; }
-@keyframes glow-spin { to { transform: rotate(360deg); } }
 
 /* Pastilles catégories : rebond au clic */
 .cat-pill { transition: transform .15s ease; }

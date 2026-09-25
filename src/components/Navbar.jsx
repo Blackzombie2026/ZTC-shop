@@ -22,7 +22,7 @@ export default function Navbar(){
       <div className="max-w-[1280px] mx-auto px-4 h-16 flex items-center gap-3">
         <Link to="/" className="flex items-center gap-2 font-black text-xl tracking-tight">
           <img src={logoUrl} alt="ZTC Shop" className="w-10 h-10 rounded-xl object-cover bg-white p-0.5 border border-white/20"/>
-          <span className="hidden sm:inline">ZTC<span className="text-violet-500"> SHOP</span></span>
+          <span className="hidden sm:inline font-display text-2xl tracking-wide">ZTC<span className="text-lime-400"> SHOP</span></span>
         </Link>
         <nav className="hidden md:flex items-center gap-5 ml-4 text-sm text-white/70">
           <Link to="/" className="hover:text-white flex items-center gap-1"><Home size={15}/></Link>
@@ -96,7 +96,7 @@ export default function Navbar(){
             </div>
           </div>
         ) : (
-          <Link to="/login" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold">
+          <Link to="/login" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-lime-400 hover:bg-lime-300 text-black text-sm font-bold">
             <User size={16}/> {t('login')}
           </Link>
         )}
