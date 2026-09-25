@@ -12,6 +12,10 @@ export const categories = [
   { id: 'netflix', label: 'Netflix' },
   { id: 'battlenet', label: 'Battle.net' },
   { id: 'steamfresh', label: 'Steam Fresh Account' },
+  { id: 'steam-games', label: 'Steam Games' },
+  { id: 'battlenet-games', label: 'Battle.net Games' },
+  { id: 'xbox-games', label: 'Xbox Games' },
+  { id: 'ps5-games', label: 'PS5 Games' },
   { id: 'other', label: 'Autres' },
 ]
 
@@ -25,6 +29,7 @@ export const MENUS = [
   { id: 'steamfresh', icon: 'Sparkles', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Fresh Account', en: 'Steam Fresh Account', ar: 'حسابات ستيم جديدة' }, products: ['sf-fc27'] },
   { id: 'steam', icon: 'Monitor', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Steam Wallet Euro', en: 'Steam Wallet Euro', ar: 'Steam Wallet Euro' }, products: ['steam-1', 'stm-usd'] },
   { id: 'subs', icon: 'Crown', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Subscriptions', en: 'Subscriptions', ar: 'اشتراكات' }, products: ['netflix-1'] },
+  { id: 'games', icon: 'Gamepad2', chip: 'bg-violet-500/10 border-violet-500/20 text-violet-200', label: { fr: 'Games', en: 'Games', ar: 'ألعاب' }, products: [], children: ['steam-games', 'battlenet-games', 'xbox-games', 'ps5-games'] },
 ]
 
 export const initialProducts = [

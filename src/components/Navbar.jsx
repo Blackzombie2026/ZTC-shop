@@ -3,7 +3,7 @@ import { ShoppingCart, User, Shield, LogOut, MessageCircle, Info, Trophy, Home, 
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { useLang, LANGS } from '../context/LanguageContext'
-import { MENUS, initialProducts } from '../data/products'
+import { MENUS, initialProducts, categories } from '../data/products'
 
 const providerLabel = { email:'Email', discord:'Discord', facebook:'Facebook', 'Internet Identity':'Internet Identity' }
 const providerColor = { email:'bg-emerald-500', discord:'bg-[#5865F2]', facebook:'bg-[#1877F2]', 'Internet Identity':'bg-violet-600' }
@@ -16,7 +16,8 @@ export default function Navbar(){
   const logoUrl = `${import.meta.env.BASE_URL}logo.jpg`
   const allProds = dbProducts || initialProducts
   const prodById = Object.fromEntries(allProds.map(p=> [p.id, p]))
-  const visibleMenus = MENUS.filter(m=> m.products.length>0)
+  const visibleMenus = MENUS.filter(m=> m.products.length>0 || (m.children||[]).length>0)
+  const catName = (id)=> categories.find(c=>c.id===id)?.label||id
   return (
     <header className="sticky top-0 z-40 backdrop-blur bg-[#0a0a0c]/90 border-b border-white/10">
       <div className="max-w-[1536px] mx-auto px-4 h-16 flex items-center gap-3">
@@ -28,13 +29,20 @@ export default function Navbar(){
           <Link to="/" className="hover:text-white flex items-center gap-1"><Home size={15}/></Link>
           {visibleMenus.map(m=>{
             const Icon = MENU_ICONS[m.icon] || Gift
+            const mainLink = m.products.length>0 ? `/catalog?menu=${m.id}` : `/catalog?cat=${(m.children||[])[0]||''}`
             return (
               <div key={m.id} className="relative group">
-                <Link to={`/catalog?menu=${m.id}`} className="flex items-center gap-1.5 py-4 text-white font-semibold hover:text-lime-400 transition">
+                <Link to={mainLink} className="flex items-center gap-1.5 py-4 text-white font-semibold hover:text-lime-400 transition">
                   <Icon size={15}/>{m.label[lang]||m.label.en}<ChevronDown size={12} className="opacity-60"/>
                 </Link>
                 <div className="absolute top-full left-0 min-w-[220px] pt-2 hidden group-hover:block">
                 <div className="rounded-2xl bg-[#141417] border border-white/10 shadow-2xl p-2">
+                  {(m.children||[]).map(cid=>(
+                    <Link key={cid} to={`/catalog?cat=${cid}`} className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 text-white/80 hover:text-white text-[13px] font-bold">
+                      <span className="w-8 h-8 rounded-lg bg-lime-400/20 text-lime-300 flex items-center justify-center text-xs font-black">{catName(cid)[0]}</span>
+                      <span className="truncate">{catName(cid)}</span>
+                    </Link>
+                  ))}
                   {m.products.map(pid=> prodById[pid] && (
                     <Link key={pid} to={`/product/${pid}`} className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/10 text-white/80 hover:text-white text-[13px]">
                       {prodById[pid].image
@@ -100,8 +108,8 @@ export default function Navbar(){
       <div className="md:hidden border-t border-white/10">
         <div className="max-w-[1536px] mx-auto px-4 py-2 flex gap-2 overflow-x-auto text-[13px] text-white/70">
           <Link to="/" className="flex items-center gap-1 whitespace-nowrap px-2 py-1"><Home size={14}/></Link>
-          {visibleMenus.map(m=>{ const Icon = MENU_ICONS[m.icon] || Gift; return (
-            <Link key={m.id} to={`/catalog?menu=${m.id}`} className="flex items-center gap-1 whitespace-nowrap px-2 py-1 text-white font-semibold"><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
+          {visibleMenus.map(m=>{ const Icon = MENU_ICONS[m.icon] || Gift; const ml = m.products.length>0 ? `/catalog?menu=${m.id}` : `/catalog?cat=${(m.children||[])[0]||''}`; return (
+            <Link key={m.id} to={ml} className="flex items-center gap-1 whitespace-nowrap px-2 py-1 text-white font-semibold"><Icon size={14}/>{m.label[lang]||m.label.en}</Link>
           )})}
         </div>
       </div>
